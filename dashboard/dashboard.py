@@ -68,6 +68,11 @@ class DashboardManager:
                 box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(108, 92, 231, 0.15) !important;
             }
 
+            /* The top metrics intentionally use three distinct readings, not a repeated card. */
+            .metric-featured { background:linear-gradient(145deg, rgba(245,166,35,.18), rgba(18,22,31,.9) 60%) !important; border-radius:28px 8px 28px 8px !important; }
+            .metric-velocity { background:rgba(108,92,231,.08) !important; border-left:3px solid #6C5CE7 !important; border-radius:8px 20px 20px 8px !important; }
+            .metric-skill { background:radial-gradient(circle at 88% 15%, rgba(34,211,238,.18), transparent 32%), rgba(18,22,31,.8) !important; border-radius:50% 20px 20px 20px !important; }
+
             /* Glow Highlights */
             .glow-amber {
                 box-shadow: 0 0 25px rgba(245, 166, 35, 0.18) !important;
@@ -318,7 +323,7 @@ class DashboardManager:
 
             with col_hero1:
                 render_clean_html("""
-                    <div class="glass-card glow-amber">
+                    <div class="glass-card glow-amber metric-featured">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
                                 <div style="font-size: 12px; font-weight: 700; color: #8A8F9E; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">
@@ -345,7 +350,7 @@ class DashboardManager:
 
             with col_hero2:
                 render_clean_html("""
-                    <div class="glass-card glow-indigo">
+                    <div class="glass-card glow-indigo metric-velocity">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
                                 <div style="font-size: 12px; font-weight: 700; color: #8A8F9E; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">
@@ -371,7 +376,7 @@ class DashboardManager:
 
             with col_hero3:
                 render_clean_html("""
-                    <div class="glass-card glow-teal">
+                    <div class="glass-card glow-teal metric-skill">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
                                 <div style="font-size: 12px; font-weight: 700; color: #8A8F9E; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">

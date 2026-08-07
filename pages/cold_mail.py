@@ -44,9 +44,9 @@ def render_cold_mail_page():
 
     # COMPRESSED HERO SECTION (Max Width 1280px Centered)
     render_clean_html("""
-        <div style="max-width: 1280px; margin: 0 auto; padding: 12px 24px 24px 24px; text-align: center;">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 40px 24px 24px 24px; text-align: center;">
             <!-- Badge -->
-            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(79, 140, 255, 0.10); border: 1px solid rgba(79, 140, 255, 0.28); color: #7EB8FF; padding: 5px 16px; border-radius: 9999px; font-size: 12px; font-weight: 600; margin-bottom: 12px;">
+            <div class="arm-tag" style="margin-bottom:12px;">
                 <i class="fa-solid fa-paper-plane"></i> Smart Outreach Automation
             </div>
             
@@ -70,7 +70,7 @@ def render_cold_mail_page():
                     <div style="font-size: 13px; font-weight: 700; color: #F5F5F7;">
                         <i class="fa-solid fa-link" style="color:#4F8CFF; margin-right:6px;"></i> AI Context Import from Public URL
                     </div>
-                    <span style="background: rgba(48, 209, 88, 0.12); color: #30D158; border: 1px solid rgba(48, 209, 88, 0.25); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px;">
+                    <span class="arm-tag">
                         <i class="fa-solid fa-bolt"></i> Auto-Extraction Active
                     </span>
                 </div>
@@ -99,10 +99,10 @@ def render_cold_mail_page():
 
     render_clean_html("""
         <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 11px; color: #86868B;">
-            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;"><i class="fa-brands fa-linkedin" style="color:#0A66C2;"></i> LinkedIn Job</span>
-            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;"><i class="fa-solid fa-globe"></i> Company Career Page</span>
-            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;"><i class="fa-brands fa-github"></i> GitHub Repo</span>
-            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;"><i class="fa-solid fa-user-tie"></i> Recruiter Profile</span>
+            <span class="arm-tag"><i class="fa-brands fa-linkedin" style="color:#0A66C2;"></i> LinkedIn Job</span>
+            <span class="arm-tag"><i class="fa-solid fa-globe"></i> Company Career Page</span>
+            <span class="arm-tag"><i class="fa-brands fa-github"></i> GitHub Repo</span>
+            <span class="arm-tag"><i class="fa-solid fa-user-tie"></i> Recruiter Profile</span>
         </div>
         </div>
     """)
@@ -308,4 +308,3 @@ Senior Software Engineer
             </div>
         </div>
     """)
-

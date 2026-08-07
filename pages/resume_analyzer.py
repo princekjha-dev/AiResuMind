@@ -633,7 +633,7 @@ def render_resume_analyzer_page():
     # ── Page-level CSS ────────────────────────────────────────────────────────
     render_clean_html("""
     <style>
-    .ra-page { max-width:1280px; margin:0 auto; padding:16px 32px 80px; }
+    .ra-page { max-width:1280px; margin:0 auto; padding:40px 32px 80px; }
     .ra-page-header { margin-bottom:24px; }
     .ra-eyebrow {
         font-size:12px; font-weight:700; letter-spacing:.12em;
@@ -645,7 +645,7 @@ def render_resume_analyzer_page():
         box-shadow:0 0 10px #4F8CFF;
     }
     .ra-h1 {
-        font-size:44px !important; font-weight:900 !important;
+        font-size:48px !important; font-weight:800 !important;
         color:#FFFFFF !important; letter-spacing:-.03em !important;
         line-height:1.1 !important; margin:0 0 14px !important;
     }
@@ -660,9 +660,9 @@ def render_resume_analyzer_page():
 
     /* Upload panel card */
     .ra-upload-card {
-        background:#0E0E10;
-        border:1px solid rgba(255,255,255,.1);
-        border-radius:20px;
+        background:linear-gradient(160deg, rgba(255,107,74,.09), #10151d 36%);
+        border:1px solid rgba(255,107,74,.28);
+        border-radius:8px 28px 8px 28px;
         padding:28px;
         position:sticky; top:88px;
     }
@@ -675,9 +675,9 @@ def render_resume_analyzer_page():
 
     /* Results empty state */
     .ra-empty {
-        background:#0A0A0C;
-        border:1px dashed rgba(255,255,255,.12);
-        border-radius:20px; padding:64px 40px;
+        background:radial-gradient(circle at 70% 20%, rgba(149,134,238,.14), transparent 28%), #10151d;
+        border:1px dashed rgba(231,184,90,.28);
+        border-radius:28px 8px 28px 8px; padding:42px 40px;
         text-align:center;
     }
     .ra-empty-title { font-size:22px; font-weight:800; color:#FFFFFF; margin:0 0 10px; }
@@ -688,6 +688,11 @@ def render_resume_analyzer_page():
         border:1px solid rgba(79,140,255,.2);
         padding:6px 16px; border-radius:999px; font-size:13px; font-weight:600;
     }
+    .ra-ghost-preview { max-width:500px; margin:0 auto 28px; padding:18px; text-align:left; background:rgba(10,13,18,.62); border:1px solid rgba(255,255,255,.08); border-radius:14px; transform:rotate(-1deg); }
+    .ra-ghost-line { height:7px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.14), rgba(97,215,178,.26)); margin:9px 0; }
+    .ra-ghost-line.short { width:46%; } .ra-ghost-line.mid { width:72%; }
+    .ra-empty-steps { display:flex; justify-content:center; gap:0; margin:0 auto 26px; max-width:460px; }
+    .ra-empty-step { flex:1; font-size:11px; color:#9ca6b4; } .ra-empty-step b { display:block; color:#e7b85a; font:500 10px 'DM Mono', monospace; margin-bottom:5px; }
 
     /* Score section */
     .ra-score-wrap {
@@ -773,6 +778,7 @@ def render_resume_analyzer_page():
         font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px;
     }
     .ra-roast-body { font-size:14px; color:#FCA5A5; line-height:1.75; font-style:italic; }
+    @media (max-width: 760px) { .ra-page { padding:28px 18px 56px; } .ra-h1 { font-size:38px !important; } .ra-upload-card { position:static; margin-bottom:20px; } .ra-metric-grid,.ra-insights-grid { grid-template-columns:1fr; } }
     </style>
     """)
 
@@ -906,12 +912,13 @@ def render_resume_analyzer_page():
         else:
             render_clean_html("""
             <div class="ra-empty">
-                <div style="font-size:48px;margin-bottom:16px;">📄</div>
+                <div class="ra-ghost-preview"><div class="ra-ghost-line short"></div><div class="ra-ghost-line"></div><div class="ra-ghost-line mid"></div><div class="ra-ghost-line"></div><div class="ra-ghost-line short"></div></div>
                 <div class="ra-empty-title">Your Analysis Report Will Appear Here</div>
                 <div class="ra-empty-sub">
                     Upload your resume on the left, configure your settings,
                     then click <strong>Run AI Audit</strong> to generate your full AI report.
                 </div>
+                <div class="ra-empty-steps"><div class="ra-empty-step"><b>01</b>Upload</div><div class="ra-empty-step"><b>02</b>Benchmark</div><div class="ra-empty-step"><b>03</b>Prioritize</div></div>
                 <div class="ra-empty-chips">
                     <span class="ra-empty-chip">ATS Score</span>
                     <span class="ra-empty-chip">Keyword Gap</span>

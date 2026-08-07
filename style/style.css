@@ -2,20 +2,27 @@
    AiResuMind - Modern Dark Glassmorphic Design System (Apple / Linear Inspired)
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-    --bg-dark-base: #050507;
-    --bg-dark-surface: #0a0a0f;
-    --bg-dark-card: #121218;
-    --bg-dark-card-hover: #181822;
-    --accent-blue: #3b82f6;
-    --accent-purple: #9333ea;
-    --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%);
-    --accent-glow: rgba(59, 130, 246, 0.15);
-    --text-primary: #FFFFFF;
-    --text-secondary: #9CA3AF;
-    --text-muted: #6B7280;
+    /* Night executive palette: Ink, Ivory, Signal, Mint, Brass, Iris and Coral. */
+    --bg-dark-base: #0a0d12;
+    --bg-dark-surface: #10151d;
+    --bg-dark-card: #151c26;
+    --bg-dark-card-hover: #1c2633;
+    --ink: #f6f1e8;
+    --signal: #ff6b4a;
+    --mint: #61d7b2;
+    --brass: #e7b85a;
+    --iris: #9586ee;
+    --sky: #74b9ff;
+    --accent-blue: var(--signal);
+    --accent-purple: var(--iris);
+    --accent-gradient: linear-gradient(135deg, #ff6b4a 0%, #e7b85a 100%);
+    --accent-glow: rgba(255, 107, 74, 0.16);
+    --text-primary: var(--ink);
+    --text-secondary: #b6becb;
+    --text-muted: #788394;
     --border-subtle: rgba(255, 255, 255, 0.08);
     --border-hover: rgba(59, 130, 246, 0.35);
     --radius-sm: 8px;
@@ -31,6 +38,31 @@ html, body, .stApp {
     color: var(--text-primary) !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
     -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .arm-display, .ra-h1 {
+    font-family: 'Fraunces', Georgia, serif !important;
+}
+
+/* A single compact tag language, used for statuses and product context. */
+.arm-tag {
+    display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
+    padding: 5px 10px; font: 500 11px/1 'DM Mono', monospace;
+    letter-spacing: .03em; color: var(--mint); background: rgba(97,215,178,.08);
+    border: 1px solid rgba(97,215,178,.24);
+}
+
+.builder-flow { display:flex; align-items:center; justify-content:center; gap:10px; margin:26px auto 0; max-width:620px; color:var(--text-muted); font-size:12px; }
+.builder-flow span { display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
+.builder-flow b { font:500 10px 'DM Mono', monospace; color:var(--brass); }
+.builder-flow .active { color:var(--ink); }.builder-flow .active b { color:var(--signal); }
+.builder-flow i { width:38px; height:1px; background:linear-gradient(90deg,var(--signal),rgba(255,255,255,.16)); }
+
+/* Focus remains visible for keyboard navigation. */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible,
+[role="combobox"]:focus-visible {
+    outline: 2px solid var(--brass) !important;
+    outline-offset: 3px !important;
 }
 
 /* Remove default Streamlit top spacing & header chrome */
@@ -125,4 +157,10 @@ footer { display: none !important; }
     background: rgba(255, 255, 255, 0.08) !important;
     border-color: rgba(255, 255, 255, 0.28) !important;
     transform: translateY(-1px) !important;
+}
+
+@media (max-width: 720px) {
+    .main .block-container, [data-testid="stAppViewBlockContainer"] { padding-bottom: 36px !important; }
+    .builder-flow { justify-content:flex-start; overflow-x:auto; padding:0 4px 4px; }
+    .builder-flow i { min-width:18px; }
 }

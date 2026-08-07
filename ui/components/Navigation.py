@@ -82,9 +82,9 @@ def render_navigation(active_page=None):
         z-index: 999999 !important;
         width: 100% !important;
         height: 56px !important;
-        background-color: #0a0a0f !important;
+        background-color: rgba(10,13,18,.92) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-        margin-bottom: 20px !important;
+        margin-bottom: 0 !important;
     }}
 
     /* ── Container: mx-auto max-w-7xl px-6 h-14 flex items-center justify-between ── */
@@ -123,7 +123,7 @@ def render_navigation(active_page=None):
         width: 24px !important;
         height: 24px !important;
         border-radius: 6px !important;
-        background: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%) !important;
+        background: linear-gradient(135deg, #ff6b4a 0%, #e7b85a 100%) !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -133,7 +133,7 @@ def render_navigation(active_page=None):
 
     /* Logo Text: text-white font-semibold text-[15px] tracking-tight */
     span.arm-brand-title {{
-        font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
+        font-family: 'Fraunces', Georgia, serif !important;
         font-size: 15px !important;
         font-weight: 600 !important;
         color: #ffffff !important;
@@ -145,7 +145,7 @@ def render_navigation(active_page=None):
     nav.arm-main-nav {{
         display: flex !important;
         align-items: center !important;
-        margin-left: 40px !important;
+        margin-left: 28px !important;
         margin-right: auto !important;
         background: transparent !important;
         border: none !important;
@@ -157,7 +157,7 @@ def render_navigation(active_page=None):
         list-style: none !important;
         margin: 0 !important;
         padding: 0 !important;
-        gap: 28px !important; /* gap-7 */
+        gap: 22px !important;
         background: transparent !important;
         border: none !important;
     }}
@@ -192,7 +192,7 @@ def render_navigation(active_page=None):
         height: auto !important;
         width: auto !important;
         white-space: nowrap !important;
-        transition: color 150ms ease !important;
+        transition: color 150ms ease, transform 150ms ease !important;
     }}
 
     a.arm-nav-a:hover {{
@@ -201,6 +201,7 @@ def render_navigation(active_page=None):
         background-color: transparent !important;
         border: 0 !important;
         box-shadow: none !important;
+        transform: translateY(-1px) !important;
     }}
 
     a.arm-nav-a.active {{
@@ -230,17 +231,18 @@ def render_navigation(active_page=None):
         font-weight: 500 !important;
         color: #ffffff !important;
         text-decoration: none !important;
-        background: linear-gradient(90deg, #3b82f6 0%, #9333ea 100%) !important;
+        background: #ff6b4a !important;
         border-radius: 9999px !important;
         padding: 7px 16px !important;
         white-space: nowrap !important;
         border: none !important;
-        box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3) !important;
-        transition: opacity 150ms ease !important;
+        box-shadow: 0 6px 18px rgba(255, 107, 74, 0.22) !important;
+        transition: transform 150ms ease, background 150ms ease !important;
     }}
 
     a.arm-auth-btn:hover {{
-        opacity: 0.9 !important;
+        background: #ff8066 !important;
+        transform: translateY(-1px) !important;
     }}
 
     /* Responsive */
@@ -257,9 +259,14 @@ def render_navigation(active_page=None):
     }}
 
     @media (max-width: 768px) {{
+        header.arm-site-header {{ height: auto !important; }}
+        div.arm-header-inner {{ min-height: 56px !important; height: auto !important; gap: 14px !important; }}
+        nav.arm-main-nav {{ order: 3 !important; width: 100% !important; margin: 0 !important; overflow-x: auto !important; }}
         ul.arm-nav-ul {{
             overflow-x: auto !important;
             scrollbar-width: none !important;
+            gap: 16px !important;
+            padding-bottom: 10px !important;
         }}
     }}
     </style>

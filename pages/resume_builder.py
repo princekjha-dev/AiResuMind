@@ -86,7 +86,7 @@ def render_resume_builder_page():
 
     # 1. COMPRESSED HERO SECTION
     render_clean_html("""
-        <div style="max-width: 1100px; margin: 0 auto; padding: 12px 24px 24px 24px; text-align: center;">
+        <div style="max-width: 1100px; margin: 0 auto; padding: 40px 24px 24px 24px; text-align: center;">
             <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #F5F5F7; padding: 4px 16px; border-radius: 9999px; font-size: 12px; font-weight: 600; margin-bottom: 12px;">
                 AI Candidate Intelligence & Executive Resume Platform
             </div>
@@ -106,6 +106,7 @@ def render_resume_builder_page():
                 <span>•</span>
                 <span>4.9 / 5.0 Recruiter Rating</span>
             </div>
+            <div class="builder-flow" aria-label="Resume builder progress"><span class="active"><b>01</b> Source</span><i></i><span><b>02</b> Target role</span><i></i><span><b>03</b> Tune</span><i></i><span><b>04</b> Generate</span></div>
         </div>
     """)
 
