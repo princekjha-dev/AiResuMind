@@ -149,7 +149,7 @@ def render_navigation(active_page='home'):
             ("dashboard",      "Dashboard"),
             ("resume_analyzer","Resume Analyzer"),
             ("resume_builder", "Resume Builder"),
-            ("interview_prep", "Interview Prep"),
+            ("interview_prep", "Cold Email Generator"),
             ("job_search",     "Job Search"),
         ]
         nav_sub = st.columns(len(nav_items), gap="small")

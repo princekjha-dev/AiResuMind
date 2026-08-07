@@ -92,8 +92,8 @@ def render_feature_cards_grid():
         },
         {
             "tag": "04",
-            "title": "STAR-Based AI Mock Interviews",
-            "description": "Practice real-time technical & behavioral questions tailored to your job description with instant AI scoring."
+            "title": "Generate Personalized Cold Emails That Get Replies",
+            "description": "Paste job URLs or recruiter profiles to generate targeted cold emails, LinkedIn DMs, and follow-ups with high response rates."
         },
         {
             "tag": "05",

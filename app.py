@@ -110,7 +110,7 @@ class ResumeApp:
             "HOME": self.render_home,
             "RESUME ANALYZER": render_resume_analyzer_page,
             "RESUME BUILDER": render_resume_builder_page,
-            "INTERVIEW PREP": render_interview_prep_page,
+            "COLD EMAIL GENERATOR": render_interview_prep_page,
             "DASHBOARD": self.render_dashboard,
             "JOB SEARCH": self.render_job_search,
             "FEEDBACK": self.render_feedback_page,

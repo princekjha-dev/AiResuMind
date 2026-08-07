@@ -294,9 +294,9 @@ def render_job_search():
                         with st.expander(f" View Job Details & Requirements"):
                             st.markdown(desc)
                     with bcol2:
-                        if st.button(f" Practice STAR Interview for {company}", key=f"prep_{job_id}_{idx}", use_container_width=True):
+                        if st.button(f" Generate Cold Email for {company}", key=f"prep_{job_id}_{idx}", use_container_width=True):
                             st.session_state.last_role = title
-                            st.info(f"Navigate to 'Interview Prep' in top navigation to practice questions for {title}!")
+                            st.info(f"Navigate to 'Cold Email Generator' in top navigation to craft personalized recruiter outreach for {title}!")
                             
                     st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
