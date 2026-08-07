@@ -8,9 +8,7 @@ def render_clean_html(html_str):
     cleaned = chr(10).join(lines)
     st.markdown(cleaned, unsafe_allow_html=True)
 
-"""
-AiResuMind - Main Application
-"""
+
 from jobs.job_search import render_job_search
 from datetime import datetime
 import ui_components
@@ -64,14 +62,13 @@ import datetime
 
 from pages.resume_analyzer import render_resume_analyzer_page
 from pages.resume_builder import render_resume_builder_page
-from pages.cover_letter import render_cover_letter_page
 from pages.interview_prep import render_interview_prep_page
 from pages.about import render_about_page
 
 # Set page config at the very beginning
 st.set_page_config(
-    page_title="Application",
-    page_icon=None,
+    page_title="AiResuMind",
+    page_icon="🧠",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -114,7 +111,6 @@ class ResumeApp:
             "HOME": self.render_home,
             "RESUME ANALYZER": render_resume_analyzer_page,
             "RESUME BUILDER": render_resume_builder_page,
-            "COVER LETTER": render_cover_letter_page,
             "INTERVIEW PREP": render_interview_prep_page,
             "DASHBOARD": self.render_dashboard,
             "JOB SEARCH": self.render_job_search,
@@ -183,15 +179,31 @@ class ResumeApp:
             border-radius: 3px;
         }
 
-        /* ── Zero default Streamlit top gap ── */
-        .main .block-container {
+        /* ── KILL ALL STREAMLIT TOP WHITESPACE ── */
+        .main .block-container,
+        [data-testid="stAppViewBlockContainer"],
+        [data-testid="stMainBlockContainer"],
+        [data-testid="stVerticalBlock"] > div:first-child,
+        .stMainBlockContainer,
+        .block-container,
+        section.main > div {
             padding-top: 0 !important;
-            margin-top: 0 !important;
+            margin-top:  0 !important;
         }
-        [data-testid="stAppViewBlockContainer"] {
+        .stApp > header,
+        [data-testid="stHeader"],
+        #stHeader {
+            display: none !important;
+            height: 0 !important;
+            min-height: 0 !important;
+        }
+        .st-emotion-cache-z5fcl4,
+        .st-emotion-cache-1dp5vir,
+        .st-emotion-cache-ztfqz8,
+        .st-emotion-cache-13ln4jf {
             padding-top: 0 !important;
+            margin-top:  0 !important;
         }
-        .stApp > header { display: none !important; }
 
         /* Hide Streamlit sidebar & toggle entirely */
         section[data-testid="stSidebar"],

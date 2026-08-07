@@ -141,16 +141,16 @@ class DashboardManager:
         handle_tag = "@" + (clean_handle if clean_handle else "Executive")
 
         render_clean_html(f"""
-            <div style="margin-bottom: 24px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px;">
+            <div style="margin-top: 4px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px;">
                     <div>
-                        <h1 style="font-size: 32px !important; font-weight: 800 !important; color: #F5F5F7 !important; margin: 0; display: inline; letter-spacing: -0.02em;">
+                        <h1 style="font-size: 26px !important; font-weight: 800 !important; color: #F5F5F7 !important; margin: 0; display: inline; letter-spacing: -0.02em;">
                             AiResuMind
                         </h1>
-                        <span style="font-size: 24px; font-weight: 600; color: #86868B; margin-left: 12px;">AI Career Analytics | Executive Dashboard</span>
+                        <span style="font-size: 18px; font-weight: 600; color: #86868B; margin-left: 10px;">AI Career Analytics | Executive Dashboard</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 16px;">
-                        <div style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); padding: 8px 18px; border-radius: 9999px; font-size: 13px; color: #F5F5F7;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); padding: 6px 14px; border-radius: 9999px; font-size: 12.5px; color: #F5F5F7;">
                             <strong>{user_name}</strong> <span style="color: #86868B; font-weight: 500;">({user_role} {handle_tag})</span>
                         </div>
                     </div>

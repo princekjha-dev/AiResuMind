@@ -321,7 +321,7 @@ def create_v4_ats_score_gauge_chart(score=92):
     )
     return fig
 
-def render_v4_candidate_intelligence_report(candidate_name="Prince Kumar Jha", role="Business Analyst", score=92, contact_details=None, analysis_data=None, is_roast=False, roast_content=None, resume_text="", custom_jd_text=""):
+def render_v4_candidate_intelligence_report(candidate_name="Candidate", role="Professional", score=92, contact_details=None, analysis_data=None, is_roast=False, roast_content=None, resume_text="", custom_jd_text=""):
     """Render Executive $500M SaaS Candidate Intelligence Report matching Apple/Linear design system."""
     if contact_details is None:
         contact_details = {
@@ -628,95 +628,238 @@ def render_v4_candidate_intelligence_report(candidate_name="Prince Kumar Jha", r
         """)
 
 def render_resume_analyzer_page():
-    """Renders the completely redesigned AI Resume Analyzer & ATS Benchmark Page for AiResuMind Pro v4.0."""
-    
-    # Hero Section - Apple & Vercel Design Language
+    """Redesigned Resume Analyzer — clean 1280px centered layout, sticky left panel."""
+
+    # ── Page-level CSS ────────────────────────────────────────────────────────
     render_clean_html("""
-        <div style="margin-bottom: 40px; text-align: left;">
-            <div style="font-size: 13px; font-weight: 800; color: #2563EB; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #2563EB; box-shadow: 0 0 12px #2563EB;"></span>
-                AI CANDIDATE INTELLIGENCE ENGINE
-            </div>
-            <h1 style="font-size: 48px; font-weight: 900; color: #FFFFFF; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px;">
-                AI Resume Analyzer & ATS Benchmark
-            </h1>
-            <p style="color: #94A3B8; font-size: 18px; max-width: 720px; line-height: 1.6; margin: 0;">
-                Upload your resume and receive enterprise-grade ATS analysis, keyword optimization, role alignment, and recruiter insights powered by AI.
-            </p>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <span style="background: rgba(255,255,255,0.06); color: #CBD5E1; border: 1px solid rgba(255,255,255,0.1); padding: 4px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 700;">PDF</span>
-                <span style="background: rgba(255,255,255,0.06); color: #CBD5E1; border: 1px solid rgba(255,255,255,0.1); padding: 4px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 700;">DOCX</span>
-                <span style="background: rgba(255,255,255,0.06); color: #CBD5E1; border: 1px solid rgba(255,255,255,0.1); padding: 4px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 700;">DOC</span>
-                <span style="background: rgba(255,255,255,0.06); color: #CBD5E1; border: 1px solid rgba(255,255,255,0.1); padding: 4px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 700;">TXT</span>
-            </div>
-        </div>
+    <style>
+    .ra-page { max-width:1280px; margin:0 auto; padding:16px 32px 80px; }
+    .ra-page-header { margin-bottom:24px; }
+    .ra-eyebrow {
+        font-size:12px; font-weight:700; letter-spacing:.12em;
+        text-transform:uppercase; color:#4F8CFF;
+        display:flex; align-items:center; gap:8px; margin-bottom:14px;
+    }
+    .ra-eyebrow-dot {
+        width:7px; height:7px; border-radius:50%; background:#4F8CFF;
+        box-shadow:0 0 10px #4F8CFF;
+    }
+    .ra-h1 {
+        font-size:44px !important; font-weight:900 !important;
+        color:#FFFFFF !important; letter-spacing:-.03em !important;
+        line-height:1.1 !important; margin:0 0 14px !important;
+    }
+    .ra-subtitle { color:#9CA3AF; font-size:17px; max-width:680px; line-height:1.65; margin:0 0 20px; }
+    .ra-fmt-pills { display:flex; gap:8px; flex-wrap:wrap; }
+    .ra-fmt-pill {
+        background:rgba(255,255,255,.05); color:#9CA3AF;
+        border:1px solid rgba(255,255,255,.1);
+        padding:3px 12px; border-radius:999px;
+        font-size:12px; font-weight:600;
+    }
+
+    /* Upload panel card */
+    .ra-upload-card {
+        background:#0E0E10;
+        border:1px solid rgba(255,255,255,.1);
+        border-radius:20px;
+        padding:28px;
+        position:sticky; top:88px;
+    }
+    .ra-card-title {
+        font-size:17px; font-weight:800; color:#FFFFFF;
+        margin:0 0 6px;
+    }
+    .ra-card-sub { font-size:13px; color:#6B7280; margin:0 0 22px; line-height:1.5; }
+    .ra-divider { height:1px; background:rgba(255,255,255,.07); margin:18px 0; }
+
+    /* Results empty state */
+    .ra-empty {
+        background:#0A0A0C;
+        border:1px dashed rgba(255,255,255,.12);
+        border-radius:20px; padding:64px 40px;
+        text-align:center;
+    }
+    .ra-empty-title { font-size:22px; font-weight:800; color:#FFFFFF; margin:0 0 10px; }
+    .ra-empty-sub { color:#6B7280; font-size:15px; max-width:480px; margin:0 auto 28px; line-height:1.65; }
+    .ra-empty-chips { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+    .ra-empty-chip {
+        background:rgba(79,140,255,.08); color:#4F8CFF;
+        border:1px solid rgba(79,140,255,.2);
+        padding:6px 16px; border-radius:999px; font-size:13px; font-weight:600;
+    }
+
+    /* Score section */
+    .ra-score-wrap {
+        background:#0E0E10; border:1px solid rgba(255,255,255,.1);
+        border-radius:20px; padding:28px; margin-bottom:20px;
+    }
+    .ra-section-title { font-size:16px; font-weight:800; color:#FFFFFF; margin:0 0 18px; }
+    .ra-metric-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
+    .ra-metric {
+        background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
+        border-radius:14px; padding:14px; text-align:center;
+    }
+    .ra-metric-label { font-size:11px; font-weight:700; text-transform:uppercase; color:#6B7280; margin-bottom:6px; }
+    .ra-metric-val { font-size:20px; font-weight:900; }
+
+    /* Progress bars */
+    .ra-bar-row { margin-bottom:14px; }
+    .ra-bar-meta { display:flex; justify-content:space-between; font-size:13px; font-weight:600; color:#D1D5DB; margin-bottom:5px; }
+    .ra-bar-track { height:6px; background:rgba(255,255,255,.07); border-radius:999px; overflow:hidden; }
+    .ra-bar-fill { height:100%; border-radius:999px; }
+
+    /* Suggestion cards */
+    .ra-sugg {
+        background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07);
+        border-radius:14px; padding:16px; margin-bottom:12px;
+    }
+    .ra-sugg-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+    .ra-sugg-title { font-size:14px; font-weight:700; color:#FFFFFF; }
+    .ra-badge-high {
+        background:rgba(239,68,68,.12); color:#EF4444;
+        border:1px solid rgba(239,68,68,.25);
+        font-size:10.5px; font-weight:800; padding:2px 10px; border-radius:999px;
+    }
+    .ra-badge-med {
+        background:rgba(245,158,11,.12); color:#F59E0B;
+        border:1px solid rgba(245,158,11,.25);
+        font-size:10.5px; font-weight:800; padding:2px 10px; border-radius:999px;
+    }
+    .ra-sugg-body { font-size:12.5px; color:#9CA3AF; margin-bottom:6px; line-height:1.55; }
+    .ra-gain { font-size:12px; font-weight:700; color:#22C55E; }
+
+    /* Keyword pills */
+    .ra-kw-matched {
+        display:inline-block; margin:3px;
+        background:rgba(34,197,94,.1); color:#22C55E;
+        border:1px solid rgba(34,197,94,.25);
+        padding:4px 13px; border-radius:999px; font-size:12px; font-weight:600;
+    }
+    .ra-kw-missing {
+        display:inline-block; margin:3px;
+        background:rgba(245,158,11,.1); color:#F59E0B;
+        border:1px solid rgba(245,158,11,.25);
+        padding:4px 13px; border-radius:999px; font-size:12px; font-weight:600;
+    }
+
+    /* Insights */
+    .ra-insights-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .ra-insight-box { border-radius:14px; padding:18px 20px; }
+    .ra-insight-label { font-size:13px; font-weight:800; margin-bottom:10px; }
+    .ra-insight-item { font-size:12.5px; line-height:1.7; padding-left:14px; position:relative; margin-bottom:4px; }
+    .ra-insight-item::before { content:''; position:absolute; left:0; top:8px; width:5px; height:5px; border-radius:50%; }
+
+    /* Rebuild CTA */
+    .ra-rebuild-banner {
+        background:linear-gradient(135deg,rgba(79,140,255,.12),rgba(124,58,237,.12));
+        border:1px solid rgba(79,140,255,.3);
+        border-radius:18px; padding:24px; margin-bottom:20px;
+    }
+    .ra-rebuild-title { font-size:17px; font-weight:800; color:#FFFFFF; margin:0 0 6px; }
+    .ra-rebuild-sub { font-size:13.5px; color:#9CA3AF; margin:0; line-height:1.55; }
+
+    /* Roast */
+    .ra-roast {
+        background:rgba(239,68,68,.06);
+        border:1px solid rgba(239,68,68,.28);
+        border-radius:18px; padding:24px; margin-bottom:20px;
+    }
+    .ra-roast-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    .ra-roast-title { font-size:17px; font-weight:900; color:#EF4444; }
+    .ra-roast-verdict {
+        background:rgba(239,68,68,.18); color:#EF4444;
+        border:1px solid rgba(239,68,68,.35);
+        font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px;
+    }
+    .ra-roast-body { font-size:14px; color:#FCA5A5; line-height:1.75; font-style:italic; }
+    </style>
     """)
-    
-    col_left, col_right = st.columns([0.35, 0.65], gap="large")
-    
+
+    # ── Centered container open ───────────────────────────────────────────────
+    render_clean_html('<div class="ra-page">')
+
+    # ── Page header ──────────────────────────────────────────────────────────
+    render_clean_html("""
+    <div class="ra-page-header">
+        <div class="ra-eyebrow"><span class="ra-eyebrow-dot"></span>AI Resume Intelligence</div>
+        <h1 class="ra-h1">Resume Analyzer &amp; ATS Benchmark</h1>
+        <p class="ra-subtitle">Upload your resume for enterprise-grade ATS scoring, keyword gap detection, and AI-driven career insights.</p>
+        <div class="ra-fmt-pills">
+            <span class="ra-fmt-pill">PDF</span>
+            <span class="ra-fmt-pill">DOCX</span>
+            <span class="ra-fmt-pill">DOC</span>
+            <span class="ra-fmt-pill">TXT</span>
+        </div>
+    </div>
+    """)
+
+    # ── Two-column layout ─────────────────────────────────────────────────────
+    col_left, col_right = st.columns([0.34, 0.66], gap="large")
+
     with col_left:
-        # Left Panel Card
+        render_clean_html('<div class="ra-upload-card">')
         render_clean_html("""
-            <div style="background: rgba(21, 24, 33, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 28px; margin-bottom: 24px; box-shadow: 0 8px 30px rgba(15,23,42,0.12);">
-                <h3 style="font-size: 19px; font-weight: 800; color: #FFFFFF; margin: 0 0 16px 0;">Upload Resume & Settings</h3>
-                <p style="color: #94A3B8; font-size: 13.5px; margin-bottom: 20px;">
-                    Drag and drop your latest resume file or browse from your device.
-                </p>
-            </div>
+        <div class="ra-card-title">Upload Resume</div>
+        <div class="ra-card-sub">Drag &amp; drop or browse. Supported: PDF, DOCX, DOC, TXT.</div>
         """)
-        
+
         uploaded_file = st.file_uploader(
-            "Upload Resume (PDF, DOCX, DOC, TXT)",
-            type=['pdf', 'docx', 'doc', 'txt', 'PDF', 'DOCX', 'DOC'],
-            key="v4_resume_file"
+            "Choose file",
+            type=['pdf','docx','doc','txt','PDF','DOCX','DOC'],
+            key="v4_resume_file",
+            label_visibility="collapsed"
         )
-        
-        if uploaded_file is not None:
-            st.success(f"Uploaded: {uploaded_file.name}")
+
+        if uploaded_file:
+            render_clean_html(f"""
+            <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);
+                        border-radius:10px;padding:10px 14px;margin-top:10px;
+                        font-size:13px;color:#22C55E;font-weight:600;">
+                ✓ &nbsp;{uploaded_file.name}
+            </div>""")
+
+        render_clean_html('<div class="ra-divider"></div>')
 
         use_custom_jd = st.checkbox("Match Against Job Description", key="v4_use_jd")
         custom_jd_text = ""
         if use_custom_jd:
             custom_jd_text = st.text_area(
-                "Target Job Description",
-                placeholder="Paste Job Description requirements here...",
-                height=120,
+                "Paste Job Description",
+                placeholder="Paste the full job description here...",
+                height=140,
                 key="v4_custom_jd_input"
             )
-            
-        enable_roast = st.checkbox("Brutal Roast Mode", key="v4_roast_toggle")
-        
-        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
-        
-        if st.button(" Analyze Resume", type="primary", use_container_width=True, key="v4_analyze_cta"):
+
+        enable_roast = st.checkbox("🔥 Brutal Roast Mode", key="v4_roast_toggle")
+
+        render_clean_html('<div style="height:16px"></div>')
+
+        if st.button("Analyze Resume →", type="primary", use_container_width=True, key="v4_analyze_cta"):
             if uploaded_file is None:
                 st.error("Please upload a resume file first.")
             else:
-                with st.spinner("Analyzing resume with OpenRouter AI engine..."):
+                with st.spinner("Running AI analysis..."):
                     try:
                         parser = ResumeParser()
                         text = parser.extract_text(uploaded_file)
-                        
                         if not text or len(text.strip()) < 30:
-                            st.error("Failed to extract readable text from the file.")
+                            st.error("Could not extract text. Try a different file format.")
                         else:
                             analyzer = AIResumeAnalyzer()
                             analysis_result = analyzer.analyze_resume(text, custom_jd=custom_jd_text if use_custom_jd else None)
-                            
                             roast_result = None
                             if enable_roast:
                                 try:
                                     roast_result = analyzer.generate_roast(text)
                                 except Exception:
                                     pass
-
                             if "error" not in analysis_result:
                                 candidate_info = extract_candidate_details(text, uploaded_file)
                                 det_role = detect_job_category_with_openrouter(text, custom_jd_text)
                                 overall_score = int(analysis_result.get('ats_score', 92) or 92)
                                 if overall_score <= 0:
                                     overall_score = 92
-                                
                                 st.session_state.resume_analysis_result = analysis_result
                                 st.session_state.uploaded_resume_text = text
                                 st.session_state.uploaded_file_name = uploaded_file.name
@@ -726,10 +869,9 @@ def render_resume_analyzer_page():
                                 st.session_state.is_roast_active = enable_roast
                                 st.session_state.roast_content = roast_result
                                 st.session_state.custom_jd_text_used = custom_jd_text if use_custom_jd else ""
-                                
                                 try:
                                     save_ai_analysis_data(
-                                        candidate_name=candidate_info.get("name", "Prince Kumar Jha"),
+                                        candidate_name=candidate_info.get("name", ""),
                                         email=candidate_info.get("email", ""),
                                         detected_role=det_role,
                                         overall_score=overall_score,
@@ -737,65 +879,46 @@ def render_resume_analyzer_page():
                                     )
                                 except Exception:
                                     pass
-                                
-                                st.success("Analysis Complete!")
                                 st.rerun()
                             else:
                                 st.error(f"Analysis failed: {analysis_result.get('error')}")
                     except Exception as e:
-                        st.error(f"Error during analysis: {str(e)}")
+                        st.error(f"Error: {str(e)}")
+
+        render_clean_html('</div>')  # close ra-upload-card
 
     with col_right:
         if 'resume_analysis_result' in st.session_state and st.session_state.get('resume_analysis_result'):
-            c_info = st.session_state.get('candidate_info', {})
-            det_r = st.session_state.get('detected_role', 'Business Analyst')
-            sc = st.session_state.get('overall_score', 92)
-            an_data = st.session_state.get('resume_analysis_result', {})
-            is_r = st.session_state.get('is_roast_active', False)
-            r_cont = st.session_state.get('roast_content', None)
-            res_txt = st.session_state.get('uploaded_resume_text', '')
-            jd_txt = st.session_state.get('custom_jd_text_used', '')
-
+            c_info    = st.session_state.get('candidate_info', {})
+            det_r     = st.session_state.get('detected_role', 'Professional')
+            sc        = st.session_state.get('overall_score', 92)
+            an_data   = st.session_state.get('resume_analysis_result', {})
+            is_r      = st.session_state.get('is_roast_active', False)
+            r_cont    = st.session_state.get('roast_content', None)
+            res_txt   = st.session_state.get('uploaded_resume_text', '')
+            jd_txt    = st.session_state.get('custom_jd_text_used', '')
             render_v4_candidate_intelligence_report(
-                candidate_name=c_info.get("name", "Prince Kumar Jha"),
-                role=det_r,
-                score=sc,
-                contact_details=c_info,
-                analysis_data=an_data,
-                is_roast=is_r,
-                roast_content=r_cont,
-                resume_text=res_txt,
-                custom_jd_text=jd_txt
+                candidate_name=c_info.get("name", "Candidate"),
+                role=det_r, score=sc, contact_details=c_info,
+                analysis_data=an_data, is_roast=is_r, roast_content=r_cont,
+                resume_text=res_txt, custom_jd_text=jd_txt
             )
         else:
             render_clean_html("""
-                <div style="background: rgba(21, 24, 33, 0.6); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 24px; padding: 56px 36px; text-align: center;">
-                    <div style="font-size: 52px; margin-bottom: 16px;"></div>
-                    <h3 style="font-size: 24px; font-weight: 800; color: #FFFFFF; margin-bottom: 10px;">Candidate Intelligence Report</h3>
-                    <p style="color: #94A3B8; font-size: 16px; max-width: 540px; margin: 0 auto 24px auto; line-height: 1.6;">
-                        Upload your resume on the left dropzone and click <strong> Analyze Resume</strong> to generate your $500M AI Candidate Intelligence Report.
-                    </p>
-                    <div style="display: flex; justify-content: center; gap: 16px; color: #64748B; font-size: 13px; font-weight: 600;">
-                        <span> ATS Score Gauge</span>
-                        <span> Actionable Suggestions</span>
-                        <span> Keyword Intelligence</span>
-                    </div>
+            <div class="ra-empty">
+                <div style="font-size:48px;margin-bottom:16px;">📄</div>
+                <div class="ra-empty-title">Your Analysis Report Will Appear Here</div>
+                <div class="ra-empty-sub">
+                    Upload your resume on the left, configure your settings,
+                    then click <strong>Analyze Resume</strong> to generate your full AI report.
                 </div>
+                <div class="ra-empty-chips">
+                    <span class="ra-empty-chip">ATS Score</span>
+                    <span class="ra-empty-chip">Keyword Gap</span>
+                    <span class="ra-empty-chip">AI Suggestions</span>
+                    <span class="ra-empty-chip">Resume Insights</span>
+                </div>
+            </div>
             """)
 
-    # Minimal Footer per specification
-    render_clean_html("""
-        <div style="margin-top: 60px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; color: #64748B; font-size: 13px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <strong style="color: #FFFFFF; font-weight: 800;">AiResuMind</strong>
-                <span>•</span>
-                <span>Enterprise AI Candidate Intelligence</span>
-            </div>
-            <div style="display: flex; gap: 20px;">
-                <a href="#" style="color: #94A3B8; text-decoration: none;">Privacy</a>
-                <a href="#" style="color: #94A3B8; text-decoration: none;">Terms</a>
-                <a href="#" style="color: #94A3B8; text-decoration: none;">Support</a>
-                <span style="color: #10B981; font-weight: 700;"> Operational</span>
-            </div>
-        </div>
-    """)
+    render_clean_html('</div>')  # close ra-page

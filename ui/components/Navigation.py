@@ -12,252 +12,135 @@ def render_clean_html(html_str):
 
 def render_navigation(active_page='home'):
     """
-    Premium sticky header — 72px height, 1280px container, 32px side padding.
-    Left: AiResuMind logo  |  Center: nav links  |  Right: Sign In + Analyze Resume
+    Compact 60px Sticky Navigation Bar — 1280px Centered Layout.
+    Left: AiResuMind Wordmark  |  Center: Flat Horizontal Nav Links  |  Right: Sign In + Primary CTA
     """
 
-    # ── Inject one-time nav CSS ──────────────────────────────────────────────
     render_clean_html("""
         <style>
-        /* ── Reset Streamlit top padding so header starts at top ── */
-        .main .block-container {
+        /* ── Zero out Streamlit default top whitespace ── */
+        .main .block-container,
+        [data-testid="stAppViewBlockContainer"],
+        [data-testid="stMainBlockContainer"],
+        [data-testid="stVerticalBlock"] > div:first-child,
+        .stMainBlockContainer,
+        .block-container,
+        section.main > div {
             padding-top: 0 !important;
             margin-top: 0 !important;
         }
-        section.main > div:first-child {
-            padding-top: 0 !important;
+        .stApp > header,
+        [data-testid="stHeader"],
+        #stHeader {
+            display: none !important;
+            height: 0 !important;
+            min-height: 0 !important;
         }
 
-        /* ── Sticky header shell ── */
-        .arm-header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: rgba(5, 5, 5, 0.88);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            width: 100%;
+        /* ── Sticky Nav Bar Container (Streamlit horizontal block target) ── */
+        [data-testid="stHorizontalBlock"]:has(button[key*="arm_nav_"]) {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 99999 !important;
+            background: rgba(5, 5, 5, 0.94) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            max-width: 1280px !important;
+            margin: 0 auto 12px auto !important;
+            padding: 0 16px !important;
+            height: 60px !important;
+            min-height: 60px !important;
+            align-items: center !important;
         }
 
-        /* ── Inner 1280px centering wrapper ── */
-        .arm-header-inner {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 32px;
-            height: 72px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
+        /* ── Baseline Alignment for Header Columns ── */
+        [data-testid="stHorizontalBlock"]:has(button[key*="arm_nav_"]) > div[data-testid="column"] {
+            display: flex !important;
+            align-items: center !important;
+            height: 60px !important;
         }
 
-        /* ── Logo ── */
-        .arm-logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            flex-shrink: 0;
-        }
-        .arm-logo-icon {
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, #4F8CFF 0%, #22C55E 100%);
-            border-radius: 7px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 900;
-            color: #fff;
-            letter-spacing: -0.5px;
-            flex-shrink: 0;
-        }
-        .arm-logo-text {
-            font-family: -apple-system, 'Inter', sans-serif;
-            font-size: 17px;
-            font-weight: 700;
-            color: #FFFFFF;
-            letter-spacing: -0.4px;
-            white-space: nowrap;
-        }
-
-        /* ── Center nav list ── */
-        .arm-nav {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            flex: 1;
-            justify-content: center;
-        }
-
-        /* ── Individual nav links ── */
-        .arm-nav-link {
-            position: relative;
-            font-family: -apple-system, 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            color: #9CA3AF;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: color 0.18s ease, background 0.18s ease;
-            white-space: nowrap;
-            border: none;
-            background: none;
-            text-decoration: none;
-        }
-        .arm-nav-link:hover {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.06);
-        }
-        .arm-nav-link.active {
-            color: #FFFFFF;
-            font-weight: 600;
-        }
-        .arm-nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 12px;
-            right: 12px;
-            height: 2px;
-            background: #FFFFFF;
-            border-radius: 999px;
-            animation: underline-in 0.22s ease forwards;
-        }
-        @keyframes underline-in {
-            from { transform: scaleX(0); opacity: 0; }
-            to   { transform: scaleX(1); opacity: 1; }
-        }
-
-        /* ── Right action buttons ── */
-        .arm-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        .arm-btn-ghost {
-            font-family: -apple-system, 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            color: #9CA3AF;
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 8px;
-            padding: 0 16px;
-            height: 40px;
-            cursor: pointer;
-            transition: all 0.18s ease;
-            white-space: nowrap;
-        }
-        .arm-btn-ghost:hover {
-            color: #FFFFFF;
-            border-color: rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.06);
-        }
-        .arm-btn-primary {
-            font-family: -apple-system, 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: #000000;
-            background: #FFFFFF;
-            border: none;
-            border-radius: 8px;
-            padding: 0 18px;
-            height: 40px;
-            cursor: pointer;
-            transition: all 0.18s ease;
-            white-space: nowrap;
-        }
-        .arm-btn-primary:hover {
-            background: #F0F0F0;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(255,255,255,0.18);
-        }
-
-        /* ── Streamlit button overrides for nav columns ── */
-        div.arm-st-navlink > div[data-testid="stButton"] > button {
+        /* ── Flat Horizontal Nav Links (No chips, no capsules) ── */
+        div.arm-st-navlink > div[data-testid="stButton"] > button,
+        div.arm-st-navlink-active > div[data-testid="stButton"] > button {
             background: transparent !important;
             color: #9CA3AF !important;
             border: none !important;
-            border-radius: 8px !important;
-            font-size: 14px !important;
+            border-radius: 0 !important;
+            font-size: 13.5px !important;
             font-weight: 500 !important;
-            padding: 6px 12px !important;
-            height: 36px !important;
+            padding: 4px 8px !important;
+            height: 32px !important;
             box-shadow: none !important;
-            letter-spacing: 0 !important;
+            letter-spacing: -0.01em !important;
+            white-space: nowrap !important;
+            transition: color 0.15s ease, background-color 0.15s ease !important;
         }
+
         div.arm-st-navlink > div[data-testid="stButton"] > button:hover {
-            background: rgba(255,255,255,0.06) !important;
+            background: rgba(255, 255, 255, 0.06) !important;
             color: #FFFFFF !important;
+            border-radius: 6px !important;
         }
+
         div.arm-st-navlink-active > div[data-testid="stButton"] > button {
-            background: transparent !important;
             color: #FFFFFF !important;
-            border: none !important;
-            border-radius: 8px !important;
-            font-size: 14px !important;
             font-weight: 600 !important;
-            padding: 6px 12px !important;
-            height: 36px !important;
-            box-shadow: none !important;
-            letter-spacing: 0 !important;
+            background: transparent !important;
+            border-radius: 0 !important;
             border-bottom: 2px solid #FFFFFF !important;
         }
+
+        /* ── Right Actions: Sign In (Ghost) ── */
         div.arm-st-btn-ghost > div[data-testid="stButton"] > button {
             background: transparent !important;
             color: #9CA3AF !important;
-            border: 1px solid rgba(255,255,255,0.14) !important;
-            border-radius: 8px !important;
-            font-size: 14px !important;
+            border: none !important;
+            border-radius: 6px !important;
+            font-size: 13.5px !important;
             font-weight: 500 !important;
-            padding: 0 16px !important;
-            height: 40px !important;
+            padding: 4px 12px !important;
+            height: 34px !important;
             box-shadow: none !important;
+            white-space: nowrap !important;
+            transition: color 0.15s ease, background 0.15s ease !important;
         }
         div.arm-st-btn-ghost > div[data-testid="stButton"] > button:hover {
-            background: rgba(255,255,255,0.06) !important;
             color: #FFFFFF !important;
-            border-color: rgba(255,255,255,0.3) !important;
+            background: rgba(255, 255, 255, 0.06) !important;
         }
+
+        /* ── Right Actions: Analyze Resume (Primary Solid CTA) ── */
         div.arm-st-btn-primary > div[data-testid="stButton"] > button {
             background: #FFFFFF !important;
             color: #000000 !important;
             border: none !important;
             border-radius: 8px !important;
-            font-size: 14px !important;
+            font-size: 13.5px !important;
             font-weight: 600 !important;
-            padding: 0 18px !important;
-            height: 40px !important;
-            box-shadow: none !important;
+            padding: 0 16px !important;
+            height: 36px !important;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.12) !important;
+            white-space: nowrap !important;
+            transition: all 0.18s ease !important;
         }
         div.arm-st-btn-primary > div[data-testid="stButton"] > button:hover {
             background: #F0F0F0 !important;
             transform: translateY(-1px) !important;
-            box-shadow: 0 4px 16px rgba(255,255,255,0.18) !important;
+            box-shadow: 0 4px 14px rgba(255, 255, 255, 0.22) !important;
         }
         </style>
     """)
 
-    # ── Logo (pure HTML, no interaction needed) ──────────────────────────────
-    render_clean_html("""
-        <div class="arm-header">
-            <div class="arm-header-inner" id="arm-header-inner-top">
-    """)
-
-    # We render the interior via Streamlit columns to keep button interactivity
-    # Logo | Nav | Actions  — proportions: logo=1.5, nav=6, actions=2.5
-    logo_col, nav_col, actions_col = st.columns([1.5, 6, 2.5], gap="small")
+    # Render Header row via Streamlit columns
+    logo_col, nav_col, actions_col = st.columns([1.4, 6, 2.6], gap="small")
 
     with logo_col:
         render_clean_html("""
-            <div style="display:flex;align-items:center;height:72px;gap:8px;">
-                <div class="arm-logo-icon">Ai</div>
-                <span class="arm-logo-text">AiResuMind</span>
+            <div style="display:flex;align-items:center;height:60px;gap:8px;">
+                <div style="width:24px;height:24px;background:linear-gradient(135deg, #4F8CFF 0%, #22C55E 100%);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;letter-spacing:-0.5px;flex-shrink:0;">Ai</div>
+                <span style="font-family:-apple-system, 'Inter', sans-serif;font-size:16px;font-weight:700;color:#FFFFFF;letter-spacing:-0.4px;white-space:nowrap;">AiResuMind</span>
             </div>
         """)
 
@@ -266,7 +149,6 @@ def render_navigation(active_page='home'):
             ("dashboard",      "Dashboard"),
             ("resume_analyzer","Resume Analyzer"),
             ("resume_builder", "Resume Builder"),
-            ("cover_letter",   "Cover Letter"),
             ("interview_prep", "Interview Prep"),
             ("job_search",     "Job Search"),
         ]
@@ -281,11 +163,11 @@ def render_navigation(active_page='home'):
                 st.markdown("</div>", unsafe_allow_html=True)
 
     with actions_col:
-        act_sub = st.columns([1, 1.3], gap="small")
+        act_sub = st.columns([1, 1.4], gap="small")
         with act_sub[0]:
             st.markdown('<div class="arm-st-btn-ghost">', unsafe_allow_html=True)
             if st.button("Sign In", key="arm_nav_signin"):
-                pass  # placeholder — wire to auth later
+                pass
             st.markdown("</div>", unsafe_allow_html=True)
         with act_sub[1]:
             st.markdown('<div class="arm-st-btn-primary">', unsafe_allow_html=True)
@@ -294,5 +176,3 @@ def render_navigation(active_page='home'):
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
 
-    # Close the header div
-    render_clean_html("</div></div>")

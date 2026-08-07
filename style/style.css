@@ -1,60 +1,52 @@
 /* ==========================================================================
-   AiResuMind Pro v4.0 - Apple Minimalist Luxury Design System
-   Monochrome Slate (#000000, #F5F5F7, #86868B)
+   AiResuMind Pro v4.0 - Executive Dark Glass Design System
+   Monochrome Obsidian (#050505, #0A0A0E, #121216) + Glowing Accents
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  /* Apple Monochrome Palette */
-  --bg-dark-base: #000000;
-  --bg-dark-surface: #0A0A0C;
-  --bg-dark-card: #121215;
-  --bg-dark-card-hover: #1A1A1E;
-  --bg-glass: rgba(18, 18, 21, 0.75);
-  --bg-glass-heavy: rgba(10, 10, 12, 0.85);
+  /* Dark Glass Palette */
+  --bg-dark-base: #050505;
+  --bg-dark-surface: #0A0A0E;
+  --bg-dark-card: #121216;
+  --bg-dark-card-hover: #18181F;
+  --bg-glass: rgba(18, 18, 22, 0.75);
+  --bg-glass-heavy: rgba(10, 10, 14, 0.90);
   
   /* Text & Typography Colors */
-  --color-white: #F5F5F7;
+  --color-white: #FFFFFF;
   --color-ink: #F5F5F7;
-  --color-ink-muted: #86868B;
-  --color-ink-subtle: #6E6E73;
+  --color-ink-muted: #9CA3AF;
+  --color-ink-subtle: #6B7280;
   
-  /* Apple Accent Palette */
-  --color-primary: #F5F5F7;
-  --color-primary-hover: #FFFFFF;
-  --color-primary-glow: rgba(255, 255, 255, 0.15);
-  
-  --color-accent-subtle: rgba(255, 255, 255, 0.08);
-  --color-emerald: #30D158;          /* Apple iOS System Green */
+  /* Accent Colors */
+  --color-primary: #FFFFFF;
+  --color-accent-blue: #4F8CFF;
+  --color-accent-green: #30D158;
+  --color-accent-purple: #A855F7;
+  --color-accent-amber: #F59E0B;
   
   /* Hairline Borders */
-  --border-line: rgba(255, 255, 255, 0.1);
-  --border-line-hover: rgba(255, 255, 255, 0.25);
-  --border-line-active: rgba(255, 255, 255, 0.4);
+  --border-line: rgba(255, 255, 255, 0.08);
+  --border-line-hover: rgba(255, 255, 255, 0.22);
+  --border-line-active: rgba(255, 255, 255, 0.35);
   
-  /* Shadows & Elevations */
-  --shadow-subtle: 0 12px 40px rgba(0, 0, 0, 0.8);
-  --shadow-glass: 0 24px 60px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(255, 255, 255, 0.12);
-
   /* Radii */
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
   --radius-full: 9999px;
 
-  /* Backward Compatibility Aliases */
+  /* Aliases */
   --color-paper: var(--bg-dark-base);
   --color-surface: var(--bg-dark-surface);
   --color-card: var(--bg-dark-card);
   --color-card-hover: var(--bg-dark-card-hover);
-  --color-accent: var(--color-primary);
-  --color-accent-hover: var(--color-primary-hover);
-  --color-line: var(--border-line);
 }
 
-/* Base Body & Reset */
+/* Base Body & Typography Reset */
 html, body, [class*="css"] {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', sans-serif !important;
     color: var(--color-ink) !important;
@@ -64,27 +56,55 @@ html, body, [class*="css"] {
     letter-spacing: -0.01em;
 }
 
-/* ── Zero out Streamlit's default top gap so sticky header starts at y=0 ── */
-.main .block-container {
+/* ══════════════════════════════════════════════════════
+   KILL ALL STREAMLIT TOP WHITESPACE — zero margin baseline
+   ══════════════════════════════════════════════════════ */
+.main .block-container,
+[data-testid="stAppViewBlockContainer"],
+[data-testid="stMainBlockContainer"],
+[data-testid="stVerticalBlock"] > div:first-child,
+.stMainBlockContainer,
+.block-container,
+section.main > div {
     padding-top: 0 !important;
     margin-top: 0 !important;
 }
-section.main > div:first-child {
-    padding-top: 0 !important;
-}
-/* Remove default Streamlit header space reservation */
-[data-testid="stAppViewBlockContainer"] {
-    padding-top: 0 !important;
-}
-.stApp > header { display: none !important; }
 
-/* Custom Scrollbars */
+/* Hide Streamlit Native Chrome */
+.stApp > header,
+[data-testid="stHeader"],
+#stHeader,
+#MainMenu,
+footer,
+header,
+[data-testid="stToolbar"],
+[data-testid="stDecoration"],
+[data-testid="stStatusWidget"],
+[data-testid="manage-app-button"],
+.stDeployButton,
+.stToolbar {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    opacity: 0 !important;
+}
+
+/* Hide Sidebar & Collapse Control */
+section[data-testid="stSidebar"],
+div[data-testid="stSidebarCollapsedControl"],
+button[data-testid="baseButton-headerNoPadding"],
+[data-testid="collapsedControl"] {
+    display: none !important;
+    width: 0 !important;
+}
+
+/* Custom Webkit Scrollbars */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
 }
 ::-webkit-scrollbar-track {
-    background: var(--bg-dark-base);
+    background: #050505;
 }
 ::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.18);
@@ -100,81 +120,63 @@ section.main > div:first-child {
     color: var(--color-ink) !important;
 }
 
-/* Block container — full width, no side padding (components handle their own 1280px centering) */
+/* Block container — 1280px responsive centering */
 .main .block-container {
     max-width: 100% !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     padding-top: 0 !important;
-    padding-bottom: 80px !important;
+    padding-bottom: 60px !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
 }
 
-/* Hide Streamlit Overhead Clutter */
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
-
-/* ── Remove sidebar & its toggle entirely ── */
-section[data-testid="stSidebar"] {
-    display: none !important;
-    width: 0 !important;
-    min-width: 0 !important;
-}
-div[data-testid="stSidebarCollapsedControl"],
-button[data-testid="baseButton-headerNoPadding"],
-.st-emotion-cache-1cypcdb,
-[data-testid="collapsedControl"] {
-    display: none !important;
-}
-
-/* Apple Minimalist Button Styling */
-.stButton > button {
-    border-radius: 9999px !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+/* Streamlit Button Styling (General Action Buttons) */
+div:not(.arm-st-navlink):not(.arm-st-navlink-active) > div[data-testid="stButton"] > button {
+    border-radius: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
     font-weight: 600 !important;
     font-size: 14px !important;
-    transition: all 0.25s ease !important;
-    padding: 12px 26px !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    padding: 10px 20px !important;
     letter-spacing: -0.01em !important;
 }
 
 .stButton > button[kind="primary"], .stButton > button[type="primary"] {
-    background: #F5F5F7 !important;
+    background: #FFFFFF !important;
     color: #000000 !important;
-    border: 1px solid #FFFFFF !important;
+    border: none !important;
     box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15) !important;
 }
 
 .stButton > button[kind="primary"]:hover, .stButton > button[type="primary"]:hover {
-    background: #FFFFFF !important;
-    transform: scale(1.02) !important;
+    background: #F0F0F0 !important;
+    transform: translateY(-1px) !important;
     box-shadow: 0 6px 28px rgba(255, 255, 255, 0.25) !important;
 }
 
 .stButton > button[kind="secondary"], .stButton > button[type="secondary"] {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     color: #F5F5F7 !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     backdrop-filter: blur(12px);
 }
 
 .stButton > button[kind="secondary"]:hover, .stButton > button[type="secondary"]:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border-color: rgba(255, 255, 255, 0.25) !important;
+    background: rgba(255, 255, 255, 0.10) !important;
+    border-color: rgba(255, 255, 255, 0.28) !important;
     color: #FFFFFF !important;
-    transform: scale(1.01) !important;
+    transform: translateY(-1px) !important;
 }
 
-/* Card Styling - Apple 24px Rounded Containers */
+/* Card Styling - Glassmorphic 20px Rounded Containers */
 .editorial-card {
     background: var(--bg-dark-card);
     border: 1px solid var(--border-line);
     border-radius: var(--radius-lg);
-    padding: 32px;
-    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: var(--shadow-subtle);
+    padding: 28px;
+    transition: all 0.30s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .editorial-card:hover {
@@ -188,9 +190,10 @@ button[data-testid="baseButton-headerNoPadding"],
     background: rgba(255, 255, 255, 0.08);
     color: #F5F5F7;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 6px 16px;
+    padding: 5px 14px;
     border-radius: 9999px;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.02em;
 }
+
