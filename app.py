@@ -2840,8 +2840,16 @@ class ResumeApp:
             if qp_page and qp_page != st.session_state.get("page"):
                 st.session_state.page = qp_page
 
-        # Get current page and render sticky Top Nav
+        # The dashboard is private: a direct URL must never expose candidate data
+        # or the dashboard UI before authentication.
         current_page = st.session_state.get('page', 'home')
+        if current_page == "dashboard" and not st.session_state.get("user_authenticated", False):
+            st.session_state.page = "signin"
+            current_page = "signin"
+            if hasattr(st, "query_params"):
+                st.query_params["page"] = "signin"
+
+        # Render sticky Top Nav only after the access check, so its CTA is accurate.
         render_top_nav(current_page)
 
         # Reload sub-page modules to guarantee clean execution without cached duplicate handlers

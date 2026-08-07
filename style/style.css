@@ -73,10 +73,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .stMainBlockContainer,
 .block-container,
 section.main > div {
+    max-width: 1280px !important;
     padding-top: 0 !important;
+    padding-left: 28px !important;
+    padding-right: 28px !important;
     margin-top: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     padding-bottom: 60px !important;
 }
+
+/* Streamlit gives style-only markdown blocks vertical layout space.  They are
+   implementation details, so remove that space before the actual page starts. */
+div[data-testid="stElementContainer"]:has(style) { display: contents !important; }
 
 .stApp > header,
 [data-testid="stHeader"],

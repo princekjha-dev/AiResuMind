@@ -1,6 +1,13 @@
 import textwrap
 import streamlit as st
 import datetime
+import re
+import json
+from html import escape
+
+import requests
+
+from utils.ai_resume_analyzer import AIResumeAnalyzer
 
 def render_clean_html(html_str):
     """Cleanly render HTML by stripping multiline indentation to prevent Markdown code block bugs."""
@@ -9,6 +16,62 @@ def render_clean_html(html_str):
     lines = [line.strip() for line in html_str.splitlines() if line.strip()]
     cleaned = chr(10).join(lines)
     st.markdown(cleaned, unsafe_allow_html=True)
+
+
+def generate_ai_outreach(context, variations=False):
+    """Generate outreach copy exclusively through the configured AI provider."""
+    variation_instruction = "Create three distinct alternatives separated by `---`." if variations else "Create one best version."
+    prompt = f"""You are an expert career strategist writing a high-converting, truthful cold email.
+
+Recipient type: {context['recipient_type']}
+Recipient name: {context['person_name'] or 'Hiring Manager'}
+Optional public URL context: {context.get('url_input') or 'Not provided'}
+Company: {context['target_company']}
+Target role: {context['job_title']}
+Purpose: {context['purpose']}
+Tone: {context['tone']}
+Length: {context['length']}
+Call to action: {context['cta']}
+Job description: {context['jd_text']}
+Candidate summary: {context['resume_summary']}
+Achievements: {context['achievements']}
+Skills: {', '.join(context['skills'])}
+Additional instructions: {context['instructions']}
+
+Write only claims supported by the candidate summary and achievements. Do not invent employers, metrics, or personal details.
+{variation_instruction}
+For every email use exactly this format:
+SUBJECT: concise subject line
+BODY:
+email body
+"""
+    response, model_used = AIResumeAnalyzer()._generate_ai_completion(prompt, temperature=0.65)
+    match = re.search(r"(?im)^subject\s*:\s*(.+?)\s*$", response)
+    subject = match.group(1).strip() if match else f"Interest in {context['job_title']} at {context['target_company']}"
+    body = re.split(r"(?im)^body\s*:\s*", response, maxsplit=1)
+    body = body[-1].strip() if len(body) > 1 else response.strip()
+    return {"subject": subject, "body": body, "model": model_used}
+
+
+def extract_ai_url_context(url):
+    """Fetch public page text then ask the configured AI model for usable outreach context."""
+    response = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (compatible; AiResuMind/1.0)"}, timeout=12)
+    response.raise_for_status()
+    page_text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", response.text))[:12000]
+    if len(page_text) < 120:
+        raise RuntimeError("The page did not expose enough public text to analyse.")
+    prompt = f"""Extract factual job-outreach context from this public page. Return JSON only with keys
+company, person_name, job_title, job_description. Use empty strings for unknown values; never invent details.
+
+URL: {url}
+PAGE TEXT: {page_text}
+"""
+    raw, model = AIResumeAnalyzer()._generate_ai_completion(prompt, temperature=0.1)
+    json_match = re.search(r"\{.*\}", raw, re.S)
+    if not json_match:
+        raise RuntimeError("The AI response was not structured extraction data.")
+    details = json.loads(json_match.group(0))
+    return details, model
 
 def render_cold_mail_page():
     """Renders the world-class 2026 AI Cold Email & Recruiter Outreach Generator page."""
@@ -21,19 +84,19 @@ def render_cold_mail_page():
         st.session_state.email_form_data = {
             'recipient_type': 'Hiring Manager',
             'purpose': 'Job Application',
-            'target_company': 'Stripe',
-            'person_name': 'Sarah Jenkins',
-            'job_title': 'Senior Software Engineer',
-            'jd_text': 'Looking for a Senior Backend Engineer experienced in Java, Spring Boot REST APIs, PostgreSQL tuning, microservices, and AWS.',
-            'resume_summary': 'Senior Software Engineer with 6+ years experience architecting distributed microservices, reducing payment API latency by 35%, and saving $140k in cloud costs.',
-            'achievements': 'Built AI Candidate Engine, Reduced cloud overhead by $140k, Top 1% Engineering Performer',
-            'skills': ['Python', 'Spring Boot', 'SQL', 'Docker', 'AWS', 'REST API'],
-            'portfolio': 'github.com/princekjha-dev',
-            'linkedin': 'linkedin.com/in/prince-kumar-jha',
+            'target_company': '',
+            'person_name': '',
+            'job_title': '',
+            'jd_text': '',
+            'resume_summary': '',
+            'achievements': '',
+            'skills': [],
+            'portfolio': '',
+            'linkedin': '',
             'tone': 'Confident',
             'length': 'Medium',
             'cta': 'Schedule Interview',
-            'instructions': 'Highlight Spring Boot REST API latency optimization and $140k cloud cost savings.',
+            'instructions': '',
             'url_input': ''
         }
 
@@ -68,10 +131,10 @@ def render_cold_mail_page():
             <div style="background: rgba(18, 18, 20, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                     <div style="font-size: 13px; font-weight: 700; color: #F5F5F7;">
-                        <i class="fa-solid fa-link" style="color:#4F8CFF; margin-right:6px;"></i> AI Context Import from Public URL
+                        <i class="fa-solid fa-link" style="color:#4F8CFF; margin-right:6px;"></i> Public URL Context
                     </div>
                     <span class="arm-tag">
-                        <i class="fa-solid fa-bolt"></i> Auto-Extraction Active
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> AI context import
                     </span>
                 </div>
             </div>
@@ -85,17 +148,26 @@ def render_cold_mail_page():
         target_url = st.text_input("Public URL", placeholder="Paste LinkedIn Job, Recruiter Profile, or Careers URL...", key="email_hero_url")
     with url_col2:
         st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-        if st.button("Analyze & Auto-Fill", key="hero_url_btn", type="primary", use_container_width=True):
+        if st.button("Save URL Context", key="hero_url_btn", type="primary", use_container_width=True):
             if target_url.strip():
-                with st.spinner("Extracting candidate signals from URL..."):
-                    st.session_state.email_form_data['target_company'] = "Stripe"
-                    st.session_state.email_form_data['person_name'] = "Sarah Jenkins"
-                    st.session_state.email_form_data['job_title'] = "Senior Backend Engineer"
-                    st.session_state.email_form_data['jd_text'] = "Extracted from URL: Stripe is hiring a Senior Backend Engineer to scale real-time payment settlement infrastructure using Java, Spring Boot, PostgreSQL, and AWS."
-                    st.success("Extracted Company & Tech Stack from URL!")
+                st.session_state.email_form_data['url_input'] = target_url.strip()
+                try:
+                    with st.spinner("Reading available public page context with AI..."):
+                        extracted, model = extract_ai_url_context(target_url.strip())
+                    field_keys = {"company": "em2_company", "person_name": "em2_person", "job_title": "em2_title", "job_description": "em2_jd"}
+                    for source_key, widget_key in field_keys.items():
+                        value = extracted.get(source_key, "").strip()
+                        if value:
+                            st.session_state[widget_key] = value
+                    st.session_state.url_context_status = f"AI extracted available public context via {model}. Review the fields before generating."
                     st.rerun()
+                except Exception as exc:
+                    st.session_state.url_context_status = f"Could not read this public page ({exc}). The URL will still be passed to the AI with your manual context."
             else:
                 st.warning("Please enter a URL.")
+
+    if st.session_state.get("url_context_status"):
+        st.info(st.session_state.url_context_status)
 
     render_clean_html("""
         <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 11px; color: #86868B;">
@@ -147,16 +219,29 @@ def render_cold_mail_page():
         bcol1, bcol2 = st.columns(2)
         with bcol1:
             if st.button("Generate AI Email", type="primary", use_container_width=True, key="em2_btn_gen"):
-                st.session_state.email_generated = True
-                st.rerun()
+                context = {**data, 'recipient_type': rec_type, 'target_company': company_input, 'job_title': job_title_input, 'purpose': purpose_input, 'person_name': person_input, 'tone': tone_input, 'jd_text': jd_area, 'resume_summary': summary_area, 'length': length_input, 'cta': cta_input, 'instructions': extra_instruct}
+                try:
+                    with st.spinner("Writing your personalized email with AI..."):
+                        st.session_state.generated_outreach = generate_ai_outreach(context)
+                    st.session_state.email_generated = True
+                    st.rerun()
+                except Exception as exc:
+                    st.error(f"AI generation unavailable: {exc}")
         with bcol2:
             if st.button("Generate 3 Variations", type="secondary", use_container_width=True, key="em2_btn_vars"):
-                st.session_state.email_generated = True
-                st.rerun()
+                context = {**data, 'recipient_type': rec_type, 'target_company': company_input, 'job_title': job_title_input, 'purpose': purpose_input, 'person_name': person_input, 'tone': tone_input, 'jd_text': jd_area, 'resume_summary': summary_area, 'length': length_input, 'cta': cta_input, 'instructions': extra_instruct}
+                try:
+                    with st.spinner("Creating AI outreach variations..."):
+                        st.session_state.generated_outreach = generate_ai_outreach(context, variations=True)
+                    st.session_state.email_generated = True
+                    st.rerun()
+                except Exception as exc:
+                    st.error(f"AI generation unavailable: {exc}")
 
     with col_right:
         # Right Panel Generated Email Card
-        render_clean_html("""
+        outreach_status = f"{len(st.session_state.get('generated_outreach', {}).get('body', '').split())} words" if st.session_state.get('generated_outreach') else "Awaiting AI"
+        render_clean_html(f"""
             <div style="background: #121214; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 18px; margin-bottom: 16px;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
@@ -166,145 +251,45 @@ def render_cold_mail_page():
                         </h3>
                     </div>
                     <span style="background: rgba(255,255,255,0.06); color: #F5F5F7; font-size: 11.5px; font-weight: 600; padding: 3px 12px; border-radius: 999px;">
-                        148 words • 45s read
+                        {outreach_status}
                     </span>
                 </div>
             </div>
         """)
 
-        subject_line = f"Application: {data['job_title']} — {data['target_company']} (Prince Kumar Jha)"
-        email_body_text = f"""Dear {data['person_name'] if data['person_name'] else 'Hiring Manager'},
-
-I came across the {data['job_title']} opening at {data['target_company']} and wanted to reach out directly. With 6+ years of experience engineering high-throughput backend services and scaling Spring Boot REST APIs, I have delivered measurable outcomes that align directly with {data['target_company']}'s growth goals.
-
-At Stripe, I architected distributed microservices that reduced payment API response latency by 35% and optimized PostgreSQL database queries across 500k+ daily transactions, saving over $140k in cloud overhead.
-
-I would welcome the opportunity to discuss how my technical experience in Java, Spring Boot, Docker, and AWS can contribute to {data['target_company']}'s engineering team.
-
-Are you open to a brief 10-minute call next week?
-
-Best regards,
-
-Prince Kumar Jha
-Senior Software Engineer
-{data['portfolio']} | {data['linkedin']}"""
-
-        render_clean_html(f"""
-            <div style="background: #0A0A0C; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 18px; margin-bottom: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;">
-                <div style="border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 8px; margin-bottom: 12px;">
-                    <div style="font-size: 11.5px; color: #86868B;">Subject Line:</div>
-                    <div style="font-size: 14.5px; font-weight: 700; color: #F5F5F7; margin-top: 2px;">{subject_line}</div>
+        generated = st.session_state.get("generated_outreach")
+        if generated:
+            subject_line = generated["subject"]
+            email_body_text = generated["body"]
+            render_clean_html(f"""
+                <div style="background:#0A0A0C; border:1px solid rgba(97,215,178,.2); border-radius:16px; padding:18px; margin-bottom:16px; font-family:Inter,sans-serif;">
+                    <div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:8px;margin-bottom:12px;"><div><div style="font-size:11.5px;color:#86868B;">AI-generated subject</div><div style="font-size:14.5px;font-weight:700;color:#F5F5F7;margin-top:2px;">{escape(subject_line)}</div></div><span class="arm-tag">{escape(generated['model'])}</span></div>
+                    <div style="font-size:13.5px;color:#F5F5F7;line-height:1.6;white-space:pre-line;">{escape(email_body_text)}</div>
                 </div>
-                <div style="font-size: 13.5px; color: #F5F5F7; line-height: 1.6; white-space: pre-line;">
-                    {email_body_text}
+            """)
+        else:
+            subject_line, email_body_text = "", ""
+            render_clean_html("""
+                <div style="background:rgba(255,255,255,.025);border:1px dashed rgba(255,255,255,.14);border-radius:16px;padding:36px 22px;margin-bottom:16px;text-align:center;color:#9CA3AF;">
+                    <div style="font-size:14px;font-weight:700;color:#F5F5F7;margin-bottom:6px;">Your AI email will appear here</div>
+                    <div style="font-size:12.5px;line-height:1.5;">Add your context, then use Generate AI Email. No stock template is used.</div>
                 </div>
-            </div>
-        """)
+            """)
 
         # Actions Row
         e1, e2, e3 = st.columns(3)
         with e1:
-            st.download_button(
-                label="Download TXT",
-                data=f"Subject: {subject_line}\n\n{email_body_text}",
-                file_name=f"Cold_Email_{data['target_company']}.txt",
-                mime="text/plain",
-                type="primary",
-                use_container_width=True,
-                key="em2_txt"
-            )
+            if generated:
+                st.download_button(label="Download TXT", data=f"Subject: {subject_line}\n\n{email_body_text}", file_name=f"Cold_Email_{data['target_company']}.txt", mime="text/plain", type="primary", use_container_width=True, key="em2_txt")
         with e2:
-            st.download_button(
-                label="Download HTML",
-                data=f"<h3>Subject: {subject_line}</h3><pre>{email_body_text}</pre>",
-                file_name=f"Cold_Email_{data['target_company']}.html",
-                mime="text/html",
-                type="secondary",
-                use_container_width=True,
-                key="em2_html"
-            )
+            if generated:
+                st.download_button(label="Download HTML", data=f"<h3>Subject: {escape(subject_line)}</h3><pre>{escape(email_body_text)}</pre>", file_name=f"Cold_Email_{data['target_company']}.html", mime="text/html", type="secondary", use_container_width=True, key="em2_html")
         with e3:
             if st.button("Regenerate", key="em2_reg", type="secondary", use_container_width=True):
-                st.session_state.email_generated = True
+                st.session_state.generated_outreach = None
                 st.rerun()
 
-        # AI Quality Analysis Cards Grid
-        render_clean_html("""
-            <div style="background: #121214; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 16px; margin-top: 20px;">
-                <div style="font-size: 11px; font-weight: 700; color: #86868B; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">
-                    <i class="fa-solid fa-chart-pie" style="color:#30D158; margin-right:4px;"></i> AI QUALITY METRICS
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 10px; border-radius: 10px;">
-                        <div style="font-size: 10.5px; color: #86868B;">Overall Score</div>
-                        <div style="font-size: 20px; font-weight: 800; color: #F5F5F7;">96%</div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 10px; border-radius: 10px;">
-                        <div style="font-size: 10.5px; color: #86868B;">Personalization</div>
-                        <div style="font-size: 20px; font-weight: 800; color: #F5F5F7;">98%</div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 10px; border-radius: 10px;">
-                        <div style="font-size: 10.5px; color: #86868B;">Professionalism</div>
-                        <div style="font-size: 20px; font-weight: 800; color: #F5F5F7;">95%</div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 10px; border-radius: 10px;">
-                        <div style="font-size: 10.5px; color: #86868B;">Reply Potential</div>
-                        <div style="font-size: 20px; font-weight: 800; color: #30D158;">94%</div>
-                    </div>
-                </div>
-            </div>
-        """)
+        if generated:
+            render_clean_html(f"""<div style="background:rgba(97,215,178,.05);border:1px solid rgba(97,215,178,.18);border-radius:14px;padding:14px;margin-top:20px;color:#b6becb;font-size:12px;"><strong style="color:#f6f1e8;">Generation complete</strong><br>Created by {escape(generated['model'])}. Review every factual claim before sending.</div>""")
 
     render_clean_html('</div>')
-
-    # BOTTOM RECENT OUTREACH TABLE (1280px Centered Container)
-    render_clean_html("""
-        <div style="max-width: 1280px; margin: 40px auto 0 auto; padding: 0 24px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 28px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <h3 style="font-size: 18px; font-weight: 800; color: #F5F5F7; margin: 0;">
-                    <i class="fa-solid fa-clock-rotate-left" style="color:#4F8CFF; margin-right:6px;"></i> Recent Outreach History
-                </h3>
-                <span style="font-size: 12px; color: #86868B;">14 Total Outreaches</span>
-            </div>
-            <div style="background: #121214; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; overflow: hidden; font-size: 13px;">
-                <table style="width: 100%; border-collapse: collapse; text-align: left; color: #F5F5F7;">
-                    <thead>
-                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.06); background: rgba(255,255,255,0.02); color: #86868B; font-size: 11px; text-transform: uppercase;">
-                            <th style="padding: 12px 18px;">Company</th>
-                            <th style="padding: 12px 18px;">Recipient</th>
-                            <th style="padding: 12px 18px;">Purpose</th>
-                            <th style="padding: 12px 18px;">Created</th>
-                            <th style="padding: 12px 18px;">Status</th>
-                            <th style="padding: 12px 18px;">Reply Probability</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04);">
-                            <td style="padding: 12px 18px; font-weight: 700;">Stripe</td>
-                            <td style="padding: 12px 18px; color: #86868B;">Sarah Jenkins (Hiring Mgr)</td>
-                            <td style="padding: 12px 18px;">Job Application</td>
-                            <td style="padding: 12px 18px; color: #86868B;">Today</td>
-                            <td style="padding: 12px 18px;"><span style="color: #30D158; background: rgba(48,209,88,0.12); padding: 2px 8px; border-radius: 999px; font-size: 11px;">Drafted</span></td>
-                            <td style="padding: 12px 18px; font-weight: 700; color: #30D158;">94%</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04);">
-                            <td style="padding: 12px 18px; font-weight: 700;">Google</td>
-                            <td style="padding: 12px 18px; color: #86868B;">David Chen (Recruiter)</td>
-                            <td style="padding: 12px 18px;">Referral Request</td>
-                            <td style="padding: 12px 18px; color: #86868B;">Yesterday</td>
-                            <td style="padding: 12px 18px;"><span style="color: #F5F5F7; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 999px; font-size: 11px;">Sent</span></td>
-                            <td style="padding: 12px 18px; font-weight: 700; color: #F5F5F7;">88%</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 12px 18px; font-weight: 700;">Vercel</td>
-                            <td style="padding: 12px 18px; color: #86868B;">Guillermo Rauch (Founder)</td>
-                            <td style="padding: 12px 18px;">Cold Outreach</td>
-                            <td style="padding: 12px 18px; color: #86868B;">3 days ago</td>
-                            <td style="padding: 12px 18px;"><span style="color: #30D158; background: rgba(48,209,88,0.12); padding: 2px 8px; border-radius: 999px; font-size: 11px;">Replied</span></td>
-                            <td style="padding: 12px 18px; font-weight: 700; color: #30D158;">96%</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    """)

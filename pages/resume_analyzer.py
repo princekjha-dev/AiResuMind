@@ -370,25 +370,21 @@ def render_v4_candidate_intelligence_report(candidate_name="Candidate", role="Pr
                     <div style="font-size: 14px; color: #94A3B8; font-weight: 600;">{role} &nbsp;•&nbsp; <span style="color: #64748B;">{domain}</span></div>
                 </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <a href="mailto:{email}" target="_blank" style="background: rgba(255,255,255,0.06); color: #FFFFFF; border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px;"></a>
-                <a href="{linkedin}" target="_blank" style="background: rgba(255,255,255,0.06); color: #FFFFFF; border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 13px; font-weight: 800;">in</a>
-                <a href="{github}" target="_blank" style="background: rgba(255,255,255,0.06); color: #FFFFFF; border: 1px solid rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px;"></a>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <a href="mailto:{email}" target="_blank" style="color:#b6becb; text-decoration:none; font-size:12px; font-weight:700;">Email</a>
+                <a href="{linkedin}" target="_blank" style="background:rgba(255,255,255,.06); color:#FFFFFF; border:1px solid rgba(255,255,255,.1); padding:7px 10px; border-radius:999px; text-decoration:none; font-size:12px; font-weight:800;">LinkedIn</a>
+                <a href="{github}" target="_blank" style="color:#b6becb; text-decoration:none; font-size:12px; font-weight:700;">GitHub</a>
             </div>
         </div>
     """)
 
-    # 2. ATS Score Hero Card & Metrics Bar
-    render_clean_html("""
-        <div style="background: rgba(21, 24, 33, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 24px 28px 14px 28px; margin-bottom: 24px; box-shadow: 0 8px 30px rgba(15,23,42,0.12);">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="font-size: 18px; font-weight: 800; color: #FFFFFF; margin: 0;">ATS Score Benchmark</h3>
-                <span style="background: rgba(255,255,255,0.06); color: #94A3B8; border: 1px solid rgba(255,255,255,0.1); padding: 4px 14px; border-radius: 12px; font-size: 12px; font-weight: 700;">AiResuMind Neural v4.0</span>
-            </div>
+    # 2. Compact score hero: readable at a glance, without an oversized chart.
+    render_clean_html(f"""
+        <div style="background:linear-gradient(105deg, rgba(255,107,74,.16), rgba(21,24,33,.9) 45%, rgba(97,215,178,.10)); border:1px solid rgba(255,107,74,.28); border-radius:28px 8px 28px 8px; padding:24px 28px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+            <div><div style="font:500 11px 'DM Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:#b6becb; margin-bottom:8px;">ATS score benchmark</div><div style="font-size:13px; color:#b6becb;">Your resume is ready for recruiter review.</div></div>
+            <div style="text-align:right;"><div style="font:800 54px/1 'Fraunces',Georgia,serif; color:#f6f1e8;">{score}<span style="font:600 20px Inter,sans-serif; color:#b6becb;">/100</span></div><div style="color:#61d7b2; font-size:12px; font-weight:800; margin-top:5px;">Strong candidate alignment</div></div>
         </div>
     """)
-    fig_gauge = create_v4_ats_score_gauge_chart(score)
-    st.plotly_chart(fig_gauge, use_container_width=True)
 
     render_clean_html(f"""
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px;">
@@ -666,6 +662,12 @@ def render_resume_analyzer_page():
         padding:28px;
         position:sticky; top:88px;
     }
+    .ra-upload-card [data-testid="stFileUploaderDropzone"], .ra-upload-card section[data-testid="stFileUploaderDropzone"] {
+        min-height:112px !important; padding:14px !important; border:1px dashed rgba(255,107,74,.48) !important;
+        border-radius:14px !important; background:rgba(255,107,74,.045) !important;
+    }
+    .ra-upload-card [data-testid="stFileUploaderDropzoneInstructions"] { font-size:12px !important; color:#b6becb !important; }
+    .ra-upload-card [data-testid="stFileUploaderDropzone"] button { min-height:32px !important; padding:6px 12px !important; }
     .ra-card-title {
         font-size:17px; font-weight:800; color:#FFFFFF;
         margin:0 0 6px;

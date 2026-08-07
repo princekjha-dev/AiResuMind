@@ -1,6 +1,7 @@
 import streamlit as st
 import datetime
 import io
+from html import escape
 from utils.ai_resume_analyzer import AIResumeAnalyzer
 from utils.resume_builder import ResumeBuilder
 from utils.resume_parser import ResumeParser
@@ -276,87 +277,15 @@ Requirements: Computer Science, AI/ML background. Knowledge of Python, scikit-le
     ])
 
     with tab_preview:
-        # High-fidelity single-column ATS Resume Preview exactly matching exported document
-        render_clean_html(f"""
-            <div style="background: #FFFFFF; color: #111111; padding: 48px; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Times New Roman', serif; max-width: 850px; margin: 0 auto 32px auto; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.7); line-height: 1.45;">
-                <div style="text-align: center; border-bottom: 2px solid #111111; padding-bottom: 14px; margin-bottom: 20px;">
-                    <h1 style="font-size: 26px; font-weight: 800; color: #000000; margin: 0 0 6px 0; text-transform: uppercase; letter-spacing: 0.04em;">{info.get('full_name', 'PRINCE KUMAR JHA')}</h1>
-                    <div style="font-size: 13px; color: #333333;">
-                        {info.get('email')} | {info.get('phone')} | {info.get('location')}<br>
-                        {info.get('linkedin')} | {info.get('portfolio')}
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-size: 13.5px; font-weight: 800; text-transform: uppercase; border-bottom: 1px solid #666666; padding-bottom: 3px; color: #000000; letter-spacing: 0.05em; margin: 0 0 8px 0;">PROFESSIONAL SUMMARY</h3>
-                    <p style="font-size: 13px; color: #222222; margin: 0;">{p_data.get('summary')}</p>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-size: 13.5px; font-weight: 800; text-transform: uppercase; border-bottom: 1px solid #666666; padding-bottom: 3px; color: #000000; letter-spacing: 0.05em; margin: 0 0 10px 0;">EDUCATION</h3>
-        """)
-
-        for edu in p_data.get('education', []):
-            render_clean_html(f"""
-                <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 13.5px; color: #000000;">
-                    <span>{edu.get('school')} — {edu.get('location')}</span>
-                    <span>Graduation: {edu.get('graduation_date')}</span>
-                </div>
-                <div style="font-style: italic; font-size: 13px; color: #333333; margin-bottom: 6px;">
-                    {edu.get('degree')} in {edu.get('field')} {f"| GPA: {edu['gpa']}" if edu.get('gpa') else ""}
-                </div>
-            """)
-
-        render_clean_html("""
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-size: 13.5px; font-weight: 800; text-transform: uppercase; border-bottom: 1px solid #666666; padding-bottom: 3px; color: #000000; letter-spacing: 0.05em; margin: 0 0 10px 0;">WORK EXPERIENCE</h3>
-        """)
-
-        for exp in p_data.get('experiences', []):
-            render_clean_html(f"""
-                <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 13.5px; color: #000000;">
-                    <span>{exp.get('position')}, {exp.get('company')}</span>
-                    <span>{exp.get('start_date')} – {exp.get('end_date')}</span>
-                </div>
-                <div style="font-size: 13px; color: #444444; margin-bottom: 4px;">{exp.get('description')}</div>
-                <ul style="margin: 0 0 10px 18px; padding: 0; font-size: 12.5px; color: #222222;">
-            """)
-            for resp in exp.get('responsibilities', []):
-                render_clean_html(f"<li>{resp}</li>")
-            render_clean_html("</ul>")
-
-        render_clean_html("""
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-size: 13.5px; font-weight: 800; text-transform: uppercase; border-bottom: 1px solid #666666; padding-bottom: 3px; color: #000000; letter-spacing: 0.05em; margin: 0 0 10px 0;">TECHNICAL PROJECTS</h3>
-        """)
-
-        for proj in p_data.get('projects', []):
-            render_clean_html(f"""
-                <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 13.5px; color: #000000;">
-                    <span>{proj.get('name')} <i style="font-weight: normal; font-size: 12.5px;">({proj.get('technologies')})</i></span>
-                    <span style="font-size: 12px; color: #444444;">{proj.get('link')}</span>
-                </div>
-                <ul style="margin: 4px 0 10px 18px; padding: 0; font-size: 12.5px; color: #222222;">
-            """)
-            for resp in proj.get('responsibilities', []):
-                render_clean_html(f"<li>{resp}</li>")
-            render_clean_html("</ul>")
-
+        # Render the whole document in one DOM node; split markdown blocks break
+        # an HTML page in Streamlit and leave later sections on the dark canvas.
+        section = "font-size:13px;font-weight:800;text-transform:uppercase;border-bottom:1px solid #666;padding-bottom:3px;color:#000;letter-spacing:.05em;margin:0 0 9px;"
+        item = "margin-bottom:17px;"
+        education_html = "".join(f'<div style="{item}"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:13px"><span>{escape(str(e.get("school", "")))} — {escape(str(e.get("location", "")))}</span><span>Graduation: {escape(str(e.get("graduation_date", "")))}</span></div><div style="font-style:italic;font-size:12.5px;color:#333">{escape(str(e.get("degree", "")))} in {escape(str(e.get("field", "")))} {"| GPA: " + escape(str(e.get("gpa"))) if e.get("gpa") else ""}</div></div>' for e in p_data.get('education', []))
+        experience_html = "".join(f'<div style="{item}"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:13px"><span>{escape(str(e.get("position", "")))}, {escape(str(e.get("company", "")))}</span><span>{escape(str(e.get("start_date", "")))} – {escape(str(e.get("end_date", "")))}</span></div><div style="font-size:12.5px;color:#333">{escape(str(e.get("description", "")))}</div><ul style="margin:5px 0 0 18px;padding:0;font-size:12.5px">{"".join(f"<li>{escape(str(r))}</li>" for r in e.get("responsibilities", []))}</ul></div>' for e in p_data.get('experiences', []))
+        projects_html = "".join(f'<div style="{item}"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:13px"><span>{escape(str(p.get("name", "")))} <i style="font-weight:normal">({escape(str(p.get("technologies", "")))})</i></span><span style="font-size:11px;color:#444">{escape(str(p.get("link", "")))}</span></div><ul style="margin:5px 0 0 18px;padding:0;font-size:12.5px">{"".join(f"<li>{escape(str(r))}</li>" for r in p.get("responsibilities", []))}</ul></div>' for p in p_data.get('projects', []))
         skills_cat = p_data.get('skills_categories', {})
-        render_clean_html(f"""
-                </div>
-                <div>
-                    <h3 style="font-size: 13.5px; font-weight: 800; text-transform: uppercase; border-bottom: 1px solid #666666; padding-bottom: 3px; color: #000000; letter-spacing: 0.05em; margin: 0 0 8px 0;">TECHNICAL SKILLS & COMPETENCIES</h3>
-                    <div style="font-size: 13px; color: #222222; line-height: 1.6;">
-                        <div><strong>Technical Skills:</strong> {', '.join(skills_cat.get('technical', []))}</div>
-                        <div><strong>Tools & Infrastructure:</strong> {', '.join(skills_cat.get('tools', []))}</div>
-                        <div><strong>Languages:</strong> {', '.join(skills_cat.get('languages', []))}</div>
-                    </div>
-                </div>
-            </div>
-        """)
+        render_clean_html(f"""<div style="background:#fff;color:#111;padding:48px;font-family:Georgia,'Times New Roman',serif;max-width:720px;margin:0 auto 32px;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.45);line-height:1.45"><div style="text-align:center;border-bottom:2px solid #111;padding-bottom:14px;margin-bottom:20px"><h1 style="font-size:26px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em">{escape(str(info.get('full_name', 'Candidate')))}</h1><div style="font-size:12px;color:#333">{escape(str(info.get('email','')))} | {escape(str(info.get('phone','')))} | {escape(str(info.get('location','')))}<br>{escape(str(info.get('linkedin','')))} | {escape(str(info.get('portfolio','')))}</div></div><div style="{item}"><h3 style="{section}">Professional Summary</h3><p style="font-size:12.5px;margin:0">{escape(str(p_data.get('summary','')))}</p></div><div><h3 style="{section}">Education</h3>{education_html}</div><div><h3 style="{section}">Work Experience</h3>{experience_html}</div><div><h3 style="{section}">Technical Projects</h3>{projects_html}</div><div><h3 style="{section}">Technical Skills & Competencies</h3><div style="font-size:12.5px"><div><strong>Technical Skills:</strong> {escape(', '.join(skills_cat.get('technical', [])))}</div><div><strong>Tools & Infrastructure:</strong> {escape(', '.join(skills_cat.get('tools', [])))}</div><div><strong>Languages:</strong> {escape(', '.join(skills_cat.get('languages', [])))}</div></div></div></div>""")
 
     with tab_edit:
         st.markdown("#### Edit Personal & Contact Details")

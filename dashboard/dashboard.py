@@ -42,6 +42,20 @@ class DashboardManager:
                 background: #0A0D14 !important;
                 color: #FFFFFF !important;
                 font-family: 'Inter', -apple-system, sans-serif !important;
+                max-width: 1280px !important;
+                padding: 28px 28px 72px !important;
+            }
+
+            /* Keep the dashboard a focused command centre at desktop widths. */
+            [data-testid="stExpander"] {
+                border-color: rgba(255,255,255,.1) !important;
+                border-radius: 12px !important;
+                margin-bottom: 10px !important;
+            }
+            [data-testid="stExpander"] summary { font-size: 13px !important; }
+            @media (max-width: 760px) {
+                .main .block-container, [data-testid="stAppViewBlockContainer"] { padding: 22px 16px 48px !important; }
+                [data-testid="stHorizontalBlock"] { gap: 12px !important; }
             }
 
             /* Custom Typography Classes */
@@ -243,11 +257,18 @@ class DashboardManager:
 
     def render_dashboard(self):
         """Render AiResuMind Pro v4.0 Executive Candidate Dashboard."""
+        # Defence in depth for callers outside app.py's primary router.
+        if not st.session_state.get("user_authenticated", False):
+            st.session_state.page = "signin"
+            st.warning("Please sign in to view your career dashboard.")
+            return
+
         self.inject_dashboard_styles()
 
         # Dynamic Session State
-        default_name = st.session_state.get('candidate_name') or st.session_state.get('user_name') or 'Executive Candidate'
-        default_role = st.session_state.get('candidate_role') or st.session_state.get('user_role') or 'Product & Tech Leader'
+        email_name = st.session_state.get("user_email", "").split("@", 1)[0].replace(".", " ").replace("_", " ").title()
+        default_name = st.session_state.get('candidate_name') or st.session_state.get('user_name') or email_name or 'Candidate'
+        default_role = st.session_state.get('candidate_role') or st.session_state.get('user_role') or 'Career Explorer'
 
         if 'candidate_name' not in st.session_state:
             st.session_state.candidate_name = default_name
@@ -264,11 +285,11 @@ class DashboardManager:
             <div style="margin-bottom: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 18px;">
                     <div>
-                        <h1 class="space-font" style="font-size: 28px !important; font-weight: 800 !important; color: #FFFFFF !important; margin: 0; display: inline; letter-spacing: -0.03em;">
-                            AiResuMind Pro v4.0
+                        <h1 class="space-font" style="font-size: 30px !important; font-weight: 800 !important; color: #FFFFFF !important; margin: 0; display: inline; letter-spacing: -0.03em;">
+                            Career Command Center
                         </h1>
                         <span style="font-size: 16px; font-weight: 600; color: #8A8F9E; margin-left: 12px; font-family: 'Inter', sans-serif;">
-                            AI Career Analytics | Executive Dashboard
+                            Live career intelligence for your next move
                         </span>
                     </div>
                     <div>
@@ -282,7 +303,7 @@ class DashboardManager:
         """)
 
         # Candidate Profile Control Panel
-        with st.expander("Edit Candidate Identity Profile", expanded=False):
+        with st.expander("Profile settings", expanded=False):
             col_n, col_r, col_b = st.columns([0.4, 0.4, 0.2])
             with col_n:
                 input_name = st.text_input("Candidate Name", value=user_name, key="dash_input_name")
@@ -295,22 +316,6 @@ class DashboardManager:
                     st.session_state.candidate_name = input_name
                     st.session_state.candidate_role = input_role
                     st.rerun()
-
-        # Demo Login Hint Card (Non-destructive demonstration modal)
-        with st.expander("Executive Platform Demo Authentication Hint", expanded=False):
-            render_clean_html("""
-                <div class="glass-card" style="background: rgba(108, 92, 231, 0.08) !important; border: 1px solid rgba(108, 92, 231, 0.25) !important;">
-                    <div style="display: flex; gap: 12px; align-items: center;">
-                        <div style="width: 36px; height: 36px; background: #6C5CE7; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #FFF;">Ai</div>
-                        <div>
-                            <div style="font-size: 14px; font-weight: 700; color: #FFFFFF;">AiResuMind Candidate Portal Demo Credentials</div>
-                            <div style="font-size: 12px; color: #8A8F9E; margin-top: 2px;">
-                                Demo Account: <code style="color: #22D3EE; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">demo@airesumind.com</code> &nbsp;|&nbsp; Password: <code style="color: #22D3EE; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">demo1234</code>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            """)
 
         # Main Navigation Tabs
         tab_overview, tab_progression, tab_skills, tab_insights, tab_performance = st.tabs([

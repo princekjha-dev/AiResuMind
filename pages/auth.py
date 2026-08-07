@@ -17,9 +17,39 @@ def render_auth_page():
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
         .auth-wrapper {
-            max-width: 460px;
-            margin: 20px auto 60px auto;
+            max-width: 520px;
+            margin: 42px auto 24px auto;
             padding: 0 16px;
+        }
+
+        /* Streamlit widgets sit outside the HTML heading block.  Constrain each
+           generated section so the authentication flow remains one focused panel. */
+        [data-testid="stTabs"], [data-testid="stForm"],
+        div[data-testid="stElementContainer"]:has(.auth-divider),
+        div[data-testid="stElementContainer"]:has(.social-btn) {
+            max-width: 520px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        [data-testid="stTabs"] { margin-bottom: 16px !important; }
+        [data-testid="stTabs"] [data-baseweb="tab-list"] { gap: 20px !important; border-bottom-color: rgba(255,255,255,.1) !important; }
+        [data-testid="stForm"] {
+            background: rgba(21,28,38,.78) !important;
+            border: 1px solid rgba(255,255,255,.1) !important;
+            border-radius: 18px !important;
+            padding: 22px 20px 14px !important;
+            box-shadow: 0 18px 42px rgba(0,0,0,.22) !important;
+        }
+        [data-testid="stTextInput"] input {
+            background: rgba(255,255,255,.055) !important;
+            border: 1px solid rgba(255,255,255,.1) !important;
+            border-radius: 10px !important;
+            color: #f6f1e8 !important;
+        }
+        [data-testid="stTextInput"] input:focus { border-color: #ff6b4a !important; box-shadow: 0 0 0 3px rgba(255,107,74,.12) !important; }
+        @media (max-width: 620px) {
+            .auth-wrapper { margin-top: 28px; padding: 0 4px; }
+            [data-testid="stForm"] { border-radius: 14px !important; padding: 18px 14px 10px !important; }
         }
 
         .auth-glass-card {
@@ -92,18 +122,31 @@ def render_auth_page():
         .auth-divider span {
             padding: 0 12px;
         }
+        .demo-credential-card {
+            display:flex; align-items:center; gap:12px; padding:13px 14px;
+            margin:16px 0 12px; border:1px solid rgba(97,215,178,.2);
+            background:rgba(97,215,178,.055); border-radius:12px;
+        }
+        .demo-credential-icon {
+            width:30px; height:30px; flex:0 0 30px; display:grid; place-items:center;
+            border-radius:9px; background:rgba(97,215,178,.15); color:#61d7b2;
+            font:700 12px 'DM Mono', monospace;
+        }
+        .demo-credential-copy { color:#b6becb; font-size:11.5px; line-height:1.55; }
+        .demo-credential-copy strong { display:block; color:#f6f1e8; font-size:12px; }
+        .demo-credential-copy code { color:#61d7b2; font-family:'DM Mono',monospace; font-size:10.5px; }
         </style>
     """)
 
     render_clean_html("""
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <div class="auth-wrapper">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; background: linear-gradient(135deg, #6C5CE7 0%, #22D3EE 100%); border-radius: 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 22px; color: #FFFFFF; box-shadow: 0 0 25px rgba(108, 92, 231, 0.4); margin-bottom: 12px;">
+            <div style="text-align: center; margin-bottom: 8px;">
+                <div style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: linear-gradient(135deg, #ff6b4a 0%, #e7b85a 100%); border-radius: 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 22px; color: #FFFFFF; box-shadow: 0 0 25px rgba(255,107,74,.28); margin-bottom: 12px;">
                     <i class="fa-solid fa-circle-user"></i>
                 </div>
-                <h1 class="auth-title"><i class="fa-solid fa-right-to-bracket" style="color: #6C5CE7; font-size: 22px; margin-right: 8px;"></i> Welcome Back</h1>
-                <p class="auth-subtitle">Sign in to AiResuMind Pro v4.0 candidate intelligence engine.</p>
+                <h1 class="auth-title">Welcome back</h1>
+                <p class="auth-subtitle">Continue building a stronger career story.</p>
             </div>
         </div>
     """)
@@ -140,6 +183,16 @@ def render_auth_page():
                 <div class="social-btn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
                     LinkedIn
+                </div>
+            </div>
+        """)
+
+        render_clean_html("""
+            <div class="demo-credential-card" role="note" aria-label="Demo account credentials">
+                <div class="demo-credential-icon">DEMO</div>
+                <div class="demo-credential-copy">
+                    <strong>Candidate preview account</strong>
+                    Use <code>demo@airesumind.com</code> · <code>demo1234</code> to explore the dashboard.
                 </div>
             </div>
         """)
