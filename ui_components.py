@@ -247,7 +247,7 @@ def render_primary_cta():
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         if st.button(
-            "Upload & Analyze Resume Now",
+            "Start Free Candidate Audit Now",
             key="primary_cta_btn",
             type="primary",
             use_container_width=True,

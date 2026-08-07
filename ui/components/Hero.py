@@ -278,7 +278,7 @@ def render_hero(
 
         btn_c1, btn_c2, _ = st.columns([1.6, 1.6, 1])
         with btn_c1:
-            if st.button("Analyze Resume Free", key="hero_cta_analyze", type="primary"):
+            if st.button("Start AI Audit Free", key="hero_cta_analyze", type="primary"):
                 st.session_state.page = "resume_analyzer"
                 st.rerun()
 
