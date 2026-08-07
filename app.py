@@ -63,6 +63,7 @@ from pages.resume_analyzer import render_resume_analyzer_page
 from pages.resume_builder import render_resume_builder_page
 from pages.cold_mail import render_interview_prep_page
 from pages.about import render_about_page
+from pages.auth import render_auth_page
 
 # Set page config at the very beginning
 st.set_page_config(
@@ -114,7 +115,8 @@ class ResumeApp:
             "DASHBOARD": self.render_dashboard,
             "JOB SEARCH": self.render_job_search,
             "FEEDBACK": self.render_feedback_page,
-            "ABOUT": render_about_page
+            "ABOUT": render_about_page,
+            "SIGN IN": render_auth_page
         }
 
         # Initialize dashboard manager
@@ -3020,7 +3022,8 @@ class ResumeApp:
             "dashboard": self.render_dashboard,
             "job_search": self.render_job_search,
             "feedback": self.render_feedback_page,
-            "about": pages.about.render_about_page
+            "about": pages.about.render_about_page,
+            "signin": render_auth_page
         }
 
         # Render current page content

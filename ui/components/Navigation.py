@@ -167,7 +167,8 @@ def render_navigation(active_page='home'):
         with act_sub[0]:
             st.markdown('<div class="arm-st-btn-ghost">', unsafe_allow_html=True)
             if st.button("Sign In", key="arm_nav_signin"):
-                pass
+                st.session_state.page = "signin"
+                st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
         with act_sub[1]:
             st.markdown('<div class="arm-st-btn-primary">', unsafe_allow_html=True)
