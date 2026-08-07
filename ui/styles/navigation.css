@@ -1,0 +1,71 @@
+/* ==========================================================================
+   AiResuMind Design System - Apple Floating Blur Navbar (navigation.css)
+   ========================================================================== */
+
+/* Sticky Top Navbar Container */
+.top-nav-bar-wrapper {
+    position: sticky;
+    top: 8px;
+    z-index: 9999;
+    background: rgba(17, 19, 24, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 18px !important;
+    padding: 6px 16px !important;
+    margin-bottom: 12px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Row block for top-level columns */
+.top-nav-bar-wrapper [data-testid="stHorizontalBlock"] {
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+}
+
+/* Center Column (Links) Horizontal Flex Container */
+.top-nav-bar-wrapper [data-testid="column"]:nth-child(2) [data-testid="stHorizontalBlock"] {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none !important;
+    width: 100% !important;
+}
+
+.top-nav-bar-wrapper [data-testid="column"]:nth-child(2) [data-testid="column"] {
+    width: auto !important;
+    min-width: max-content !important;
+    flex: 0 0 auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Navbar Brand Logo */
+.nav-logo {
+    font-family: 'Inter', -apple-system, sans-serif !important;
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.03em;
+}
+
+.nav-version {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #0071E3;
+    background: rgba(0, 113, 227, 0.15);
+    border: 1px solid rgba(0, 113, 227, 0.3);
+    padding: 1px 6px;
+    border-radius: 9999px;
+}

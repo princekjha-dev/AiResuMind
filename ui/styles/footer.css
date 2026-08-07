@@ -1,0 +1,46 @@
+/* ==========================================================================
+   AiResuMind Design System - Footer (ui/styles/footer.css)
+   ========================================================================== */
+
+.editorial-footer {
+    border-top: 1px solid var(--color-line);
+    padding-top: var(--space-48);
+    padding-bottom: var(--space-48);
+    margin-top: var(--space-80);
+    text-align: center;
+}
+
+.footer-logo {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-white);
+    margin-bottom: var(--space-8);
+    letter-spacing: -0.02em;
+}
+
+.footer-tagline {
+    font-size: 14px;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-20);
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-20);
+    font-size: 14px;
+    color: var(--color-ink-subtle);
+}
+
+.footer-links a {
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--color-accent);
+}

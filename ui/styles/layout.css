@@ -1,0 +1,28 @@
+/* ==========================================================================
+   AiResuMind Design System - 1320px Centered Container (layout.css)
+   ========================================================================== */
+
+/* Main Streamlit App Wrapper */
+.main, .stApp {
+    background-color: #0B0B0F !important;
+    color: #F4F4F5 !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Constrain content to 1320px centered container */
+.main .block-container {
+    max-width: 1320px !important;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+    padding-top: 16px !important;
+    padding-bottom: 64px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Hide default Streamlit headers & footers */
+#MainMenu, header, footer, [data-testid="stHeader"] {
+    visibility: hidden !important;
+    height: 0 !important;
+    padding: 0 !important;
+}

@@ -1,0 +1,113 @@
+/* ==========================================================================
+   AiResuMind Design System - Apple 3D Glassmorphic Card Architecture (cards.css)
+   ========================================================================== */
+
+.editorial-card {
+    background: linear-gradient(145deg, rgba(25, 29, 38, 0.85) 0%, rgba(13, 15, 20, 0.95) 100%) !important;
+    backdrop-filter: blur(25px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 24px !important;
+    padding: 28px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transform-style: preserve-3d !important;
+    perspective: 1000px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    height: 100%;
+}
+
+.editorial-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, rgba(255, 90, 95, 0) 0%, rgba(255, 90, 95, 0.6) 50%, rgba(94, 234, 212, 0.6) 80%, rgba(255, 255, 255, 0) 100%) !important;
+    opacity: 0.7 !important;
+}
+
+.editorial-card:hover {
+    border-color: rgba(255, 90, 95, 0.4) !important;
+    transform: perspective(1000px) rotateX(3deg) rotateY(-3deg) translateZ(14px) scale(1.025) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(255, 90, 95, 0.2) !important;
+}
+
+.editorial-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.editorial-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(255, 90, 95, 0.2) 0%, rgba(94, 234, 212, 0.1) 100%);
+    color: #FF5A5F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border: 1px solid rgba(255, 90, 95, 0.4);
+    box-shadow: 0 0 15px rgba(255, 90, 95, 0.25);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.editorial-card:hover .editorial-card-icon {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.editorial-card-title {
+    font-size: 19.5px !important;
+    font-weight: 800 !important;
+    color: #FFFFFF !important;
+    margin: 0 !important;
+    letter-spacing: -0.01em !important;
+}
+
+.editorial-card-desc {
+    font-size: 14.5px !important;
+    color: #A1A1AA !important;
+    line-height: 1.65 !important;
+    margin: 0 !important;
+    margin-top: 6px !important;
+}
+
+/* Metric Card Variant */
+.metric-card {
+    background: linear-gradient(145deg, rgba(25, 29, 38, 0.9) 0%, rgba(13, 15, 20, 0.95) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid #FF5A5F;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    transition: all 0.35s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 25px rgba(94, 234, 212, 0.15);
+}
+
+.metric-label {
+    font-size: 13px;
+    color: #A1A1AA;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.metric-value {
+    font-size: 38px;
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}

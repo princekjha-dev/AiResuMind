@@ -1,0 +1,51 @@
+:root {
+  --color-paper: #08090D;
+  --color-surface: #0F1117;
+  --color-card: #151821;
+  --color-card-hover: #1E222F;
+  --color-white: #FFFFFF;
+  --color-ink: #F4F4F6;
+  --color-ink-muted: #94A3B8;
+  --color-ink-subtle: #64748B;
+  
+  --color-primary: #FF5A5F;
+  --color-accent: #FF5A5F;
+  --color-accent-hover: #FF7074;
+  --color-cyan: #00F2FE;
+  --color-blue: #0071E3;
+  --color-teal: #5EEAD4;
+  --color-purple: #A855F7;
+  --color-emerald: #30D158;
+  
+  --color-line: rgba(255, 255, 255, 0.1);
+  --color-line-dark: rgba(255, 255, 255, 0.18);
+  --color-line-active: rgba(255, 90, 95, 0.45);
+  
+  --shadow-subtle: 0 4px 24px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 90, 95, 0.25);
+  --shadow-glass: 0 10px 40px 0 rgba(0, 0, 0, 0.6);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --radius-full: 9999px;
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  --paper: var(--color-paper);
+  --surface: var(--color-surface);
+  --card: var(--color-card);
+  --line: var(--color-line);
+  --ink: var(--color-ink);
+  --ink-light: var(--color-ink-muted);
+}

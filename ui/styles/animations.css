@@ -1,0 +1,128 @@
+/* ==========================================================================
+   AiResuMind Design System - Apple 3D Motion & Aurora Shader Bundle
+   ========================================================================== */
+
+/* 3D Floating Mesh Keyframes */
+@keyframes appleFloat3D {
+  0% {
+    transform: perspective(1000px) translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(1000px) translateY(-10px) rotateX(2deg) rotateY(-2deg);
+  }
+  100% {
+    transform: perspective(1000px) translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+}
+
+@keyframes pulseGlow3D {
+  0% {
+    box-shadow: 0 0 20px rgba(255, 90, 95, 0.2), 0 0 40px rgba(94, 234, 212, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255, 90, 95, 0.4), 0 0 60px rgba(94, 234, 212, 0.25);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 90, 95, 0.2), 0 0 40px rgba(94, 234, 212, 0.1);
+  }
+}
+
+@keyframes metallicShine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Aurora Background Shader */
+@keyframes aurora3D {
+  0% {
+    background-position: 0% 50%, 50% 0%;
+  }
+  50% {
+    background-position: 100% 50%, 0% 100%;
+  }
+  100% {
+    background-position: 0% 50%, 50% 0%;
+  }
+}
+
+.aurora-background-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  padding: 40px;
+  background: linear-gradient(135deg, #0B0D12 0%, #111318 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+  perspective: 1200px;
+}
+
+.aurora-background-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  opacity: 0.55;
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(255, 90, 95, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(94, 234, 212, 0.25) 0%, transparent 40%),
+    repeating-linear-gradient(100deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 7%, transparent 10%, transparent 12%);
+  background-size: 200% 200%;
+  filter: blur(20px);
+  animation: aurora3D 25s ease infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.aurora-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Laser Scanner Beam 3D */
+.scanner-beam {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, rgba(255,90,95,0) 0%, #FF5A5F 50%, rgba(94,234,212,0) 100%);
+    box-shadow: 0 0 15px #FF5A5F, 0 0 25px #5EEAD4;
+    top: 0%;
+    animation: scanAnimation3D 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    z-index: 10;
+}
+
+@keyframes scanAnimation3D {
+    0% {
+        top: 0%;
+        opacity: 0;
+    }
+    15% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
+
+/* Floating 3D Component Utility */
+.apple-float-3d {
+  animation: appleFloat3D 6s ease-in-out infinite !important;
+}
+
+.apple-glow-pulse {
+  animation: pulseGlow3D 4s ease-in-out infinite !important;
+}
+
+/* Reduced motion accessibility support */
+@media (prefers-reduced-motion: reduce) {
+    .scanner-beam, .aurora-background-wrapper::before, .apple-float-3d, .apple-glow-pulse {
+        animation: none !important;
+    }
+}

@@ -1,0 +1,44 @@
+/* ==========================================================================
+   AiResuMind Design System - Responsive Rules (ui/styles/responsive.css)
+   ========================================================================== */
+
+/* Tablet Optimization (768px – 1199px) */
+@media (max-width: 1199px) {
+    .main, .main .block-container {
+        padding-left: var(--space-32) !important;
+        padding-right: var(--space-32) !important;
+    }
+    
+    .hero-editorial-headline {
+        font-size: 44px !important;
+    }
+    
+    .feature-cards-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* Mobile Optimization (≤767px) */
+@media (max-width: 767px) {
+    .main, .main .block-container {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+    
+    .hero-editorial-headline {
+        font-size: 36px !important;
+    }
+    
+    .hero-paragraph {
+        font-size: 16px !important;
+    }
+    
+    .feature-cards-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: var(--space-8);
+    }
+}

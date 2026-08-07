@@ -1,0 +1,41 @@
+/* ==========================================================================
+   AiResuMind Design System - Apple Form Controls (forms.css)
+   ========================================================================== */
+
+/* Input Fields & Textareas */
+.stTextInput input, 
+.stTextArea textarea, 
+.stSelectbox select,
+div[data-baseweb="input"] input,
+div[data-baseweb="select"] {
+    background-color: #171A21 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 14px !important;
+    color: #F4F4F5 !important;
+    font-family: 'Inter', -apple-system, sans-serif !important;
+    font-size: 14.5px !important;
+    padding: 12px 18px !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.stTextInput input:focus, 
+.stTextArea textarea:focus,
+div[data-baseweb="input"]:focus-within {
+    border-color: #FF5A5F !important;
+    box-shadow: 0 0 0 3px rgba(255, 90, 95, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    background-color: #1C2029 !important;
+    outline: none !important;
+}
+
+/* Field Labels */
+.stTextInput label, 
+.stTextArea label, 
+.stSelectbox label, 
+.stFileUploader label {
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #CBD5E1 !important;
+    margin-bottom: 8px !important;
+    letter-spacing: -0.01em !important;
+}
