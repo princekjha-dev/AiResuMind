@@ -2249,7 +2249,7 @@ class ResumeApp:
                             """)
                     else:
                         st.info(
-                            "No AI analysis data available yet. Upload and analyze resumes to see statistics here.")
+                            "No AI analysis data available yet. Run a resume audit to see statistics here.")
                 except Exception as e:
                     st.error(f"Error loading AI analysis statistics: {str(e)}")
 

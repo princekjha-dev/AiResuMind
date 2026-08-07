@@ -835,7 +835,7 @@ def render_resume_analyzer_page():
 
         render_clean_html('<div style="height:16px"></div>')
 
-        if st.button("Analyze Resume →", type="primary", use_container_width=True, key="v4_analyze_cta"):
+        if st.button("Run AI Audit →", type="primary", use_container_width=True, key="v4_analyze_cta"):
             if uploaded_file is None:
                 st.error("Please upload a resume file first.")
             else:
@@ -910,7 +910,7 @@ def render_resume_analyzer_page():
                 <div class="ra-empty-title">Your Analysis Report Will Appear Here</div>
                 <div class="ra-empty-sub">
                     Upload your resume on the left, configure your settings,
-                    then click <strong>Analyze Resume</strong> to generate your full AI report.
+                    then click <strong>Run AI Audit</strong> to generate your full AI report.
                 </div>
                 <div class="ra-empty-chips">
                     <span class="ra-empty-chip">ATS Score</span>

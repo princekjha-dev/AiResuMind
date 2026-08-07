@@ -31,7 +31,7 @@ def render_about_page():
             <div style="font-size: 12px; font-weight: 700; color: #86868B; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">SINGLE INTELLIGENT WORKSPACE</div>
             <h2 style="font-size: 26px; font-weight: 800; color: #F5F5F7; margin: 0 0 16px 0;">All-in-One Candidate Intelligence</h2>
             <p style="font-size: 16px; color: #86868B; line-height: 1.7; margin: 0 0 20px 0;">
-                AiResuMind is an AI-powered career intelligence platform built for job seekers, students, professionals, and career switchers. Analyze resumes against ATS algorithms, optimize every section with actionable AI feedback, generate tailored resumes and cover letters, and prepare for interviews—all from a single intelligent workspace.
+                AiResuMind is an AI-powered career intelligence platform built for job seekers, students, professionals, and career switchers. Audit resumes against ATS algorithms, optimize every section with actionable AI feedback, generate tailored resumes and cover letters, and prepare for interviews—all from a single intelligent workspace.
             </p>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px;">
                 <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 18px; border-radius: 16px;">
