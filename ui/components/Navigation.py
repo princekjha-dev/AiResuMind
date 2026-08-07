@@ -17,6 +17,7 @@ def render_navigation(active_page='home'):
     """
 
     render_clean_html("""
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <style>
         /* ── Zero out Streamlit default top whitespace ── */
         .main .block-container,
@@ -138,9 +139,9 @@ def render_navigation(active_page='home'):
 
     with logo_col:
         render_clean_html("""
-            <div style="display:flex;align-items:center;height:60px;gap:8px;">
-                <div style="width:24px;height:24px;background:linear-gradient(135deg, #4F8CFF 0%, #22C55E 100%);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;letter-spacing:-0.5px;flex-shrink:0;">Ai</div>
-                <span style="font-family:-apple-system, 'Inter', sans-serif;font-size:16px;font-weight:700;color:#FFFFFF;letter-spacing:-0.4px;white-space:nowrap;">AiResuMind</span>
+            <div style="display:flex;align-items:center;height:60px;gap:8px;cursor:pointer;" onclick="window.location.reload();">
+                <div style="width:26px;height:26px;background:linear-gradient(135deg, #6C5CE7 0%, #22D3EE 100%);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;letter-spacing:-0.5px;flex-shrink:0;box-shadow:0 0 12px rgba(108,92,231,0.5);">Ai</div>
+                <span style="font-family:-apple-system, 'Inter', sans-serif;font-size:16.5px;font-weight:800;color:#FFFFFF;letter-spacing:-0.4px;white-space:nowrap;">AiResuMind</span>
             </div>
         """)
 
@@ -163,11 +164,15 @@ def render_navigation(active_page='home'):
                 st.markdown("</div>", unsafe_allow_html=True)
 
     with actions_col:
-        act_sub = st.columns([1, 1.4], gap="small")
+        act_sub = st.columns([1.1, 1.5], gap="small")
+        is_auth = st.session_state.get('user_authenticated', False)
+        auth_label = "Profile" if is_auth else "Sign In"
+        auth_target = "dashboard" if is_auth else "signin"
+
         with act_sub[0]:
             st.markdown('<div class="arm-st-btn-ghost">', unsafe_allow_html=True)
-            if st.button("Sign In", key="arm_nav_signin"):
-                st.session_state.page = "signin"
+            if st.button(auth_label, key="arm_nav_signin"):
+                st.session_state.page = auth_target
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
         with act_sub[1]:

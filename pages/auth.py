@@ -96,12 +96,13 @@ def render_auth_page():
     """)
 
     render_clean_html("""
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <div class="auth-wrapper">
             <div style="text-align: center; margin-bottom: 20px;">
-                <div style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: linear-gradient(135deg, #6C5CE7 0%, #22D3EE 100%); border-radius: 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 20px; color: #FFFFFF; box-shadow: 0 0 25px rgba(108, 92, 231, 0.4); margin-bottom: 12px;">
-                    Ai
+                <div style="display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; background: linear-gradient(135deg, #6C5CE7 0%, #22D3EE 100%); border-radius: 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 22px; color: #FFFFFF; box-shadow: 0 0 25px rgba(108, 92, 231, 0.4); margin-bottom: 12px;">
+                    <i class="fa-solid fa-circle-user"></i>
                 </div>
-                <h1 class="auth-title">Welcome Back</h1>
+                <h1 class="auth-title"><i class="fa-solid fa-right-to-bracket" style="color: #6C5CE7; font-size: 22px; margin-right: 8px;"></i> Welcome Back</h1>
                 <p class="auth-subtitle">Sign in to AiResuMind Pro v4.0 candidate intelligence engine.</p>
             </div>
         </div>
