@@ -1,86 +1,39 @@
 /* ==========================================================================
-   AiResuMind Pro v4.0 - Executive Dark Glass Design System
-   Monochrome Obsidian (#050505, #0A0A0E, #121216) + Glowing Accents
+   AiResuMind - Modern Dark Glassmorphic Design System (Apple / Linear Inspired)
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  /* Dark Glass Palette */
-  --bg-dark-base: #050505;
-  --bg-dark-surface: #0A0A0E;
-  --bg-dark-card: #121216;
-  --bg-dark-card-hover: #18181F;
-  --bg-glass: rgba(18, 18, 22, 0.75);
-  --bg-glass-heavy: rgba(10, 10, 14, 0.90);
-  
-  /* Text & Typography Colors */
-  --color-white: #FFFFFF;
-  --color-ink: #F5F5F7;
-  --color-ink-muted: #9CA3AF;
-  --color-ink-subtle: #6B7280;
-  
-  /* Accent Colors */
-  --color-primary: #FFFFFF;
-  --color-accent-blue: #4F8CFF;
-  --color-accent-green: #30D158;
-  --color-accent-purple: #A855F7;
-  --color-accent-amber: #F59E0B;
-  
-  /* Hairline Borders */
-  --border-line: rgba(255, 255, 255, 0.08);
-  --border-line-hover: rgba(255, 255, 255, 0.22);
-  --border-line-active: rgba(255, 255, 255, 0.35);
-  
-  /* Radii */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
-  --radius-full: 9999px;
-
-  /* Aliases */
-  --color-paper: var(--bg-dark-base);
-  --color-surface: var(--bg-dark-surface);
-  --color-card: var(--bg-dark-card);
-  --color-card-hover: var(--bg-dark-card-hover);
+    --bg-dark-base: #050507;
+    --bg-dark-surface: #0a0a0f;
+    --bg-dark-card: #121218;
+    --bg-dark-card-hover: #181822;
+    --accent-blue: #3b82f6;
+    --accent-purple: #9333ea;
+    --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%);
+    --accent-glow: rgba(59, 130, 246, 0.15);
+    --text-primary: #FFFFFF;
+    --text-secondary: #9CA3AF;
+    --text-muted: #6B7280;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(59, 130, 246, 0.35);
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 24px;
+    --radius-full: 9999px;
+    --shadow-glass: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
-/* Base Body & Typography Reset */
-html, body, [class*="css"] {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', sans-serif !important;
-    color: var(--color-ink) !important;
-    background-color: #050505 !important;
+/* Global Reset & Base Typography */
+html, body, .stApp {
+    background-color: var(--bg-dark-base) !important;
+    color: var(--text-primary) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.01em;
 }
 
-/* ── HIDE ALL STREAMLIT DEFAULT SIDEBARS & MULTIPAGE NAV ── */
-[data-testid="stSidebar"],
-[data-testid="stSidebarNav"],
-[data-testid="stSidebarContent"],
-[data-testid="stSidebarUserContent"],
-[data-testid="collapsedControl"],
-section[data-testid="stSidebar"],
-div[data-testid="stSidebarNav"],
-button[data-testid="baseButton-headerNoPadding"] {
-    display: none !important;
-    visibility: hidden !important;
-    width: 0 !important;
-    height: 0 !important;
-    min-width: 0 !important;
-    max-width: 0 !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* ══════════════════════════════════════════════════════
-   KILL ALL STREAMLIT TOP WHITESPACE — zero margin baseline
-   ══════════════════════════════════════════════════════ */
+/* Remove default Streamlit top spacing & header chrome */
 .main .block-container,
 [data-testid="stAppViewBlockContainer"],
 [data-testid="stMainBlockContainer"],
@@ -90,81 +43,22 @@ button[data-testid="baseButton-headerNoPadding"] {
 section.main > div {
     padding-top: 0 !important;
     margin-top: 0 !important;
+    padding-bottom: 60px !important;
 }
 
-/* Hide Streamlit Native Chrome */
 .stApp > header,
 [data-testid="stHeader"],
-#stHeader,
-#MainMenu,
-footer,
-header,
-[data-testid="stToolbar"],
-[data-testid="stDecoration"],
-[data-testid="stStatusWidget"],
-[data-testid="manage-app-button"],
-.stDeployButton,
-.stToolbar {
+#stHeader {
     display: none !important;
-    visibility: hidden !important;
     height: 0 !important;
-    opacity: 0 !important;
+    min-height: 0 !important;
 }
 
-/* Hide Sidebar & Collapse Control */
-section[data-testid="stSidebar"],
-div[data-testid="stSidebarCollapsedControl"],
-button[data-testid="baseButton-headerNoPadding"],
-[data-testid="collapsedControl"] {
-    display: none !important;
-    width: 0 !important;
-}
+/* Hide Streamlit footer branding */
+footer { display: none !important; }
+#MainMenu { visibility: hidden !important; }
 
-/* Custom Webkit Scrollbars */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: #050505;
-}
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.18);
-    border-radius: 999px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.35);
-}
-
-/* Main App Container */
-.main, .stApp {
-    background-color: #050505 !important;
-    color: var(--color-ink) !important;
-}
-
-/* Block container — 1280px responsive centering */
-.main .block-container {
-    max-width: 100% !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 60px !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-}
-
-/* Streamlit Button Styling (General Action Buttons) */
-div:not(.arm-st-navlink):not(.arm-st-navlink-active) > div[data-testid="stButton"] > button {
-    border-radius: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    padding: 10px 20px !important;
-    letter-spacing: -0.01em !important;
-}
-
-/* ── Absolute Reset for Top Navigation Plain Text Links ── */
+/* ── Top Navigation Explicit Resets ── */
 .arm-site-header a.arm-nav-a,
 .arm-site-header a.arm-brand-logo,
 .arm-nav-ul a,
@@ -180,59 +74,55 @@ div:not(.arm-st-navlink):not(.arm-st-navlink-active) > div[data-testid="stButton
     -webkit-backdrop-filter: none !important;
 }
 
+/* Glassmorphic Bento Cards */
+.editorial-card, .arm-bento-card {
+    background: var(--bg-dark-card) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: var(--radius-lg) !important;
+    padding: 32px !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: var(--shadow-glass) !important;
+}
 
+.editorial-card:hover, .arm-bento-card:hover {
+    border-color: var(--border-hover) !important;
+    background: var(--bg-dark-card-hover) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 24px 60px rgba(59, 130, 246, 0.12) !important;
+}
+
+/* Streamlit Button Styling (General Action Buttons) */
 .stButton > button[kind="primary"], .stButton > button[type="primary"] {
-    background: #FFFFFF !important;
-    color: #000000 !important;
+    background: var(--accent-gradient) !important;
+    color: #FFFFFF !important;
     border: none !important;
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15) !important;
+    border-radius: var(--radius-full) !important;
+    font-size: 14.5px !important;
+    font-weight: 600 !important;
+    padding: 12px 28px !important;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3) !important;
+    transition: all 0.2s ease !important;
 }
 
 .stButton > button[kind="primary"]:hover, .stButton > button[type="primary"]:hover {
-    background: #F0F0F0 !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 6px 28px rgba(255, 255, 255, 0.25) !important;
+    opacity: 0.92 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.45) !important;
 }
 
 .stButton > button[kind="secondary"], .stButton > button[type="secondary"] {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: #F5F5F7 !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    color: #FFFFFF !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    backdrop-filter: blur(12px);
+    border-radius: var(--radius-full) !important;
+    font-size: 14.5px !important;
+    font-weight: 500 !important;
+    padding: 12px 24px !important;
+    transition: all 0.2s ease !important;
 }
 
 .stButton > button[kind="secondary"]:hover, .stButton > button[type="secondary"]:hover {
-    background: rgba(255, 255, 255, 0.10) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
     border-color: rgba(255, 255, 255, 0.28) !important;
-    color: #FFFFFF !important;
     transform: translateY(-1px) !important;
 }
-
-/* Card Styling - Glassmorphic 20px Rounded Containers */
-.editorial-card {
-    background: var(--bg-dark-card);
-    border: 1px solid var(--border-line);
-    border-radius: var(--radius-lg);
-    padding: 28px;
-    transition: all 0.30s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-}
-
-.editorial-card:hover {
-    border-color: var(--border-line-hover);
-    background: var(--bg-dark-card-hover);
-    transform: translateY(-2px);
-}
-
-/* Apple Pills & Badges */
-.badge-apple {
-    background: rgba(255, 255, 255, 0.08);
-    color: #F5F5F7;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 5px 14px;
-    border-radius: 9999px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-}
-
