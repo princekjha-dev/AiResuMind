@@ -13,12 +13,9 @@ def render_clean_html(html_str):
 def render_navigation(active_page=None):
     """
     Exact implementation of user's React/Tailwind Navbar component in Streamlit.
-
-    Structure:
-    - Container: max-w-7xl, px-6, h-14 (56px), bg-[#0a0a0f], border-b border-white/10
-    - Logo: Sparkles icon badge (bg-gradient-to-br from-blue-500 to-purple-600), "AiResuMind" wordmark
-    - Nav Links: Dashboard, Resume Analyzer, Resume Builder, Cold Mail, Job Search (gap-7, ml-10, mr-auto)
-    - Right Side: Gradient pill button for "Sign In" / "Profile" (bg-gradient-to-r from-blue-500 to-purple-600)
+    - Zero boxed buttons on nav links.
+    - Pure flat text navigation links: Dashboard, Resume Analyzer, Resume Builder, Cold Mail, Job Search.
+    - Right side: Single gradient pill button for "Sign In" / "Profile".
     """
 
     # Sync URL query parameters with session state for URL-based navigation
@@ -111,8 +108,11 @@ def render_navigation(active_page=None):
         flex-shrink: 0 !important;
         cursor: pointer !important;
         background: transparent !important;
+        background-color: transparent !important;
         border: none !important;
+        box-shadow: none !important;
         padding: 0 !important;
+        margin: 0 !important;
     }}
     a.arm-brand-logo:hover {{
         opacity: 0.9 !important;
@@ -147,6 +147,8 @@ def render_navigation(active_page=None):
         align-items: center !important;
         margin-left: 40px !important;
         margin-right: auto !important;
+        background: transparent !important;
+        border: none !important;
     }}
 
     ul.arm-nav-ul {{
@@ -156,6 +158,8 @@ def render_navigation(active_page=None):
         margin: 0 !important;
         padding: 0 !important;
         gap: 28px !important; /* gap-7 */
+        background: transparent !important;
+        border: none !important;
     }}
 
     li.arm-nav-li {{
@@ -164,29 +168,47 @@ def render_navigation(active_page=None):
         height: 56px !important;
         margin: 0 !important;
         padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
     }}
 
-    /* Link Style: text-[14px] font-medium text-gray-400 hover:text-white transition-colors duration-150 */
+    /* Plain Text Links: ABSOLUTE OVERRIDE — NO BORDERS, NO BOXES, NO BACKGROUNDS */
     a.arm-nav-a {{
         font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
         font-size: 14px !important;
         font-weight: 500 !important;
-        color: #9ca3af !important;
+        color: #9ca3af !important; /* text-gray-400 */
         text-decoration: none !important;
         background: transparent !important;
-        border: none !important;
+        background-color: transparent !important;
+        border: 0 !important;
+        border-style: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        outline: none !important;
         padding: 0 !important;
+        margin: 0 !important;
+        height: auto !important;
+        width: auto !important;
         white-space: nowrap !important;
         transition: color 150ms ease !important;
     }}
 
     a.arm-nav-a:hover {{
-        color: #ffffff !important;
+        color: #ffffff !important; /* hover:text-white */
+        background: transparent !important;
+        background-color: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
     }}
 
     a.arm-nav-a.active {{
         color: #ffffff !important;
         font-weight: 600 !important;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
     }}
 
     /* ── Right side: Sign In only ── */
@@ -194,6 +216,8 @@ def render_navigation(active_page=None):
         display: flex !important;
         align-items: center !important;
         flex-shrink: 0 !important;
+        background: transparent !important;
+        border: none !important;
     }}
 
     /* Sign In: text-[14px] font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90 transition-opacity duration-150 rounded-full px-4 py-[7px] */
@@ -210,6 +234,8 @@ def render_navigation(active_page=None):
         border-radius: 9999px !important;
         padding: 7px 16px !important;
         white-space: nowrap !important;
+        border: none !important;
+        box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3) !important;
         transition: opacity 150ms ease !important;
     }}
 

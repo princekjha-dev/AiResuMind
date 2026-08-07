@@ -164,6 +164,23 @@ div:not(.arm-st-navlink):not(.arm-st-navlink-active) > div[data-testid="stButton
     letter-spacing: -0.01em !important;
 }
 
+/* ── Absolute Reset for Top Navigation Plain Text Links ── */
+.arm-site-header a.arm-nav-a,
+.arm-site-header a.arm-brand-logo,
+.arm-nav-ul a,
+.arm-main-nav a {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+
 .stButton > button[kind="primary"], .stButton > button[type="primary"] {
     background: #FFFFFF !important;
     color: #000000 !important;
