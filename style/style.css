@@ -57,6 +57,27 @@ html, body, [class*="css"] {
     letter-spacing: -0.01em;
 }
 
+/* ── HIDE ALL STREAMLIT DEFAULT SIDEBARS & MULTIPAGE NAV ── */
+[data-testid="stSidebar"],
+[data-testid="stSidebarNav"],
+[data-testid="stSidebarContent"],
+[data-testid="stSidebarUserContent"],
+[data-testid="collapsedControl"],
+section[data-testid="stSidebar"],
+div[data-testid="stSidebarNav"],
+button[data-testid="baseButton-headerNoPadding"] {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 /* ══════════════════════════════════════════════════════
    KILL ALL STREAMLIT TOP WHITESPACE — zero margin baseline
    ══════════════════════════════════════════════════════ */

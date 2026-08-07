@@ -10,9 +10,12 @@ def render_clean_html(html_str):
     cleaned = chr(10).join(lines)
     st.markdown(cleaned, unsafe_allow_html=True)
 
-def render_interview_prep_page():
-    """Renders the world-class 2026 AI Cold Email Generator page."""
+def render_cold_mail_page():
+    """Renders the world-class 2026 AI Cold Email & Recruiter Outreach Generator page."""
     
+    # Inject Font Awesome 6.5.1 CDN
+    render_clean_html('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">')
+
     # Initialize session state for email generator
     if 'email_form_data' not in st.session_state:
         st.session_state.email_form_data = {
@@ -25,8 +28,8 @@ def render_interview_prep_page():
             'resume_summary': 'Senior Software Engineer with 6+ years experience architecting distributed microservices, reducing payment API latency by 35%, and saving $140k in cloud costs.',
             'achievements': 'Built AI Candidate Engine, Reduced cloud overhead by $140k, Top 1% Engineering Performer',
             'skills': ['Python', 'Spring Boot', 'SQL', 'Docker', 'AWS', 'REST API'],
-            'portfolio': 'github.com/alexsharma',
-            'linkedin': 'linkedin.com/in/alexsharma',
+            'portfolio': 'github.com/princekjha-dev',
+            'linkedin': 'linkedin.com/in/prince-kumar-jha',
             'tone': 'Confident',
             'length': 'Medium',
             'cta': 'Schedule Interview',
@@ -43,17 +46,17 @@ def render_interview_prep_page():
     render_clean_html("""
         <div style="max-width: 1280px; margin: 0 auto; padding: 12px 24px 24px 24px; text-align: center;">
             <!-- Badge -->
-            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #F5F5F7; padding: 4px 16px; border-radius: 9999px; font-size: 12px; font-weight: 600; margin-bottom: 12px; letter-spacing: 0.02em;">
-                Smart Outreach Automation
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(79, 140, 255, 0.10); border: 1px solid rgba(79, 140, 255, 0.28); color: #7EB8FF; padding: 5px 16px; border-radius: 9999px; font-size: 12px; font-weight: 600; margin-bottom: 12px;">
+                <i class="fa-solid fa-paper-plane"></i> Smart Outreach Automation
             </div>
             
             <!-- Hero Title -->
-            <h1 style="font-family: -apple-system, BlinkMacSystemFont, 'Geist', 'SF Pro Display', sans-serif !important; font-size: 52px !important; font-weight: 800 !important; color: #FFFFFF !important; letter-spacing: -0.035em !important; margin: 0 0 10px 0; line-height: 1.05;">
+            <h1 style="font-family: -apple-system, BlinkMacSystemFont, 'Geist', 'SF Pro Display', sans-serif !important; font-size: 48px !important; font-weight: 800 !important; color: #FFFFFF !important; letter-spacing: -0.035em !important; margin: 0 0 10px 0; line-height: 1.05;">
                 Generate Personalized Cold Emails That Get Replies
             </h1>
             
             <!-- Description -->
-            <p style="font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 17px; color: #86868B; max-width: 650px; margin: 0 auto 24px auto; line-height: 1.5; font-weight: 400;">
+            <p style="font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 17px; color: #9CA3AF; max-width: 650px; margin: 0 auto 24px auto; line-height: 1.5; font-weight: 400;">
                 Paste any public job URL, LinkedIn profile, or GitHub repository. AI extracts recruiter context and generates high-converting outreach messages.
             </p>
         </div>
@@ -64,9 +67,11 @@ def render_interview_prep_page():
         <div style="max-width: 1280px; margin: 0 auto 28px auto; padding: 0 24px;">
             <div style="background: rgba(18, 18, 20, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <div style="font-size: 13px; font-weight: 700; color: #F5F5F7;">AI Context Import from Public URL</div>
+                    <div style="font-size: 13px; font-weight: 700; color: #F5F5F7;">
+                        <i class="fa-solid fa-link" style="color:#4F8CFF; margin-right:6px;"></i> AI Context Import from Public URL
+                    </div>
                     <span style="background: rgba(48, 209, 88, 0.12); color: #30D158; border: 1px solid rgba(48, 209, 88, 0.25); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px;">
-                        Auto-Extraction Active
+                        <i class="fa-solid fa-bolt"></i> Auto-Extraction Active
                     </span>
                 </div>
             </div>
@@ -94,11 +99,10 @@ def render_interview_prep_page():
 
     render_clean_html("""
         <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 11px; color: #86868B;">
-            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;">LinkedIn Job</span>
-            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;">Company Career Page</span>
-            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;">GitHub Repo</span>
-            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;">Recruiter Profile</span>
-            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;">Wellfound Startup</span>
+            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;"><i class="fa-brands fa-linkedin" style="color:#0A66C2;"></i> LinkedIn Job</span>
+            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;"><i class="fa-solid fa-globe"></i> Company Career Page</span>
+            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;"><i class="fa-brands fa-github"></i> GitHub Repo</span>
+            <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 999px;"><i class="fa-solid fa-user-tie"></i> Recruiter Profile</span>
         </div>
         </div>
     """)
@@ -112,19 +116,21 @@ def render_interview_prep_page():
         render_clean_html("""
             <div style="background: #121214; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 18px; margin-bottom: 16px;">
                 <div style="font-size: 11px; font-weight: 700; color: #86868B; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;">OUTREACH CONFIGURATION</div>
-                <h3 style="font-size: 18px; font-weight: 800; color: #F5F5F7; margin: 0;">Strategy & Context Inputs</h3>
+                <h3 style="font-size: 18px; font-weight: 800; color: #F5F5F7; margin: 0;">
+                    <i class="fa-solid fa-sliders" style="color:#4F8CFF; margin-right:6px;"></i> Strategy & Context Inputs
+                </h3>
             </div>
         """)
 
         c1, c2 = st.columns(2)
         with c1:
-            rec_type = st.selectbox("Recipient Type", ["Hiring Manager", "Recruiter", "HR", "Founder", "Engineering Manager", "Referral Contact", "Campus Recruiter"], key="em2_rec_type")
+            rec_type = st.selectbox("Recipient Type", ["Hiring Manager", "Recruiter", "HR", "Founder", "Engineering Manager", "Referral Contact"], key="em2_rec_type")
             company_input = st.text_input("Target Company", value=data['target_company'], key="em2_company")
             job_title_input = st.text_input("Job Title", value=data['job_title'], key="em2_title")
         with c2:
-            purpose_input = st.selectbox("Outreach Purpose", ["Job Application", "Internship Application", "Networking", "Referral Request", "Follow-Up", "Thank You Email"], key="em2_purpose")
+            purpose_input = st.selectbox("Outreach Purpose", ["Job Application", "Internship Application", "Networking", "Referral Request", "Follow-Up"], key="em2_purpose")
             person_input = st.text_input("Hiring Person Name", value=data['person_name'], key="em2_person")
-            tone_input = st.selectbox("Tone", ["Confident", "Professional", "Friendly", "Formal", "Executive", "Enthusiastic"], key="em2_tone")
+            tone_input = st.selectbox("Tone", ["Confident", "Professional", "Friendly", "Formal", "Executive"], key="em2_tone")
 
         jd_area = st.text_area("Target Job Description", value=data['jd_text'], height=90, key="em2_jd")
         summary_area = st.text_area("Candidate Resume Summary", value=data['resume_summary'], height=80, key="em2_summary")
@@ -155,7 +161,9 @@ def render_interview_prep_page():
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <div style="font-size: 11px; font-weight: 700; color: #86868B; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;">GENERATED OUTREACH</div>
-                        <h3 style="font-size: 18px; font-weight: 800; color: #F5F5F7; margin: 0;">Recruiter Email Draft</h3>
+                        <h3 style="font-size: 18px; font-weight: 800; color: #F5F5F7; margin: 0;">
+                            <i class="fa-solid fa-envelope-open-text" style="color:#4F8CFF; margin-right:6px;"></i> Recruiter Email Draft
+                        </h3>
                     </div>
                     <span style="background: rgba(255,255,255,0.06); color: #F5F5F7; font-size: 11.5px; font-weight: 600; padding: 3px 12px; border-radius: 999px;">
                         148 words • 45s read
@@ -164,7 +172,7 @@ def render_interview_prep_page():
             </div>
         """)
 
-        subject_line = f"Application: {data['job_title']} — {data['target_company']} (Alex Sharma)"
+        subject_line = f"Application: {data['job_title']} — {data['target_company']} (Prince Kumar Jha)"
         email_body_text = f"""Dear {data['person_name'] if data['person_name'] else 'Hiring Manager'},
 
 I came across the {data['job_title']} opening at {data['target_company']} and wanted to reach out directly. With 6+ years of experience engineering high-throughput backend services and scaling Spring Boot REST APIs, I have delivered measurable outcomes that align directly with {data['target_company']}'s growth goals.
@@ -177,7 +185,7 @@ Are you open to a brief 10-minute call next week?
 
 Best regards,
 
-Alex Sharma
+Prince Kumar Jha
 Senior Software Engineer
 {data['portfolio']} | {data['linkedin']}"""
 
@@ -194,17 +202,28 @@ Senior Software Engineer
         """)
 
         # Actions Row
-        e1, e2, e3, e4 = st.columns(4)
+        e1, e2, e3 = st.columns(3)
         with e1:
-            if st.button("Copy Email", key="em2_cp", type="primary", use_container_width=True):
-                st.success("Copied!")
+            st.download_button(
+                label="Download TXT",
+                data=f"Subject: {subject_line}\n\n{email_body_text}",
+                file_name=f"Cold_Email_{data['target_company']}.txt",
+                mime="text/plain",
+                type="primary",
+                use_container_width=True,
+                key="em2_txt"
+            )
         with e2:
-            if st.button("Download TXT", key="em2_txt", type="secondary", use_container_width=True):
-                st.info("Saved .txt")
+            st.download_button(
+                label="Download HTML",
+                data=f"<h3>Subject: {subject_line}</h3><pre>{email_body_text}</pre>",
+                file_name=f"Cold_Email_{data['target_company']}.html",
+                mime="text/html",
+                type="secondary",
+                use_container_width=True,
+                key="em2_html"
+            )
         with e3:
-            if st.button("Download DOCX", key="em2_docx", type="secondary", use_container_width=True):
-                st.info("Saved .docx")
-        with e4:
             if st.button("Regenerate", key="em2_reg", type="secondary", use_container_width=True):
                 st.session_state.email_generated = True
                 st.rerun()
@@ -212,7 +231,9 @@ Senior Software Engineer
         # AI Quality Analysis Cards Grid
         render_clean_html("""
             <div style="background: #121214; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 16px; margin-top: 20px;">
-                <div style="font-size: 11px; font-weight: 700; color: #86868B; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">AI QUALITY METRICS</div>
+                <div style="font-size: 11px; font-weight: 700; color: #86868B; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">
+                    <i class="fa-solid fa-chart-pie" style="color:#30D158; margin-right:4px;"></i> AI QUALITY METRICS
+                </div>
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
                     <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 10px; border-radius: 10px;">
                         <div style="font-size: 10.5px; color: #86868B;">Overall Score</div>
@@ -240,7 +261,9 @@ Senior Software Engineer
     render_clean_html("""
         <div style="max-width: 1280px; margin: 40px auto 0 auto; padding: 0 24px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 28px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <h3 style="font-size: 18px; font-weight: 800; color: #F5F5F7; margin: 0;">Recent Outreach History</h3>
+                <h3 style="font-size: 18px; font-weight: 800; color: #F5F5F7; margin: 0;">
+                    <i class="fa-solid fa-clock-rotate-left" style="color:#4F8CFF; margin-right:6px;"></i> Recent Outreach History
+                </h3>
                 <span style="font-size: 12px; color: #86868B;">14 Total Outreaches</span>
             </div>
             <div style="background: #121214; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; overflow: hidden; font-size: 13px;">
@@ -285,3 +308,4 @@ Senior Software Engineer
             </div>
         </div>
     """)
+

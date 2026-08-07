@@ -53,7 +53,6 @@ from config.database import (
 from utils.ai_resume_analyzer import AIResumeAnalyzer
 from utils.resume_builder import ResumeBuilder
 from utils.resume_analyzer import ResumeAnalyzer
-from utils.interview_prep import InterviewPrepGenerator
 import traceback
 import pandas as pd
 import streamlit as st
@@ -61,7 +60,7 @@ import datetime
 
 from pages.resume_analyzer import render_resume_analyzer_page
 from pages.resume_builder import render_resume_builder_page
-from pages.cold_mail import render_interview_prep_page
+from pages.cold_mail import render_cold_mail_page
 from pages.about import render_about_page
 from pages.auth import render_auth_page
 
@@ -111,7 +110,7 @@ class ResumeApp:
             "HOME": self.render_home,
             "RESUME ANALYZER": render_resume_analyzer_page,
             "RESUME BUILDER": render_resume_builder_page,
-            "COLD MAIL": render_interview_prep_page,
+            "COLD MAIL": render_cold_mail_page,
             "DASHBOARD": self.render_dashboard,
             "JOB SEARCH": self.render_job_search,
             "FEEDBACK": self.render_feedback_page,
@@ -207,14 +206,24 @@ class ResumeApp:
         }
 
         /* Hide Streamlit sidebar & toggle entirely */
+        [data-testid="stSidebar"],
+        [data-testid="stSidebarNav"],
+        [data-testid="stSidebarContent"],
+        [data-testid="stSidebarUserContent"],
         section[data-testid="stSidebar"],
+        div[data-testid="stSidebarNav"],
         div[data-testid="stSidebarCollapsedControl"],
         button[data-testid="baseButton-headerNoPadding"],
         [data-testid="collapsedControl"],
         .st-emotion-cache-1cypcdb {
             display: none !important;
+            visibility: hidden !important;
             width: 0 !important;
+            height: 0 !important;
             min-width: 0 !important;
+            max-width: 0 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
             overflow: hidden !important;
         }
 
@@ -2814,189 +2823,22 @@ class ResumeApp:
             feedback_manager.render_feedback_stats()
 
 
-
-    def render_interview_prep_page(self):
-        """Render AI Mock Interview Prep page with 6 core role options available"""
-        apply_modern_styles()
-        hero_section(
-            "AI Mock Interview Prep",
-            "Master technical, behavioral, and system design interview questions tailored to top tier tech roles.",
-            "Powered by multi-provider AI engine with STAR framework breakdowns, interactive practice modes, and real-time answer evaluation."
-        )
-        
-        prep_gen = InterviewPrepGenerator()
-        available_roles = prep_gen.available_roles
-        
-        with st.form("interview_prep_form"):
-            st.markdown("### Target Role & Customization Form")
-            col1, col2 = st.columns([2, 1])
-            with col1:
-                prep_role = st.selectbox("Role Category (6 Core Options)", available_roles, index=0)
-            with col2:
-                custom_skills = st.text_input("Focus Skills / Tech Stack", value="Python, System Design, SQL")
-            
-            submit_prep = st.form_submit_button("SUBMIT & GENERATE AI INTERVIEW QUESTIONS", type="primary", use_container_width=True)
-
-        if submit_prep:
-            with st.spinner("AI is generating targeted interview questions, answer strategies, and STAR frameworks..."):
-                skills_list = [s.strip() for s in custom_skills.split(",") if s.strip()]
-                st.session_state.current_prep_data = prep_gen.generate_interview_prep(prep_role, skills_list)
-                st.session_state.last_role = prep_role
-                st.session_state.prep_submitted = True
-                st.success("Successfully generated role-specific interview prep data!")
-        elif 'current_prep_data' not in st.session_state:
-            # Generate default initial prep data silently for immediate view
-            skills_list = [s.strip() for s in custom_skills.split(",") if s.strip()]
-            st.session_state.current_prep_data = prep_gen.generate_interview_prep(prep_role, skills_list)
-            st.session_state.last_role = prep_role
-
-        data = st.session_state.get('current_prep_data', {})
-        if not data:
-            st.info("Form Ready — Select your target role above and click SUBMIT to generate AI questions.")
-            return
-            
-        is_ai = data.get("is_ai_generated", False)
-        render_clean_html(f"""
-            <div style='display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); padding: 1rem 1.25rem; border-radius: 12px; border: 1px solid var(--border-subtle); margin: 1.25rem 0;'>
-                <div style='font-size: 1.15rem; font-weight: 700; color: var(--text-primary);'>
-                    Targeting: <span style='color: var(--accent);'>{data.get('role', prep_role)}</span>
-                </div>
-                <div style='background: var(--accent-light); color: var(--accent); font-weight: 700; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.8rem; border: 1px solid var(--success-border);'>
-                    {'Real-Time AI Generated' if is_ai else 'Structured Expert Bank'}
-                </div>
-            </div>
-        """)
-        
-        questions = data.get("questions", [])
-        study_guide_text = f"AI MOCK INTERVIEW STUDY GUIDE - {data.get('role', prep_role)}\n" + "="*60 + "\n\n"
-
-        for idx, q in enumerate(questions):
-            q_type = q.get("type", "Technical")
-            diff = q.get("difficulty", "Medium")
-            q_text = q.get("question", "")
-            ans = q.get("answer_guide", "")
-            star = q.get("star_framework", {})
-            keywords = q.get("keywords", [])
-            
-            diff_color = "#10B981" if diff == "Easy" else "#D97706" if diff == "Medium" else "#DC2626"
-            
-            study_guide_text += f"QUESTION #{idx+1} [{q_type}] ({diff}):\n{q_text}\n\nANSWER GUIDE:\n{ans}\n\n"
-            if star:
-                study_guide_text += f"STAR BREAKDOWN:\n- Situation: {star.get('situation','')}\n- Task: {star.get('task','')}\n- Action: {star.get('action','')}\n- Result: {star.get('result','')}\n\n"
-            study_guide_text += "-"*50 + "\n\n"
-
-            with st.expander(f"Question #{idx+1} [{q_type}] • {q_text}", expanded=(idx == 0)):
-                render_clean_html(f"""
-                    <div style='margin-bottom: 1rem;'>
-                        <span style='background: var(--bg-surface-raised); color: {diff_color}; font-weight: 700; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 6px; border: 1px solid var(--border-subtle);'>Difficulty: {diff}</span>
-                        <span style='background: var(--accent-light); color: var(--accent); font-weight: 700; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 6px; margin-left: 0.5rem; border: 1px solid var(--success-border);'>{q_type}</span>
-                    </div>
-                """)
-                
-                # Answer Strategy Guide Card
-                render_clean_html(f"""
-                    <div style='background: linear-gradient(145deg, rgba(25, 29, 38, 0.9) 0%, rgba(13, 15, 20, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-left: 5px solid #30D158; border-radius: 12px; padding: 1.25rem 1.5rem; margin: 1rem 0 1.5rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.4);'>
-                        <div style='font-size: 0.8rem; font-weight: 800; color: #30D158; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem;'>ANSWER STRATEGY GUIDE</div>
-                        <div style='color: #FFFFFF; font-size: 0.95rem; line-height: 1.7;'>{ans}</div>
-                    </div>
-                """)
-                
-                # STAR Framework Breakdown Visual Cards
-                if star:
-                    st.markdown("<h4 style='color: var(--text-primary); margin-top: 1rem; margin-bottom: 0.75rem; font-weight: 700;'>STAR Framework Breakdown Matrix</h4>", unsafe_allow_html=True)
-                    sc1, sc2 = st.columns(2)
-                    with sc1:
-                        render_clean_html(f"""
-                            <div style='background: #F0F9FF; border: 1px solid #BAE6FD; border-left: 4px solid #0284C7; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem;'>
-                                <div style='font-size: 0.75rem; font-weight: 800; color: #0369A1; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem;'>SITUATION</div>
-                                <div style='color: #0F172A; font-size: 0.925rem; line-height: 1.55;'>{star.get('situation', 'N/A')}</div>
-                            </div>
-                        """)
-                        render_clean_html(f"""
-                            <div style='background: #F5F3FF; border: 1px solid #DDD6FE; border-left: 4px solid #7C3AED; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem;'>
-                                <div style='font-size: 0.75rem; font-weight: 800; color: #6D28D9; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem;'>TASK</div>
-                                <div style='color: #0F172A; font-size: 0.925rem; line-height: 1.55;'>{star.get('task', 'N/A')}</div>
-                            </div>
-                        """)
-                    with sc2:
-                        render_clean_html(f"""
-                            <div style='background: #ECFDF5; border: 1px solid #A7F3D0; border-left: 4px solid #10B981; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem;'>
-                                <div style='font-size: 0.75rem; font-weight: 800; color: #047857; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem;'>ACTION</div>
-                                <div style='color: #0F172A; font-size: 0.925rem; line-height: 1.55;'>{star.get('action', 'N/A')}</div>
-                            </div>
-                        """)
-                        render_clean_html(f"""
-                            <div style='background: #FFF7ED; border: 1px solid #FFEDD5; border-left: 4px solid #F97316; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem;'>
-                                <div style='font-size: 0.75rem; font-weight: 800; color: #C2410C; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem;'>RESULT & IMPACT</div>
-                                <div style='color: #0F172A; font-size: 0.925rem; line-height: 1.55;'>{star.get('result', 'N/A')}</div>
-                            </div>
-                        """)
-                
-                if keywords:
-                    st.markdown("#### Key Concepts & Terminology:")
-                    kw_cols = st.columns(min(len(keywords), 4))
-                    for k_idx, kw in enumerate(keywords[:4]):
-                        with kw_cols[k_idx % 4]:
-                            if st.button(f"{kw}", key=f"kw_btn_{idx}_{k_idx}"):
-                                st.info(f"**{kw}**: Mentioning this key technical concept signals deep hands-on expertise to interviewers for {prep_role} positions.")
-                
-                # Interactive Practice Box with Real AI Evaluation
-                st.markdown("<hr style='margin: 1.25rem 0; border-color: var(--border-subtle);'>", unsafe_allow_html=True)
-                st.markdown("#### Self-Practice Mode")
-                user_ans = st.text_area("Draft your response to practice:", key=f"user_ans_{idx}", placeholder="Type your response using the STAR framework (Situation, Task, Action, Result)...", height=110)
-                
-                if st.button("Evaluate My Answer with AI", key=f"eval_btn_{idx}"):
-                    if user_ans and len(user_ans.strip()) >= 10:
-                        with st.spinner("AI is evaluating your response against the STAR framework..."):
-                            eval_res = prep_gen.evaluate_user_answer(q_text, user_ans, data.get('role', prep_role), star)
-                            
-                            score = eval_res.get('score', 80)
-                            badge_bg = "var(--success-bg)" if score >= 80 else "var(--warning-bg)"
-                            badge_text = "var(--success-text)" if score >= 80 else "var(--warning-text)"
-                            
-                            render_clean_html(f"""
-                                <div style='background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.25rem; margin-top: 1rem;'>
-                                    <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;'>
-                                        <h4 style='margin: 0; color: var(--text-primary);'>AI Answer Evaluation Report</h4>
-                                        <span style='background: {badge_bg}; color: {badge_text}; font-weight: 800; font-size: 1rem; padding: 0.3rem 0.8rem; border-radius: 9999px;'>Score: {score} / 100</span>
-                                    </div>
-                                    <p style='color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5;'>{eval_res.get('feedback', '')}</p>
-                                </div>
-                            """)
-                            
-                            ec1, ec2 = st.columns(2)
-                            with ec1:
-                                st.markdown("**Key Strengths:**")
-                                for st_item in eval_res.get('strengths', []):
-                                    st.markdown(f"- {st_item}")
-                            with ec2:
-                                st.markdown("**Recommendations for Improvement:**")
-                                for imp_item in eval_res.get('improvements', []):
-                                    st.markdown(f"- {imp_item}")
-                    else:
-                        st.warning("Please type a response (at least 10 characters) before running AI evaluation.")
-
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.download_button(
-            label="Download Interview Prep Study Guide (.txt)",
-            data=study_guide_text,
-            file_name=f"{data.get('role', 'Interview')}_Prep_Guide.txt",
-            mime="text/plain",
-            use_container_width=True
-        )
-
-
-
-
     def main(self):
         """Main application entry point"""
         self.apply_global_styles()
 
-        # Force home page on first load
+        # Handle initial load and query param page routing
         if 'initial_load' not in st.session_state:
             st.session_state.initial_load = True
-            st.session_state.page = 'home'
-            st.rerun()
+            if hasattr(st, "query_params") and "page" in st.query_params:
+                st.session_state.page = st.query_params["page"]
+            else:
+                st.session_state.page = 'home'
+
+        if hasattr(st, "query_params") and "page" in st.query_params:
+            qp_page = st.query_params["page"]
+            if qp_page and qp_page != st.session_state.get("page"):
+                st.session_state.page = qp_page
 
         # Get current page and render sticky Top Nav
         current_page = st.session_state.get('page', 'home')
@@ -3006,19 +2848,19 @@ class ResumeApp:
         import importlib
         import pages.resume_analyzer
         import pages.resume_builder
-        import pages.interview_prep
+        import pages.cold_mail
         import pages.about
 
         importlib.reload(pages.resume_analyzer)
         importlib.reload(pages.resume_builder)
-        importlib.reload(pages.interview_prep)
+        importlib.reload(pages.cold_mail)
         importlib.reload(pages.about)
 
         page_dispatch = {
             "home": self.render_home,
             "resume_analyzer": pages.resume_analyzer.render_resume_analyzer_page,
             "resume_builder": pages.resume_builder.render_resume_builder_page,
-            "interview_prep": pages.interview_prep.render_interview_prep_page,
+            "cold_mail": pages.cold_mail.render_cold_mail_page,
             "dashboard": self.render_dashboard,
             "job_search": self.render_job_search,
             "feedback": self.render_feedback_page,

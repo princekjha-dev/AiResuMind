@@ -10,175 +10,256 @@ def render_clean_html(html_str):
     st.markdown(cleaned, unsafe_allow_html=True)
 
 
-def render_navigation(active_page='home'):
+def render_navigation(active_page=None):
     """
-    Compact 60px Sticky Navigation Bar — 1280px Centered Layout.
-    Left: AiResuMind Wordmark  |  Center: Flat Horizontal Nav Links  |  Right: Sign In + Primary CTA
+    Exact implementation of user's React/Tailwind Navbar component in Streamlit.
+
+    Structure:
+    - Container: max-w-7xl, px-6, h-14 (56px), bg-[#0a0a0f], border-b border-white/10
+    - Logo: Sparkles icon badge (bg-gradient-to-br from-blue-500 to-purple-600), "AiResuMind" wordmark
+    - Nav Links: Dashboard, Resume Analyzer, Resume Builder, Cold Mail, Job Search (gap-7, ml-10, mr-auto)
+    - Right Side: Gradient pill button for "Sign In" / "Profile" (bg-gradient-to-r from-blue-500 to-purple-600)
     """
 
-    render_clean_html("""
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <style>
-        /* ── Zero out Streamlit default top whitespace ── */
-        .main .block-container,
-        [data-testid="stAppViewBlockContainer"],
-        [data-testid="stMainBlockContainer"],
-        [data-testid="stVerticalBlock"] > div:first-child,
-        .stMainBlockContainer,
-        .block-container,
-        section.main > div {
-            padding-top: 0 !important;
-            margin-top: 0 !important;
-        }
-        .stApp > header,
-        [data-testid="stHeader"],
-        #stHeader {
-            display: none !important;
-            height: 0 !important;
-            min-height: 0 !important;
-        }
+    # Sync URL query parameters with session state for URL-based navigation
+    if hasattr(st, "query_params"):
+        qp = st.query_params
+        if "page" in qp:
+            param_page = qp["page"]
+            if param_page and param_page != st.session_state.get("page"):
+                st.session_state.page = param_page
 
-        /* ── Sticky Nav Bar Container (Streamlit horizontal block target) ── */
-        [data-testid="stHorizontalBlock"]:has(button[key*="arm_nav_"]) {
-            position: sticky !important;
-            top: 0 !important;
-            z-index: 99999 !important;
-            background: rgba(5, 5, 5, 0.94) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-            max-width: 1280px !important;
-            margin: 0 auto 12px auto !important;
+    current_page = active_page or st.session_state.get("page", "home")
+
+    nav_items = [
+        ("dashboard", "Dashboard"),
+        ("resume_analyzer", "Resume Analyzer"),
+        ("resume_builder", "Resume Builder"),
+        ("cold_mail", "Cold Mail"),
+        ("job_search", "Job Search"),
+    ]
+
+    is_auth = st.session_state.get("user_authenticated", False)
+    auth_label = "Profile" if is_auth else "Sign In"
+    auth_target = "dashboard" if is_auth else "signin"
+
+    li_elements = []
+    for page_key, label in nav_items:
+        is_active = current_page == page_key
+        active_cls = " active" if is_active else ""
+        li_elements.append(
+            f'<li class="arm-nav-li">'
+            f'<a href="?page={page_key}" target="_self" class="arm-nav-a{active_cls}">{label}</a>'
+            f"</li>"
+        )
+    nav_links_html = "".join(li_elements)
+
+    html_str = f"""
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+    /* Reset Streamlit default container padding */
+    .main .block-container,
+    [data-testid="stAppViewBlockContainer"],
+    [data-testid="stMainBlockContainer"],
+    [data-testid="stVerticalBlock"] > div:first-child,
+    .stMainBlockContainer,
+    .block-container,
+    section.main > div {{
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }}
+    .stApp > header,
+    [data-testid="stHeader"],
+    #stHeader {{
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+    }}
+
+    /* ── Header: w-full bg-[#0a0a0f] border-b border-white/10 ── */
+    header.arm-site-header {{
+        position: sticky !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 999999 !important;
+        width: 100% !important;
+        height: 56px !important;
+        background-color: #0a0a0f !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        margin-bottom: 20px !important;
+    }}
+
+    /* ── Container: mx-auto max-w-7xl px-6 h-14 flex items-center justify-between ── */
+    div.arm-header-inner {{
+        max-width: 1280px !important;
+        margin: 0 auto !important;
+        padding: 0 24px !important;
+        height: 56px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+    }}
+
+    /* ── Logo: flex items-center gap-2 shrink-0 ── */
+    a.arm-brand-logo {{
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        text-decoration: none !important;
+        flex-shrink: 0 !important;
+        cursor: pointer !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+    }}
+    a.arm-brand-logo:hover {{
+        opacity: 0.9 !important;
+    }}
+
+    /* Logo Icon: w-6 h-6 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 */
+    div.arm-brand-icon {{
+        width: 24px !important;
+        height: 24px !important;
+        border-radius: 6px !important;
+        background: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 11px !important;
+        color: #ffffff !important;
+    }}
+
+    /* Logo Text: text-white font-semibold text-[15px] tracking-tight */
+    span.arm-brand-title {{
+        font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        letter-spacing: -0.025em !important;
+        white-space: nowrap !important;
+    }}
+
+    /* ── Nav Links: flex items-center gap-7 ml-10 mr-auto ── */
+    nav.arm-main-nav {{
+        display: flex !important;
+        align-items: center !important;
+        margin-left: 40px !important;
+        margin-right: auto !important;
+    }}
+
+    ul.arm-nav-ul {{
+        display: flex !important;
+        align-items: center !important;
+        list-style: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 28px !important; /* gap-7 */
+    }}
+
+    li.arm-nav-li {{
+        display: inline-flex !important;
+        align-items: center !important;
+        height: 56px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }}
+
+    /* Link Style: text-[14px] font-medium text-gray-400 hover:text-white transition-colors duration-150 */
+    a.arm-nav-a {{
+        font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #9ca3af !important;
+        text-decoration: none !important;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        white-space: nowrap !important;
+        transition: color 150ms ease !important;
+    }}
+
+    a.arm-nav-a:hover {{
+        color: #ffffff !important;
+    }}
+
+    a.arm-nav-a.active {{
+        color: #ffffff !important;
+        font-weight: 600 !important;
+    }}
+
+    /* ── Right side: Sign In only ── */
+    div.arm-header-right {{
+        display: flex !important;
+        align-items: center !important;
+        flex-shrink: 0 !important;
+    }}
+
+    /* Sign In: text-[14px] font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90 transition-opacity duration-150 rounded-full px-4 py-[7px] */
+    a.arm-auth-btn {{
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #ffffff !important;
+        text-decoration: none !important;
+        background: linear-gradient(90deg, #3b82f6 0%, #9333ea 100%) !important;
+        border-radius: 9999px !important;
+        padding: 7px 16px !important;
+        white-space: nowrap !important;
+        transition: opacity 150ms ease !important;
+    }}
+
+    a.arm-auth-btn:hover {{
+        opacity: 0.9 !important;
+    }}
+
+    /* Responsive */
+    @media (max-width: 1024px) {{
+        div.arm-header-inner {{
             padding: 0 16px !important;
-            height: 60px !important;
-            min-height: 60px !important;
-            align-items: center !important;
-        }
+        }}
+        nav.arm-main-nav {{
+            margin-left: 20px !important;
+        }}
+        ul.arm-nav-ul {{
+            gap: 18px !important;
+        }}
+    }}
 
-        /* ── Baseline Alignment for Header Columns ── */
-        [data-testid="stHorizontalBlock"]:has(button[key*="arm_nav_"]) > div[data-testid="column"] {
-            display: flex !important;
-            align-items: center !important;
-            height: 60px !important;
-        }
+    @media (max-width: 768px) {{
+        ul.arm-nav-ul {{
+            overflow-x: auto !important;
+            scrollbar-width: none !important;
+        }}
+    }}
+    </style>
 
-        /* ── Flat Horizontal Nav Links (No chips, no capsules) ── */
-        div.arm-st-navlink > div[data-testid="stButton"] > button,
-        div.arm-st-navlink-active > div[data-testid="stButton"] > button {
-            background: transparent !important;
-            color: #9CA3AF !important;
-            border: none !important;
-            border-radius: 0 !important;
-            font-size: 13.5px !important;
-            font-weight: 500 !important;
-            padding: 4px 8px !important;
-            height: 32px !important;
-            box-shadow: none !important;
-            letter-spacing: -0.01em !important;
-            white-space: nowrap !important;
-            transition: color 0.15s ease, background-color 0.15s ease !important;
-        }
+    <header class="arm-site-header">
+      <div class="arm-header-inner">
+        <!-- Logo -->
+        <a href="?page=home" target="_self" class="arm-brand-logo">
+          <div class="arm-brand-icon">
+            <i class="fa-solid fa-sparkles" style="font-size:11px;"></i>
+          </div>
+          <span class="arm-brand-title">AiResuMind</span>
+        </a>
 
-        div.arm-st-navlink > div[data-testid="stButton"] > button:hover {
-            background: rgba(255, 255, 255, 0.06) !important;
-            color: #FFFFFF !important;
-            border-radius: 6px !important;
-        }
+        <!-- Nav links: Dashboard, Resume Analyzer, Resume Builder, Cold Mail, Job Search -->
+        <nav class="arm-main-nav">
+          <ul class="arm-nav-ul">
+            {nav_links_html}
+          </ul>
+        </nav>
 
-        div.arm-st-navlink-active > div[data-testid="stButton"] > button {
-            color: #FFFFFF !important;
-            font-weight: 600 !important;
-            background: transparent !important;
-            border-radius: 0 !important;
-            border-bottom: 2px solid #FFFFFF !important;
-        }
-
-        /* ── Right Actions: Sign In (Ghost) ── */
-        div.arm-st-btn-ghost > div[data-testid="stButton"] > button {
-            background: transparent !important;
-            color: #9CA3AF !important;
-            border: none !important;
-            border-radius: 6px !important;
-            font-size: 13.5px !important;
-            font-weight: 500 !important;
-            padding: 4px 12px !important;
-            height: 34px !important;
-            box-shadow: none !important;
-            white-space: nowrap !important;
-            transition: color 0.15s ease, background 0.15s ease !important;
-        }
-        div.arm-st-btn-ghost > div[data-testid="stButton"] > button:hover {
-            color: #FFFFFF !important;
-            background: rgba(255, 255, 255, 0.06) !important;
-        }
-
-        /* ── Right Actions: Analyze Resume (Primary Solid CTA) ── */
-        div.arm-st-btn-primary > div[data-testid="stButton"] > button {
-            background: #FFFFFF !important;
-            color: #000000 !important;
-            border: none !important;
-            border-radius: 8px !important;
-            font-size: 13.5px !important;
-            font-weight: 600 !important;
-            padding: 0 16px !important;
-            height: 36px !important;
-            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.12) !important;
-            white-space: nowrap !important;
-            transition: all 0.18s ease !important;
-        }
-        div.arm-st-btn-primary > div[data-testid="stButton"] > button:hover {
-            background: #F0F0F0 !important;
-            transform: translateY(-1px) !important;
-            box-shadow: 0 4px 14px rgba(255, 255, 255, 0.22) !important;
-        }
-        </style>
-    """)
-
-    # Render Header row via Streamlit columns
-    logo_col, nav_col, actions_col = st.columns([1.4, 6, 2.6], gap="small")
-
-    with logo_col:
-        render_clean_html("""
-            <div style="display:flex;align-items:center;height:60px;gap:8px;cursor:pointer;" onclick="window.location.reload();">
-                <div style="width:26px;height:26px;background:linear-gradient(135deg, #6C5CE7 0%, #22D3EE 100%);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;letter-spacing:-0.5px;flex-shrink:0;box-shadow:0 0 12px rgba(108,92,231,0.5);">Ai</div>
-                <span style="font-family:-apple-system, 'Inter', sans-serif;font-size:16.5px;font-weight:800;color:#FFFFFF;letter-spacing:-0.4px;white-space:nowrap;">AiResuMind</span>
-            </div>
-        """)
-
-    with nav_col:
-        nav_items = [
-            ("dashboard",      "Dashboard"),
-            ("resume_analyzer","Resume Analyzer"),
-            ("resume_builder", "Resume Builder"),
-            ("interview_prep", "Cold Mail"),
-            ("job_search",     "Job Search"),
-        ]
-        nav_sub = st.columns(len(nav_items), gap="small")
-        for i, (key, label) in enumerate(nav_items):
-            with nav_sub[i]:
-                cls = "arm-st-navlink-active" if active_page == key else "arm-st-navlink"
-                st.markdown(f'<div class="{cls}">', unsafe_allow_html=True)
-                if st.button(label, key=f"arm_nav_{key}"):
-                    st.session_state.page = key
-                    st.rerun()
-                st.markdown("</div>", unsafe_allow_html=True)
-
-    with actions_col:
-        act_sub = st.columns([1.1, 1.5], gap="small")
-        is_auth = st.session_state.get('user_authenticated', False)
-        auth_label = "Profile" if is_auth else "Sign In"
-        auth_target = "dashboard" if is_auth else "signin"
-
-        with act_sub[0]:
-            st.markdown('<div class="arm-st-btn-ghost">', unsafe_allow_html=True)
-            if st.button(auth_label, key="arm_nav_signin"):
-                st.session_state.page = auth_target
-                st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
-        with act_sub[1]:
-            st.markdown('<div class="arm-st-btn-primary">', unsafe_allow_html=True)
-            if st.button("Analyze Resume", key="arm_nav_cta"):
-                st.session_state.page = "resume_analyzer"
-                st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
-
+        <!-- Right side: Sign In only -->
+        <div class="arm-header-right">
+          <a href="?page={auth_target}" target="_self" class="arm-auth-btn">{auth_label}</a>
+        </div>
+      </div>
+    </header>
+    """
+    render_clean_html(html_str)
