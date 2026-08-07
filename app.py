@@ -53,7 +53,6 @@ from config.database import (
 from utils.ai_resume_analyzer import AIResumeAnalyzer
 from utils.resume_builder import ResumeBuilder
 from utils.resume_analyzer import ResumeAnalyzer
-from utils.cover_letter import CoverLetterGenerator
 from utils.interview_prep import InterviewPrepGenerator
 import traceback
 import pandas as pd
@@ -62,7 +61,7 @@ import datetime
 
 from pages.resume_analyzer import render_resume_analyzer_page
 from pages.resume_builder import render_resume_builder_page
-from pages.interview_prep import render_interview_prep_page
+from pages.cold_mail import render_interview_prep_page
 from pages.about import render_about_page
 
 # Set page config at the very beginning
@@ -2812,127 +2811,7 @@ class ResumeApp:
         with stats_tab:
             feedback_manager.render_feedback_stats()
 
-    def render_cover_letter_page(self):
-        """Render AI Cover Letter & Candidate Outreach Suite page"""
-        apply_modern_styles()
-        hero_section(
-            "AI Cover Letter & Outreach Suite",
-            "Generate executive cover letters, recruiter cold emails, LinkedIn DMs, post-based replies, and interview follow-ups powered by AI.",
-            "Multi-format outreach engine designed for high response rates and ATS compliance."
-        )
-        
-        outreach_mode = st.selectbox(
-            "Select Outreach Format",
-            [
-                "Executive Cover Letter",
-                "Cold Email to Recruiter / Hiring Manager",
-                "LinkedIn Connection Note & InMail DM",
-                "LinkedIn / Twitter Post-Based DM (Reply to Hiring Post)",
-                "Post-Interview Thank You & Follow-Up"
-            ]
-        )
-        
-        with st.form("cover_letter_outreach_form"):
-            col1, col2 = st.columns(2)
-            with col1:
-                candidate_name = st.text_input("Your Full Name", value="Prince Kumar Jha")
-                job_title = st.text_input("Target Job Title", value="Senior AI / Software Engineer")
-                company_name = st.text_input("Target Company Name", value="Google / Hugging Face")
-                recruiter_name = st.text_input("Recruiter / Interviewer Name (Optional)", value="Hiring Manager")
-            with col2:
-                experience_years = st.number_input("Years of Relevant Experience", min_value=0, max_value=30, value=4)
-                skills_input = st.text_input("Key Skills (comma separated)", value="Python, PyTorch, React, FastAPI, System Design")
-                tone = st.selectbox("Tone Profile", ["Professional", "Executive", "Passionate", "Engaging", "Creative"])
-            
-            if outreach_mode == "LinkedIn / Twitter Post-Based DM (Reply to Hiring Post)":
-                context_text = st.text_area(
-                    "Recruiter Post / Tweet Snippet",
-                    placeholder="Paste the recruiter's hiring post or tweet here (e.g. 'Looking for a Senior Python Engineer to build scalable microservices...')...",
-                    height=100
-                )
-            elif outreach_mode == "Post-Interview Thank You & Follow-Up":
-                context_text = st.text_area(
-                    "Key Interview Discussion Point",
-                    placeholder="Briefly describe what you discussed during the interview (e.g. 'our conversation about microservices latency and team culture')...",
-                    height=100
-                )
-            else:
-                context_text = st.text_area(
-                    "Target Job Description / Key Context (Optional)",
-                    placeholder="Paste job description highlights here for AI-driven alignment...",
-                    height=100
-                )
-            
-            submit_outreach = st.form_submit_button("GENERATE OUTREACH CONTENT", type="primary", use_container_width=True)
-            
-        if submit_outreach:
-            with st.spinner(f"AI is crafting your {outreach_mode.lower()}..."):
-                generator = CoverLetterGenerator()
-                skills_list = [s.strip() for s in skills_input.split(",") if s.strip()]
-                
-                if outreach_mode == "Executive Cover Letter":
-                    result_text = generator.generate_cover_letter(candidate_name, job_title, company_name, skills_list, experience_years, context_text, tone)
-                elif outreach_mode == "Cold Email to Recruiter / Hiring Manager":
-                    result_text = generator.generate_cold_email(candidate_name, job_title, company_name, recruiter_name, skills_list, context_text, tone)
-                elif outreach_mode == "LinkedIn Connection Note & InMail DM":
-                    result_text = generator.generate_linkedin_dm(candidate_name, job_title, company_name, recruiter_name, skills_list, tone)
-                elif outreach_mode == "LinkedIn / Twitter Post-Based DM (Reply to Hiring Post)":
-                    result_text = generator.generate_post_based_dm(candidate_name, job_title, company_name, context_text, skills_list, tone)
-                else:  # Post-Interview Thank You & Follow-Up
-                    result_text = generator.generate_interview_followup(candidate_name, job_title, company_name, recruiter_name, context_text, tone)
-            
-            st.success(f"AI {outreach_mode} Generated Successfully!")
-            
-            # Metric analytics bar
-            words = len(result_text.split())
-            chars = len(result_text)
-            read_time = max(1, round(words / 200))
-            
-            mcol1, mcol2, mcol3, mcol4 = st.columns(4)
-            with mcol1:
-                st.metric("Total Words", f"{words} words")
-            with mcol2:
-                st.metric("Characters", f"{chars}")
-            with mcol3:
-                st.metric("Estimated Read Time", f"~{read_time} min")
-            with mcol4:
-                st.metric("Tone Profile", tone)
-            
-            st.markdown("<div style='margin-top: 1rem;'></div>", unsafe_allow_html=True)
-            
-            # Display formatted markdown card + interactive text area
-            st.markdown(f"#### Generated {outreach_mode}")
-            render_clean_html(f"""
-                <div style='background: #FFFFFF; border: 1px solid var(--border-subtle); border-left: 5px solid #10B981; border-radius: 12px; padding: 1.5rem 1.75rem; margin: 0.75rem 0 1.25rem 0; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04); font-family: "Inter", sans-serif; line-height: 1.7; color: #0F172A; white-space: pre-wrap; font-size: 0.95rem;'>
-{result_text}
-                </div>
-            """)
-            
-            with st.expander("Edit / Copy Raw Plaintext", expanded=False):
-                st.text_area("Plaintext Editor", value=result_text, height=250)
-            
-            # Interactive skill pop-ups
-            if skills_list:
-                st.markdown("#### Key Skills Embedded:")
-                skill_cols = st.columns(min(len(skills_list), 5))
-                for idx, sk in enumerate(skills_list[:5]):
-                    with skill_cols[idx % 5]:
-                        if st.button(f"{sk}", key=f"sk_pop_{idx}"):
-                            st.info(f"**{sk}** has been strategically positioned to demonstrate relevant expertise to {company_name}.")
-            
-            st.markdown("<br>", unsafe_allow_html=True)
-            
-            dcol1, dcol2 = st.columns(2)
-            with dcol1:
-                st.download_button(
-                    label="Download Outreach Content (.txt)",
-                    data=result_text,
-                    file_name=f"{candidate_name.replace(' ', '_')}_{outreach_mode.replace(' ', '_')}.txt",
-                    mime="text/plain",
-                    use_container_width=True
-                )
-            with dcol2:
-                st.info("Tip: You can copy the text above directly into LinkedIn messages, email clients, or job portals.")
+
 
     def render_interview_prep_page(self):
         """Render AI Mock Interview Prep page with 6 core role options available"""
@@ -3125,13 +3004,11 @@ class ResumeApp:
         import importlib
         import pages.resume_analyzer
         import pages.resume_builder
-        import pages.cover_letter
         import pages.interview_prep
         import pages.about
 
         importlib.reload(pages.resume_analyzer)
         importlib.reload(pages.resume_builder)
-        importlib.reload(pages.cover_letter)
         importlib.reload(pages.interview_prep)
         importlib.reload(pages.about)
 
@@ -3139,7 +3016,6 @@ class ResumeApp:
             "home": self.render_home,
             "resume_analyzer": pages.resume_analyzer.render_resume_analyzer_page,
             "resume_builder": pages.resume_builder.render_resume_builder_page,
-            "cover_letter": pages.cover_letter.render_cover_letter_page,
             "interview_prep": pages.interview_prep.render_interview_prep_page,
             "dashboard": self.render_dashboard,
             "job_search": self.render_job_search,
