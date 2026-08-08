@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AiResuMind — Apple-Inspired AI Career Intelligence</title>
+  <meta name="description" content="Transform your resume into an ATS-beating career engine with AI-powered candidate intelligence, real-time job alignment, and executive resume building.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- STICKY GLASSMORPHISM NAVIGATION -->
+  <header class="navbar-wrapper" id="navbar">
+    <div class="navbar-container">
+      <!-- LOGO -->
+      <a href="#" class="nav-logo">
+        <div class="logo-mark">
+          <i class="fa-solid fa-sparkles"></i>
+        </div>
+        <span class="logo-text">AiResuMind</span>
+      </a>
+
+      <!-- MINIMAL LINKS -->
+      <nav class="nav-menu">
+        <a href="#dashboard" class="nav-link">Dashboard</a>
+        <a href="#analyzer" class="nav-link">Resume Analyzer</a>
+        <a href="#builder" class="nav-link">Resume Builder</a>
+        <a href="#cold-mail" class="nav-link">Cold Mail</a>
+        <a href="#job-search" class="nav-link">Job Search</a>
+      </nav>
+
+      <!-- RIGHT CTA -->
+      <div class="nav-actions">
+        <a href="#signin" class="btn-signin">Sign In</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- SECTION 1: HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="hero-container">
+        <!-- LEFT COLUMN: EDITORIAL TYPOGRAPHY & CTAS -->
+        <div class="hero-content scroll-reveal">
+          <div class="eyebrow-tag">
+            <span class="eyebrow-dot"></span>
+            <span>AI CAREER INTELLIGENCE</span>
+          </div>
+
+          <h1 class="hero-title">
+            Transform Your Resume<br>
+            Into an<br>
+            <span class="gradient-text">ATS-Beating</span> Career Engine
+          </h1>
+
+          <p class="hero-description">
+            Analyze your resume, optimize it for real job descriptions, and build stronger applications with AI-powered career intelligence.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="#analyzer" class="btn-primary">
+              <div class="btn-primary-inner">
+                <span class="btn-title">Start AI Resume Audit</span>
+                <span class="btn-subtext">Free to try</span>
+              </div>
+              <i class="fa-solid fa-arrow-right btn-icon"></i>
+            </a>
+
+            <a href="#builder" class="btn-secondary">
+              Build My Resume
+            </a>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: REALISTIC PRODUCT VISUALIZATION -->
+        <div class="hero-visual scroll-reveal delay-1">
+          <div class="product-panel">
+            <div class="panel-header">
+              <div class="panel-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <div class="panel-title">Resume Intelligence — Real-Time Telemetry</div>
+              <div class="panel-status">
+                <span class="status-indicator"></span>
+                <span>Active Audit</span>
+              </div>
+            </div>
+
+            <div class="panel-body">
+              <!-- TOP 4 METRICS GRID -->
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <span class="metric-label">ATS MATCH</span>
+                  <div class="metric-value-row">
+                    <span class="metric-num">94%</span>
+                    <span class="metric-badge green">+14%</span>
+                  </div>
+                </div>
+
+                <div class="metric-card">
+                  <span class="metric-label">KEYWORD ALIGNMENT</span>
+                  <div class="metric-value-row">
+                    <span class="metric-num">96%</span>
+                    <span class="metric-badge blue">Top 3%</span>
+                  </div>
+                </div>
+
+                <div class="metric-card">
+                  <span class="metric-label">SKILL COVERAGE</span>
+                  <div class="metric-value-row">
+                    <span class="metric-num">92%</span>
+                    <span class="metric-badge purple">18/20</span>
+                  </div>
+                </div>
+
+                <div class="metric-card">
+                  <span class="metric-label">RESUME QUALITY</span>
+                  <div class="metric-value-row">
+                    <span class="metric-num">88%</span>
+                    <span class="metric-badge green">Verified</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- DETAILED RESUME ANALYSIS VISUALIZATION -->
+              <div class="analysis-visualization">
+                <div class="vis-header">
+                  <span class="vis-title">Candidate Alignment Scorecard</span>
+                  <span class="vis-score">Executive Level</span>
+                </div>
+
+                <!-- PROGRESS BARS -->
+                <div class="progress-item">
+                  <div class="progress-labels">
+                    <span>Quantified Achievement Density</span>
+                    <span class="progress-val">96%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: 96%; background: linear-gradient(90deg, #6366F1, #A855F7);"></div>
+                  </div>
+                </div>
+
+                <div class="progress-item">
+                  <div class="progress-labels">
+                    <span>Target Job Description Match</span>
+                    <span class="progress-val">92%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: 92%; background: linear-gradient(90deg, #3B82F6, #10B981);"></div>
+                  </div>
+                </div>
+
+                <div class="progress-item">
+                  <div class="progress-labels">
+                    <span>Single-Column ATS Parsing</span>
+                    <span class="progress-val">100%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: 100%; background: #10B981;"></div>
+                  </div>
+                </div>
+
+                <!-- KEYWORD CHIPS -->
+                <div class="keyword-section">
+                  <div class="chip-label">High-Impact Target Matches</div>
+                  <div class="chip-container">
+                    <span class="chip matched"><i class="fa-solid fa-check"></i> System Architecture</span>
+                    <span class="chip matched"><i class="fa-solid fa-check"></i> Distributed Systems</span>
+                    <span class="chip matched"><i class="fa-solid fa-check"></i> Kubernetes</span>
+                    <span class="chip missing"><i class="fa-solid fa-triangle-exclamation"></i> gRPC</span>
+                  </div>
+                </div>
+
+                <!-- RECRUITER READINESS -->
+                <div class="readiness-banner">
+                  <i class="fa-solid fa-shield-check readiness-icon"></i>
+                  <div class="readiness-text">
+                    <strong>Recruiter-Readiness Indicator: Passed</strong>
+                    <p>Optimized for tier-1 tech & enterprise ATS filters.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: SOCIAL PROOF & CAPABILITIES -->
+    <section class="social-proof-section">
+      <div class="section-container">
+        <div class="social-proof-content scroll-reveal">
+          <p class="proof-statement">
+            Built for candidates who want more than keyword stuffing.
+          </p>
+          <div class="capabilities-row">
+            <div class="capability-item">
+              <i class="fa-solid fa-bullseye"></i>
+              <span>ATS Optimization</span>
+            </div>
+            <div class="capability-item">
+              <i class="fa-solid fa-brain"></i>
+              <span>Resume Intelligence</span>
+            </div>
+            <div class="capability-item">
+              <i class="fa-solid fa-sliders"></i>
+              <span>Job Matching</span>
+            </div>
+            <div class="capability-item">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>AI Career Tools</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: PRODUCT EXPERIENCE -->
+    <section class="product-experience-section" id="product-experience">
+      <div class="section-container">
+        <div class="section-header scroll-reveal">
+          <span class="section-eyebrow">INTELLIGENT SUITE</span>
+          <h2 class="section-title">Everything you need to build a stronger application.</h2>
+          <p class="section-subtitle">Real UI workflows engineered to transform candidate performance at every stage.</p>
+        </div>
+
+        <div class="product-grid">
+          <!-- PANEL 1: RESUME ANALYZER -->
+          <div class="product-card scroll-reveal" id="analyzer">
+            <div class="card-meta">01 / AUDIT</div>
+            <h3 class="card-title">Resume Analyzer</h3>
+            <p class="card-desc">Deep semantic parsing benchmarking your document against top ATS screeners and target job descriptions.</p>
+            <div class="card-ui-preview">
+              <div class="preview-mini-header">
+                <span>ATS Parsing Telemetry</span>
+                <span class="mini-score">94 / 100</span>
+              </div>
+              <div class="preview-mini-bars">
+                <div class="mini-bar-row"><span>Keywords</span><div class="bar-fill green" style="width: 95%;"></div></div>
+                <div class="mini-bar-row"><span>Formatting</span><div class="bar-fill blue" style="width: 100%;"></div></div>
+                <div class="mini-bar-row"><span>Impact</span><div class="bar-fill purple" style="width: 88%;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL 2: RESUME BUILDER -->
+          <div class="product-card scroll-reveal delay-1" id="builder">
+            <div class="card-meta">02 / GENERATION</div>
+            <h3 class="card-title">Resume Builder</h3>
+            <p class="card-desc">Prompt-based AI resume architect creating ATS-compliant executive resumes tailored to any job prompt.</p>
+            <div class="card-ui-preview">
+              <div class="preview-prompt-box">
+                <div class="prompt-tag">AI Prompt Input</div>
+                <code>"Target Role: Staff Software Engineer. Focus on distributed systems, Go, Kubernetes..."</code>
+              </div>
+              <div class="preview-tag-row">
+                <span class="preview-chip">STAR Formatted</span>
+                <span class="preview-chip">Single Column</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL 3: COLD MAIL GENERATOR -->
+          <div class="product-card scroll-reveal" id="cold-mail">
+            <div class="card-meta">03 / OUTREACH</div>
+            <h3 class="card-title">Cold Mail Generator</h3>
+            <p class="card-desc">Generate personalized executive cold emails and LinkedIn messages with high response rates.</p>
+            <div class="card-ui-preview">
+              <div class="preview-email-box">
+                <div class="email-subject">Subject: Senior Engineer Role — Technical Leadership</div>
+                <div class="email-snippet">"Hi Sarah, I reviewed the infrastructure scaling challenges at Acme and drafted 3 high-impact solutions..."</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL 4: JOB SEARCH -->
+          <div class="product-card scroll-reveal delay-1" id="job-search">
+            <div class="card-meta">04 / MATCHING</div>
+            <h3 class="card-title">Job Search</h3>
+            <p class="card-desc">Search active job openings across global tech platforms with real-time AI match scoring.</p>
+            <div class="card-ui-preview">
+              <div class="job-item-preview">
+                <div class="job-role">Principal Systems Architect</div>
+                <div class="job-company">Stripe • Remote</div>
+                <div class="job-match-pill">96% Resume Match</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: RESUME INTELLIGENCE DEEP DIVE -->
+    <section class="resume-intelligence-section" id="intelligence">
+      <div class="section-container">
+        <div class="intelligence-wrapper scroll-reveal">
+          <div class="intelligence-header">
+            <span class="section-eyebrow">DEEP DIAGNOSTICS</span>
+            <h2 class="section-title">Know exactly what your resume is missing.</h2>
+            <p class="section-subtitle">Comprehensive scoring algorithms evaluating keyword density, formatting compliance, and impact metrics.</p>
+          </div>
+
+          <div class="intelligence-dashboard">
+            <div class="dash-column left">
+              <div class="big-score-card">
+                <div class="big-score-label">OVERALL ATS MATCH</div>
+                <div class="big-score-num">94<span class="big-score-max">/100</span></div>
+                <div class="big-score-status">
+                  <i class="fa-solid fa-circle-check"></i> Excellent — Top 3% Candidate
+                </div>
+              </div>
+
+              <div class="breakdown-list">
+                <div class="breakdown-item">
+                  <div class="breakdown-info">
+                    <span>ATS Format Compliance</span>
+                    <strong>100%</strong>
+                  </div>
+                  <div class="breakdown-track"><div class="breakdown-fill" style="width: 100%;"></div></div>
+                </div>
+
+                <div class="breakdown-item">
+                  <div class="breakdown-info">
+                    <span>Target Keyword Match Rate</span>
+                    <strong>92%</strong>
+                  </div>
+                  <div class="breakdown-track"><div class="breakdown-fill" style="width: 92%;"></div></div>
+                </div>
+
+                <div class="breakdown-item">
+                  <div class="breakdown-info">
+                    <span>Experience Impact & Metrics</span>
+                    <strong>89%</strong>
+                  </div>
+                  <div class="breakdown-track"><div class="breakdown-fill" style="width: 89%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-column right">
+              <div class="gap-analysis-card">
+                <div class="gap-card-title">Keyword Gap Audit & Suggestions</div>
+                <div class="gap-items">
+                  <div class="gap-row matched">
+                    <span class="gap-icon"><i class="fa-solid fa-check"></i></span>
+                    <div class="gap-text">
+                      <strong>Cloud Architecture & Microservices</strong>
+                      <p>Found 8 instances across work experience section.</p>
+                    </div>
+                  </div>
+
+                  <div class="gap-row missing">
+                    <span class="gap-icon"><i class="fa-solid fa-plus"></i></span>
+                    <div class="gap-text">
+                      <strong>Recommended Skill: Distributed Caching (Redis)</strong>
+                      <p>Featured in 85% of target Job Descriptions.</p>
+                    </div>
+                  </div>
+
+                  <div class="gap-row missing">
+                    <span class="gap-icon"><i class="fa-solid fa-bolt"></i></span>
+                    <div class="gap-text">
+                      <strong>Refactor Action Bullet: "Led team to build API"</strong>
+                      <p>Suggested AI Fix: "Engineered scalable REST microservices reducing latency by 42%."</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: CAREER TOOLS GRID -->
+    <section class="career-tools-section" id="tools">
+      <div class="section-container">
+        <div class="section-header scroll-reveal">
+          <span class="section-eyebrow">COMPLETE PLATFORM</span>
+          <h2 class="section-title">Engineered for candidate success.</h2>
+          <p class="section-subtitle">A unified system designed to give you an unfair advantage in every job hunt.</p>
+        </div>
+
+        <div class="tools-grid">
+          <div class="tool-card scroll-reveal">
+            <div class="tool-icon"><i class="fa-solid fa-file-shield"></i></div>
+            <h4 class="tool-title">Single-Column ATS Layout</h4>
+            <p class="tool-desc">Standardized layouts guaranteed to parse with zero errors across Workday, Greenhouse, and Lever.</p>
+          </div>
+
+          <div class="tool-card scroll-reveal delay-1">
+            <div class="tool-icon"><i class="fa-solid fa-chart-line-up"></i></div>
+            <h4 class="tool-title">STAR Method Reframing</h4>
+            <p class="tool-desc">Automatically rewrite plain bullet points into metric-rich Situation, Task, Action, Result achievements.</p>
+          </div>
+
+          <div class="tool-card scroll-reveal">
+            <div class="tool-icon"><i class="fa-solid fa-fire"></i></div>
+            <h4 class="tool-title">Recruiter Roast Mode</h4>
+            <p class="tool-desc">Brutally honest feedback highlighting vague phrasing, missing metrics, and formatting weaknesses.</p>
+          </div>
+
+          <div class="tool-card scroll-reveal delay-1">
+            <div class="tool-icon"><i class="fa-solid fa-paper-plane"></i></div>
+            <h4 class="tool-title">1-Click PDF / DOCX Export</h4>
+            <p class="tool-desc">Download clean, perfectly formatted executive resume files ready to submit to recruiters.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: FINAL CTA -->
+    <section class="final-cta-section">
+      <div class="section-container">
+        <div class="cta-banner scroll-reveal">
+          <h2 class="cta-headline">
+            Your next opportunity<br>starts with a better application.
+          </h2>
+          <div class="cta-action-wrapper">
+            <a href="#analyzer" class="btn-primary btn-large">
+              <div class="btn-primary-inner">
+                <span class="btn-title">Start AI Resume Audit</span>
+                <span class="btn-subtext">Free to try</span>
+              </div>
+              <i class="fa-solid fa-arrow-right btn-icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SECTION 7: FOOTER -->
+  <footer class="footer-wrapper">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="logo-mark"><i class="fa-solid fa-sparkles"></i></div>
+            <span>AiResuMind</span>
+          </div>
+          <p class="footer-tagline">Apple-inspired AI career intelligence platform.</p>
+        </div>
+
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <span class="col-title">Platform</span>
+            <a href="#analyzer">Resume Analyzer</a>
+            <a href="#builder">Resume Builder</a>
+            <a href="#cold-mail">Cold Mail Generator</a>
+            <a href="#job-search">Job Search</a>
+          </div>
+
+          <div class="footer-col">
+            <span class="col-title">Resources</span>
+            <a href="#intelligence">ATS Telemetry</a>
+            <a href="#tools">Career Tools</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 AiResuMind. All rights reserved. Precision candidate engineering.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

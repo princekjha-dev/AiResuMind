@@ -1,6 +1,5 @@
 import streamlit as st
 
-
 def render_clean_html(html_str):
     """Cleanly render HTML — strips indentation to avoid markdown code blocks."""
     if not html_str:
@@ -9,15 +8,14 @@ def render_clean_html(html_str):
     cleaned = chr(10).join(lines)
     st.markdown(cleaned, unsafe_allow_html=True)
 
-
 def render_hero(
-    title="Transform Your Resume Into An ATS-Beating Career Engine",
-    subtitle="Receive high-precision AI feedback, benchmark keyword alignment against top job descriptions, and generate executive-ready documents engineered to pass screening filters.",
+    title="Your career deserves better intelligence.",
+    subtitle="Analyze your resume, understand your fit, build stronger applications, and make smarter career moves.",
 ):
     """
-    Apple & Linear Inspired Ultra-Premium Landing Hero.
-    Left Column: Pill badge + Headline + Subtitle + Action CTAs + Trust metrics.
-    Right Column: Floating glass telemetry dashboard preview card.
+    Apple & Linear Inspired High-End Hero Component V5.
+    Left Column: Eyebrow + Dramatic Editorial Typography + Tactile CTAs.
+    Right Column: Realistic Resume Intelligence Telemetry Panel.
     """
 
     render_clean_html("""
@@ -25,7 +23,7 @@ def render_hero(
         .arm-hero-wrapper {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 60px 24px 80px 24px;
+            padding: 72px 24px 80px 24px;
         }
 
         .arm-hero-grid {
@@ -35,332 +33,279 @@ def render_hero(
             align-items: center;
         }
 
-        .arm-badge {
+        .arm-eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(59, 130, 246, 0.10);
-            border: 1px solid rgba(59, 130, 246, 0.28);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
             color: #60A5FA;
-            padding: 6px 16px;
-            border-radius: 9999px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.01em;
             margin-bottom: 24px;
         }
 
-        .arm-badge-dot {
-            width: 7px;
-            height: 7px;
+        .arm-eyebrow-dot {
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: #3B82F6;
-            box-shadow: 0 0 10px #3B82F6;
+            background-color: #60A5FA;
+            box-shadow: 0 0 8px #60A5FA;
         }
 
         .arm-headline {
-            font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-            font-size: 56px !important;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif !important;
+            font-size: 76px !important;
             font-weight: 800 !important;
-            line-height: 1.08 !important;
-            color: #FFFFFF !important;
-            letter-spacing: -0.035em !important;
+            line-height: 1.05 !important;
+            color: #F5F5F7 !important;
+            letter-spacing: -0.04em !important;
             margin: 0 0 24px 0 !important;
         }
 
         .arm-headline-accent {
-            background: linear-gradient(135deg, #3B82F6 0%, #9333EA 100%);
+            background: linear-gradient(135deg, #6366F1 0%, #A855F7 50%, #EC4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .arm-desc {
-            font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-            font-size: 17.5px !important;
-            color: #9CA3AF !important;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif !important;
+            font-size: 19px !important;
+            color: #86868B !important;
             line-height: 1.6 !important;
-            margin: 0 0 36px 0 !important;
+            margin: 0 0 40px 0 !important;
             font-weight: 400 !important;
+            max-width: 520px !important;
         }
 
-        .arm-cta-row {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 40px;
-        }
-
-        .arm-trust-row {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-            padding-top: 32px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .arm-trust-metric {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .arm-trust-num {
-            font-size: 22px;
-            font-weight: 800;
-            color: #FFFFFF;
-            letter-spacing: -0.02em;
-            line-height: 1;
-        }
-
-        .arm-trust-num.green { color: #10B981; }
-
-        .arm-trust-label {
-            font-size: 12.5px;
-            color: #6B7280;
-            font-weight: 400;
-        }
-
-        /* Glass Preview Card */
-        .arm-preview-card {
-            background: rgba(18, 18, 24, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.10);
+        /* Glass Telemetry Panel */
+        .arm-panel-card {
+            background: #12141A;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
             padding: 28px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .arm-panel-card:hover {
+            border-color: rgba(255, 255, 255, 0.16);
+            transform: translateY(-4px);
         }
 
         .arm-win-bar {
             display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: space-between;
             margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .arm-win-dots {
+            display: flex;
+            gap: 8px;
         }
 
         .arm-win-btn {
-            width: 11px;
-            height: 11px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
         }
 
-        .arm-score-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+        .arm-panel-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6E6E73;
         }
 
-        .arm-score-cell {
+        .arm-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .arm-metric-cell {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.07);
             border-radius: 14px;
-            padding: 14px;
+            padding: 14px 16px;
         }
 
-        .arm-score-label {
+        .arm-metric-label {
             font-size: 10.5px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: #6B7280;
+            letter-spacing: 0.08em;
+            color: #6E6E73;
             margin-bottom: 4px;
         }
 
-        .arm-score-val {
-            font-size: 20px;
+        .arm-metric-val-row {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .arm-metric-num {
+            font-size: 24px;
             font-weight: 800;
-            color: #FFFFFF;
+            color: #F5F5F7;
             letter-spacing: -0.02em;
         }
 
-        .arm-score-delta {
-            font-size: 11px;
-            font-weight: 600;
-            color: #10B981;
-            margin-left: 4px;
-        }
-
-        .arm-progress-block {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 16px;
-        }
-
-        .arm-progress-header {
-            display: flex;
-            justify-content: space-between;
+        .arm-metric-unit {
             font-size: 12px;
-            font-weight: 600;
-            color: #E5E7EB;
+            color: #6E6E73;
+        }
+
+        .arm-vis-bar-wrap {
             margin-bottom: 12px;
         }
 
-        .arm-progress-row {
-            margin-bottom: 10px;
-        }
-        .arm-progress-row:last-child { margin-bottom: 0; }
-
-        .arm-progress-meta {
+        .arm-vis-meta {
             display: flex;
             justify-content: space-between;
             font-size: 11.5px;
-            color: #6B7280;
-            margin-bottom: 4px;
+            color: #86868B;
+            margin-bottom: 5px;
         }
 
-        .arm-progress-track {
+        .arm-vis-track {
             height: 5px;
             background: rgba(255, 255, 255, 0.07);
             border-radius: 999px;
             overflow: hidden;
         }
 
-        .arm-progress-fill {
+        .arm-vis-fill {
             height: 100%;
             border-radius: 999px;
         }
 
-        .arm-ai-rec {
+        .arm-chips-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .arm-chip {
+            font-size: 11.5px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+        .arm-chip.matched { background: rgba(16, 185, 129, 0.12); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .arm-chip.missing { background: rgba(245, 158, 11, 0.12); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.2); }
+
+        .arm-readiness {
+            margin-top: 16px;
             background: rgba(59, 130, 246, 0.08);
             border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 14px;
-            padding: 14px 16px;
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #F5F5F7;
         }
 
-        .arm-ai-rec-label {
-            font-size: 10.5px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: #60A5FA;
-            margin-bottom: 4px;
-        }
-
-        .arm-ai-rec-body {
-            font-size: 12.5px;
-            color: #9CA3AF;
-            line-height: 1.5;
-        }
-
-        @media (max-width: 900px) {
-            .arm-hero-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            .arm-headline { font-size: 40px !important; }
+        @media (max-width: 1024px) {
+            .arm-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+            .arm-headline { font-size: 56px !important; }
         }
         </style>
     """)
 
     render_clean_html('<div class="arm-hero-wrapper"><div class="arm-hero-grid">')
 
-    # Left Column
     left_col, right_col = st.columns([1, 1], gap="large")
 
     with left_col:
         render_clean_html(f"""
             <div>
-                <div class="arm-badge">
-                    <span class="arm-badge-dot"></span>
-                    AI Resume Intelligence v4.0
+                <div class="arm-eyebrow">
+                    <span class="arm-eyebrow-dot"></span>
+                    AI CAREER INTELLIGENCE PLATFORM
                 </div>
                 <h1 class="arm-headline">
-                    Transform Your Resume Into<br>
-                    <span class="arm-headline-accent">An ATS-Beating</span><br>
-                    Career Engine
+                    Your career<br>
+                    deserves better<br>
+                    <span class="arm-headline-accent">intelligence.</span>
                 </h1>
                 <p class="arm-desc">{subtitle}</p>
             </div>
         """)
 
-        btn_c1, btn_c2, _ = st.columns([1.6, 1.6, 1])
+        btn_c1, btn_c2 = st.columns([1.5, 1.3])
         with btn_c1:
-            if st.button("Start AI Audit Free", key="hero_cta_analyze", type="primary"):
+            if st.button("Start with your Resume", key="hero_cta_analyze", type="primary", use_container_width=True):
                 st.session_state.page = "resume_analyzer"
                 st.rerun()
 
         with btn_c2:
-            if st.button("Try Resume Builder", key="hero_cta_builder"):
-                st.session_state.page = "resume_builder"
+            if st.button("Explore the Platform", key="hero_cta_builder", use_container_width=True):
+                st.session_state.page = "dashboard"
                 st.rerun()
-
-        render_clean_html("""
-            <div class="arm-trust-row">
-                <div class="arm-trust-metric">
-                    <span class="arm-trust-num">99.4%</span>
-                    <span class="arm-trust-label">ATS Match Accuracy</span>
-                </div>
-                <div class="arm-trust-metric">
-                    <span class="arm-trust-num">50,000+</span>
-                    <span class="arm-trust-label">Resumes Audited</span>
-                </div>
-                <div class="arm-trust-metric">
-                    <span class="arm-trust-num green">4.9 / 5.0</span>
-                    <span class="arm-trust-label">Candidate Rating</span>
-                </div>
-            </div>
-        """)
 
     with right_col:
         render_clean_html("""
-            <div class="arm-preview-card">
+            <div class="arm-panel-card">
                 <div class="arm-win-bar">
-                    <div class="arm-win-btn" style="background:#FF5F56"></div>
-                    <div class="arm-win-btn" style="background:#FFBD2E"></div>
-                    <div class="arm-win-btn" style="background:#27C93F"></div>
-                    <span style="margin-left:8px;font-size:12px;color:#6B7280;font-weight:500;">
-                        Candidate Intelligence Telemetry
-                    </span>
+                    <div class="arm-win-dots">
+                        <div class="arm-win-btn" style="background:#FF5F56"></div>
+                        <div class="arm-win-btn" style="background:#FFBD2E"></div>
+                        <div class="arm-win-btn" style="background:#27C93F"></div>
+                    </div>
+                    <span class="arm-panel-title">AiResuMind Pro v5.0 — Intelligence Workspace</span>
                 </div>
 
-                <div class="arm-score-grid">
-                    <div class="arm-score-cell">
-                        <div class="arm-score-label">ATS Match Score</div>
-                        <div class="arm-score-val">94%<span class="arm-score-delta">+14%</span></div>
+                <div class="arm-metrics-grid">
+                    <div class="arm-metric-cell">
+                        <div class="arm-metric-label">ATS SCORE</div>
+                        <div class="arm-metric-val-row">
+                            <span class="arm-metric-num">87</span>
+                            <span class="arm-metric-unit">/ 100</span>
+                        </div>
                     </div>
-                    <div class="arm-score-cell">
-                        <div class="arm-score-label">Profile Signal</div>
-                        <div class="arm-score-val" style="font-size:15px;">Executive</div>
-                    </div>
-                    <div class="arm-score-cell">
-                        <div class="arm-score-label">Callback Rate</div>
-                        <div class="arm-score-val" style="color:#10B981;">High (88%)</div>
-                    </div>
-                </div>
-
-                <div class="arm-progress-block">
-                    <div class="arm-progress-header">
-                        <span>ATS Keyword Alignment</span>
-                        <span style="color:#10B981;">Verified High Match</span>
-                    </div>
-
-                    <div class="arm-progress-row">
-                        <div class="arm-progress-meta"><span>Resume Structure</span><strong>96%</strong></div>
-                        <div class="arm-progress-track"><div class="arm-progress-fill" style="width:96%;background:#E5E7EB;"></div></div>
-                    </div>
-
-                    <div class="arm-progress-row">
-                        <div class="arm-progress-meta"><span>Keyword Density & Skills</span><strong>92%</strong></div>
-                        <div class="arm-progress-track"><div class="arm-progress-fill" style="width:92%;background:#10B981;"></div></div>
-                    </div>
-
-                    <div class="arm-progress-row">
-                        <div class="arm-progress-meta"><span>Quantified Business Impact</span><strong>88%</strong></div>
-                        <div class="arm-progress-track"><div class="arm-progress-fill" style="width:88%;background:#3B82F6;"></div></div>
+                    <div class="arm-metric-cell">
+                        <div class="arm-metric-label">KEYWORD MATCH</div>
+                        <div class="arm-metric-val-row">
+                            <span class="arm-metric-num">82%</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="arm-ai-rec">
-                    <div class="arm-ai-rec-label">AI Executive Recommendation</div>
-                    <div class="arm-ai-rec-body">
-                        Reframe project achievements using quantified STAR metrics (+15% score lift)
-                        and add missing high-density target skills (System Architecture, Distributed Systems) to pass ATS screening.
-                    </div>
+                <div class="arm-vis-bar-wrap">
+                    <div class="arm-vis-meta"><span>Experience Relevance</span><strong style="color:#F5F5F7">91%</strong></div>
+                    <div class="arm-vis-track"><div class="arm-vis-fill" style="width:91%; background:#A855F7"></div></div>
+                </div>
+
+                <div class="arm-vis-bar-wrap">
+                    <div class="arm-vis-meta"><span>Impact Assessment</span><strong style="color:#F5F5F7">78%</strong></div>
+                    <div class="arm-vis-track"><div class="arm-vis-fill" style="width:78%; background:#3B82F6"></div></div>
+                </div>
+
+                <div class="arm-chips-row">
+                    <span class="arm-chip matched">Python</span>
+                    <span class="arm-chip matched">Spring Boot</span>
+                    <span class="arm-chip matched">PostgreSQL</span>
+                    <span class="arm-chip missing">AWS Cloud</span>
+                    <span class="arm-chip missing">Microservices</span>
+                </div>
+
+                <div class="arm-readiness">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #34D399;"></span>
+                    <span>AI Recommendation: Add cloud architecture evidence to experience section.</span>
                 </div>
             </div>
         """)
 
-    render_clean_html("</div></div>")
+    render_clean_html('</div></div>')

@@ -10,13 +10,13 @@ def render_clean_html(html_str):
     st.markdown(cleaned, unsafe_allow_html=True)
 
 def render_about_page():
-    """Renders the official AiResuMind Pro v4.0 Platform Intelligence & Mission page."""
+    """Renders the official AiResuMind Platform Intelligence & Mission page."""
     render_clean_html("""
     <div style="max-width: 1200px; margin: 0 auto; padding: 20px 0 60px 0;">
         <!-- Header -->
         <div style="text-align: center; margin-bottom: 48px;">
             <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #F5F5F7; padding: 6px 18px; border-radius: 9999px; font-size: 12.5px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.04em;">
-                AiResuMind Pro v4.0 • Platform Vision & Architecture
+                AiResuMind • Platform Vision & Architecture
             </div>
             <h1 style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important; font-size: 48px !important; font-weight: 800 !important; color: #FFFFFF !important; letter-spacing: -0.03em !important; margin: 0 0 16px 0;">
                 AI-Powered Career Intelligence Engine

@@ -1,67 +1,73 @@
 /* ==========================================================================
-   AiResuMind - Modern Dark Glassmorphic Design System (Apple / Linear Inspired)
+   AiResuMind Pro v5.0 — Design System Tokens & Master Stylesheet
+   Single source of truth for visual tokens and shared styles.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    /* Night executive palette: Ink, Ivory, Signal, Mint, Brass, Iris and Coral. */
-    --bg-dark-base: #0a0d12;
-    --bg-dark-surface: #10151d;
-    --bg-dark-card: #151c26;
-    --bg-dark-card-hover: #1c2633;
-    --ink: #f6f1e8;
-    --signal: #ff6b4a;
-    --mint: #61d7b2;
-    --brass: #e7b85a;
-    --iris: #9586ee;
-    --sky: #74b9ff;
-    --accent-blue: var(--signal);
-    --accent-purple: var(--iris);
-    --accent-gradient: linear-gradient(135deg, #ff6b4a 0%, #e7b85a 100%);
-    --accent-glow: rgba(255, 107, 74, 0.16);
-    --text-primary: var(--ink);
-    --text-secondary: #b6becb;
-    --text-muted: #788394;
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-hover: rgba(59, 130, 246, 0.35);
+    /* Primary Design Tokens */
+    --bg: #0B0C0F;
+    --surface: #141519;
+    --surface-elevated: #191A1F;
+    --text-primary: #F5F5F7;
+    --text-secondary: #86868B;
+    --text-muted: #5F6368;
+    --border: rgba(255, 255, 255, 0.08);
+    --accent-start: #3B82F6;
+    --accent-end: #A855F7;
+    --success: #34D399;
+    --warning: #FBBF24;
+    --error: #F87171;
+
+    /* Legacy Alias Mappings */
+    --bg-dark-base: var(--bg);
+    --bg-dark-surface: var(--surface);
+    --bg-dark-card: var(--surface);
+    --bg-dark-card-hover: var(--surface-elevated);
+    --ink: var(--text-primary);
+    --border-subtle: var(--border);
+    --border-hover: rgba(255, 255, 255, 0.16);
+    --accent-blue: var(--accent-start);
+    --accent-purple: var(--accent-end);
+    --accent-green: var(--success);
+    --accent-gradient: linear-gradient(135deg, var(--accent-start) 0%, var(--accent-end) 100%);
+    
     --radius-sm: 8px;
     --radius-md: 14px;
     --radius-lg: 24px;
     --radius-full: 9999px;
-    --shadow-glass: 0 20px 50px rgba(0, 0, 0, 0.6);
+    --shadow-glass: 0 40px 100px rgba(0, 0, 0, 0.7);
 }
 
 /* Global Reset & Base Typography */
 html, body, .stApp {
-    background-color: var(--bg-dark-base) !important;
+    background-color: var(--bg) !important;
     color: var(--text-primary) !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", sans-serif !important;
     -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, .arm-display, .ra-h1 {
-    font-family: 'Fraunces', Georgia, serif !important;
+h1, h2, h3, h4 {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif !important;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.03em !important;
 }
 
-/* A single compact tag language, used for statuses and product context. */
-.arm-tag {
-    display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
-    padding: 5px 10px; font: 500 11px/1 'DM Mono', monospace;
-    letter-spacing: .03em; color: var(--mint); background: rgba(97,215,178,.08);
-    border: 1px solid rgba(97,215,178,.24);
+/* Reduced Motion Override for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
-.builder-flow { display:flex; align-items:center; justify-content:center; gap:10px; margin:26px auto 0; max-width:620px; color:var(--text-muted); font-size:12px; }
-.builder-flow span { display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
-.builder-flow b { font:500 10px 'DM Mono', monospace; color:var(--brass); }
-.builder-flow .active { color:var(--ink); }.builder-flow .active b { color:var(--signal); }
-.builder-flow i { width:38px; height:1px; background:linear-gradient(90deg,var(--signal),rgba(255,255,255,.16)); }
-
-/* Focus remains visible for keyboard navigation. */
+/* Focus remains visible for keyboard navigation */
 a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible,
 [role="combobox"]:focus-visible {
-    outline: 2px solid var(--brass) !important;
+    outline: 2px solid var(--accent-start) !important;
     outline-offset: 3px !important;
 }
 
@@ -75,16 +81,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 section.main > div {
     max-width: 1280px !important;
     padding-top: 0 !important;
-    padding-left: 28px !important;
-    padding-right: 28px !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
     margin-top: 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    padding-bottom: 60px !important;
+    padding-bottom: 80px !important;
 }
 
-/* Streamlit gives style-only markdown blocks vertical layout space.  They are
-   implementation details, so remove that space before the actual page starts. */
 div[data-testid="stElementContainer"]:has(style) { display: contents !important; }
 
 .stApp > header,
@@ -95,11 +99,10 @@ div[data-testid="stElementContainer"]:has(style) { display: contents !important;
     min-height: 0 !important;
 }
 
-/* Hide Streamlit footer branding */
 footer { display: none !important; }
 #MainMenu { visibility: hidden !important; }
 
-/* ── Top Navigation Explicit Resets ── */
+/* Top Navigation Explicit Resets */
 .arm-site-header a.arm-nav-a,
 .arm-site-header a.arm-brand-logo,
 .arm-nav-ul a,
@@ -110,66 +113,58 @@ footer { display: none !important; }
     border-radius: 0 !important;
     box-shadow: none !important;
     outline: none !important;
-    filter: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
 }
 
-/* Glassmorphic Bento Cards */
-.editorial-card, .arm-bento-card {
-    background: var(--bg-dark-card) !important;
-    border: 1px solid var(--border-subtle) !important;
-    border-radius: var(--radius-lg) !important;
-    padding: 32px !important;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    box-shadow: var(--shadow-glass) !important;
-}
-
-.editorial-card:hover, .arm-bento-card:hover {
-    border-color: var(--border-hover) !important;
-    background: var(--bg-dark-card-hover) !important;
-    transform: translateY(-3px) !important;
-    box-shadow: 0 24px 60px rgba(59, 130, 246, 0.12) !important;
-}
-
-/* Streamlit Button Styling (General Action Buttons) */
+/* Streamlit Button System (Primary / Secondary / Tertiary) */
 .stButton > button[kind="primary"], .stButton > button[type="primary"] {
-    background: var(--accent-gradient) !important;
-    color: #FFFFFF !important;
+    background: var(--text-primary) !important;
+    color: #000000 !important;
     border: none !important;
     border-radius: var(--radius-full) !important;
     font-size: 14.5px !important;
-    font-weight: 600 !important;
-    padding: 12px 28px !important;
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3) !important;
-    transition: all 0.2s ease !important;
+    font-weight: 700 !important;
+    padding: 14px 32px !important;
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.12) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .stButton > button[kind="primary"]:hover, .stButton > button[type="primary"]:hover {
-    opacity: 0.92 !important;
+    background: #FFFFFF !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.45) !important;
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2) !important;
 }
 
 .stButton > button[kind="secondary"], .stButton > button[type="secondary"] {
-    background: rgba(255, 255, 255, 0.04) !important;
-    color: #FFFFFF !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #F5F5F7 !important;
+    border: 1px solid var(--border) !important;
     border-radius: var(--radius-full) !important;
-    font-size: 14.5px !important;
+    font-size: 13.5px !important;
     font-weight: 500 !important;
-    padding: 12px 24px !important;
+    padding: 10px 20px !important;
     transition: all 0.2s ease !important;
 }
 
 .stButton > button[kind="secondary"]:hover, .stButton > button[type="secondary"]:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-color: rgba(255, 255, 255, 0.28) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
     transform: translateY(-1px) !important;
 }
 
-@media (max-width: 720px) {
-    .main .block-container, [data-testid="stAppViewBlockContainer"] { padding-bottom: 36px !important; }
-    .builder-flow { justify-content:flex-start; overflow-x:auto; padding:0 4px 4px; }
-    .builder-flow i { min-width:18px; }
+/* Inputs & Textareas Overrides */
+.stTextArea textarea, .stTextInput input, .stSelectbox select, [data-baseweb="select"] {
+    background-color: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-md) !important;
+    color: var(--text-primary) !important;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif !important;
+}
+
+.stTextArea textarea:focus, .stTextInput input:focus {
+    border-color: rgba(255, 255, 255, 0.24) !important;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.24) !important;
+}
+
+@media (max-width: 768px) {
+    .main .block-container, [data-testid="stAppViewBlockContainer"] { padding-bottom: 40px !important; }
 }

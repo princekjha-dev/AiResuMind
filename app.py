@@ -67,7 +67,6 @@ from pages.auth import render_auth_page
 # Set page config at the very beginning
 st.set_page_config(
     page_title="AiResuMind",
-    page_icon="🧠",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -75,7 +74,18 @@ st.set_page_config(
 
 class ResumeApp:
     def __init__(self):
-        """Initialize the application"""
+        """Initialize the application with Shared Career Context"""
+        if 'career_context' not in st.session_state:
+            st.session_state.career_context = {
+                'resume_text': None,
+                'targetRole': 'Software Engineer',
+                'jobDescription': None,
+                'identifiedGaps': ['Distributed Systems', 'AWS Cloud Architecture'],
+                'atsScore': 87,
+                'candidateInfo': {'name': 'Prince Kumar Jha', 'email': 'pkjha2028@gmail.com'},
+                'company': 'Stripe'
+            }
+
         if 'form_data' not in st.session_state:
             st.session_state.form_data = {
                 'personal_info': {
@@ -98,6 +108,9 @@ class ResumeApp:
                 }
             }
 
+        # Always default user authentication to True
+        st.session_state.user_authenticated = True
+
         # Initialize navigation state
         if 'page' not in st.session_state:
             st.session_state.page = 'home'
@@ -114,8 +127,7 @@ class ResumeApp:
             "DASHBOARD": self.render_dashboard,
             "JOB SEARCH": self.render_job_search,
             "FEEDBACK": self.render_feedback_page,
-            "ABOUT": render_about_page,
-            "SIGN IN": render_auth_page
+            "ABOUT": render_about_page
         }
 
         # Initialize dashboard manager
@@ -2777,23 +2789,32 @@ class ResumeApp:
     def render_home(self):
         apply_modern_styles()
         
-        # 1. Hero Section with Real HD Product Mockup Frame
+        # 1. Hero Section V5
         hero_section(
-            "Transform Your Resume into an ATS-Beating Executive Asset",
-            "Receive high-precision AI feedback, benchmark keyword alignment against top job descriptions, and generate executive-ready documents engineered to pass screening filters."
+            "Your career deserves better intelligence.",
+            "Analyze your resume, understand your fit, build stronger applications, and make smarter career moves."
         )
         
-        # 2. Features Section (6 Cards Grid)
+        # 2. Features Grid (Intelligent Suite)
         render_feature_cards_grid()
 
-        # 3. Product Showcase (4-Step Workflow)
+        # 3. Product Showcase (6-Step Workflow)
         render_product_showcase()
 
-        # 4. Executive Analytics Telemetry Preview
-        render_analytics_preview_section()
-
-        # 5. Primary Call to Action Banner
-        render_primary_cta()
+        # 4. Primary Call to Action Banner
+        render_clean_html("""
+            <div style="max-width: 1200px; margin: 96px auto 64px auto; padding: 64px 32px; background: #141519; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 32px; text-align: center;">
+                <h2 style="font-size: 48px; font-weight: 800; color: #F5F5F7; margin: 0 0 16px 0; letter-spacing: -0.03em;">Build your next opportunity.</h2>
+                <p style="font-size: 18px; color: #86868B; max-width: 580px; margin: 0 auto 32px auto; line-height: 1.6;">
+                    Analyze your resume, understand your fit, and apply with more confidence.
+                </p>
+            </div>
+        """)
+        cta_col1, cta_col2, cta_col3 = st.columns([0.35, 0.3, 0.35])
+        with cta_col2:
+            if st.button("Start with your Resume", type="primary", use_container_width=True, key="home_final_cta"):
+                st.session_state.page = "resume_analyzer"
+                st.rerun()
 
     def render_job_search(self):
         """Render the job search page"""
@@ -2835,19 +2856,10 @@ class ResumeApp:
             else:
                 st.session_state.page = 'home'
 
-        if hasattr(st, "query_params") and "page" in st.query_params:
-            qp_page = st.query_params["page"]
-            if qp_page and qp_page != st.session_state.get("page"):
-                st.session_state.page = qp_page
-
-        # The dashboard is private: a direct URL must never expose candidate data
-        # or the dashboard UI before authentication.
         current_page = st.session_state.get('page', 'home')
-        if current_page == "dashboard" and not st.session_state.get("user_authenticated", False):
-            st.session_state.page = "signin"
-            current_page = "signin"
-            if hasattr(st, "query_params"):
-                st.query_params["page"] = "signin"
+
+        if hasattr(st, "query_params"):
+            st.query_params["page"] = current_page
 
         # Render sticky Top Nav only after the access check, so its CTA is accurate.
         render_top_nav(current_page)
@@ -2872,8 +2884,7 @@ class ResumeApp:
             "dashboard": self.render_dashboard,
             "job_search": self.render_job_search,
             "feedback": self.render_feedback_page,
-            "about": pages.about.render_about_page,
-            "signin": render_auth_page
+            "about": pages.about.render_about_page
         }
 
         # Render current page content

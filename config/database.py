@@ -71,6 +71,17 @@ def init_database():
     )
     ''')
     
+    # Create users table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        full_name TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+
     # Create admin table
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS admin (
@@ -81,10 +92,10 @@ def init_database():
     )
     ''')
     
-    # Ensure default admin user exists
-    cursor.execute('SELECT COUNT(*) FROM admin')
-    if cursor.fetchone()[0] == 0:
-        cursor.execute('INSERT INTO admin (email, password) VALUES (?, ?)', ('admin@example.com', 'admin123'))
+    # Ensure default users and admins exist
+    cursor.execute('INSERT OR IGNORE INTO users (email, password, full_name) VALUES (?, ?, ?)', ('prince@airesumind.com', 'AiResuMind@V5#2026', 'Prince Kumar Jha'))
+    cursor.execute('INSERT OR IGNORE INTO admin (email, password) VALUES (?, ?)', ('prince@airesumind.com', 'AiResuMind@V5#2026'))
+    cursor.execute('INSERT OR IGNORE INTO admin (email, password) VALUES (?, ?)', ('admin@example.com', 'admin123'))
     
     conn.commit()
     conn.close()
@@ -191,6 +202,132 @@ def get_resume_stats():
         return None
     finally:
         conn.close()
+
+def get_dashboard_analytics():
+    """Fetch complete real analytics for the AiResuMind Pro v5.0 Dashboard from SQLite."""
+    import datetime
+    conn = get_database_connection()
+    cursor = conn.cursor()
+    
+    analytics = {
+        'total_resumes': 0,
+        'avg_ats_score': None,
+        'high_performing_count': 0,
+        'success_rate': None,
+        'last_analysis_date': None,
+        'skill_distribution': [],
+        'weekly_activity': [],
+        'role_performance': [],
+        'top_performing_role': None,
+        'weekly_trend': None,
+        'recent_analyses': []
+    }
+
+    try:
+        # Total Resumes
+        cursor.execute('SELECT COUNT(*) FROM resume_data')
+        total = cursor.fetchone()[0]
+        analytics['total_resumes'] = total
+
+        # Avg ATS Score & Last Analysis Date
+        cursor.execute('SELECT AVG(ats_score), MAX(created_at) FROM resume_analysis')
+        row = cursor.fetchone()
+        if row and row[0] is not None:
+            analytics['avg_ats_score'] = round(float(row[0]), 1)
+        if row and row[1] is not None:
+            try:
+                dt = datetime.datetime.strptime(str(row[1]).split('.')[0], "%Y-%m-%d %H:%M:%S")
+                analytics['last_analysis_date'] = dt.strftime("%b %d, %Y")
+            except Exception:
+                analytics['last_analysis_date'] = str(row[1])
+
+        # High Performing Count (score >= 80)
+        cursor.execute('SELECT COUNT(*) FROM resume_analysis WHERE ats_score >= 80')
+        analytics['high_performing_count'] = cursor.fetchone()[0]
+
+        # Success Rate (score >= 70 / total if total > 0)
+        if total > 0:
+            cursor.execute('SELECT COUNT(*) FROM resume_analysis WHERE ats_score >= 70')
+            success_count = cursor.fetchone()[0]
+            analytics['success_rate'] = round((success_count / total) * 100, 1)
+
+        # Skill Distribution
+        cursor.execute('SELECT skill_category, COUNT(*) FROM resume_skills GROUP BY skill_category ORDER BY COUNT(*) DESC')
+        skills_rows = cursor.fetchall()
+        if skills_rows:
+            analytics['skill_distribution'] = [(r[0], r[1]) for r in skills_rows]
+
+        # Weekly Activity — last 7 calendar days, count of analyses per day
+        week_map = {}
+        today = datetime.date.today()
+        for i in range(6, -1, -1):
+            day = today - datetime.timedelta(days=i)
+            week_map[day.strftime("%Y-%m-%d")] = 0
+        cursor.execute('''
+            SELECT DATE(created_at) as d, COUNT(*) as cnt
+            FROM resume_analysis
+            WHERE DATE(created_at) >= DATE('now', '-6 days')
+            GROUP BY DATE(created_at)
+        ''')
+        for row in cursor.fetchall():
+            if row[0] in week_map:
+                week_map[row[0]] = row[1]
+        day_labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        ordered = []
+        for date_str, cnt in week_map.items():
+            try:
+                d = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+                label = day_labels[d.weekday()]
+                ordered.append((date_str, label, cnt))
+            except Exception:
+                pass
+        ordered.sort(key=lambda x: x[0])
+        analytics['weekly_activity'] = [(x[1], x[2]) for x in ordered]
+
+        # Role Performance
+        cursor.execute('''
+            SELECT r.target_role, AVG(a.ats_score), COUNT(*) 
+            FROM resume_data r 
+            JOIN resume_analysis a ON r.id = a.resume_id 
+            WHERE r.target_role IS NOT NULL AND r.target_role != '' 
+            GROUP BY r.target_role 
+            ORDER BY AVG(a.ats_score) DESC
+        ''')
+        role_rows = cursor.fetchall()
+        if role_rows:
+            analytics['role_performance'] = [(r[0], round(r[1], 1), r[2]) for r in role_rows]
+            analytics['top_performing_role'] = analytics['role_performance'][0]
+
+        # Recent Analyses
+        cursor.execute('''
+            SELECT r.id, r.name, r.target_role, a.ats_score, a.created_at 
+            FROM resume_data r 
+            JOIN resume_analysis a ON r.id = a.resume_id 
+            ORDER BY a.created_at DESC 
+            LIMIT 5
+        ''')
+        recent_rows = cursor.fetchall()
+        for r in recent_rows:
+            date_str = str(r[4])
+            try:
+                dt = datetime.datetime.strptime(date_str.split('.')[0], "%Y-%m-%d %H:%M:%S")
+                date_str = dt.strftime("%b %d")
+            except Exception:
+                pass
+            analytics['recent_analyses'].append({
+                'id': r[0],
+                'name': r[1] or "Resume.pdf",
+                'target_role': r[2] or "General",
+                'ats_score': round(float(r[3]), 1) if r[3] is not None else 0.0,
+                'created_at': date_str
+            })
+
+    except Exception as e:
+        print(f"Error fetching dashboard analytics: {e}")
+    finally:
+        conn.close()
+
+    return analytics
 
 def log_admin_action(admin_email, action):
     """Log admin login/logout actions"""

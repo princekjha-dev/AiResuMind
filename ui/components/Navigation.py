@@ -12,21 +12,17 @@ def render_clean_html(html_str):
 
 def render_navigation(active_page=None):
     """
-    Exact implementation of user's React/Tailwind Navbar component in Streamlit.
-    - Zero boxed buttons on nav links.
-    - Pure flat text navigation links: Dashboard, Resume Analyzer, Resume Builder, Cold Mail, Job Search.
-    - Right side: Single gradient pill button for "Sign In" / "Profile".
+    Apple & Linear Inspired Sticky Glassmorphism Navigation Bar.
+    - Centered max-width container (1280px).
+    - Subtle glassmorphism: background rgba(10,12,15,0.65) with backdrop-filter blur(20px).
+    - AiResuMind logo on the left.
+    - Minimal navigation links: Dashboard, Resume Analyzer, Resume Builder, Cold Mail, Job Search.
+    - Right side: Clean Sign In button.
     """
 
-    # Sync URL query parameters with session state for URL-based navigation
-    if hasattr(st, "query_params"):
-        qp = st.query_params
-        if "page" in qp:
-            param_page = qp["page"]
-            if param_page and param_page != st.session_state.get("page"):
-                st.session_state.page = param_page
-
     current_page = active_page or st.session_state.get("page", "home")
+    if hasattr(st, "query_params"):
+        st.query_params["page"] = current_page
 
     nav_items = [
         ("dashboard", "Dashboard"),
@@ -54,7 +50,7 @@ def render_navigation(active_page=None):
     html_str = f"""
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-    /* Reset Streamlit default container padding */
+    /* Reset Streamlit default container top spacing */
     .main .block-container,
     [data-testid="stAppViewBlockContainer"],
     [data-testid="stMainBlockContainer"],
@@ -73,7 +69,7 @@ def render_navigation(active_page=None):
         min-height: 0 !important;
     }}
 
-    /* ── Header: w-full bg-[#0a0a0f] border-b border-white/10 ── */
+    /* Sticky Glassmorphism Header */
     header.arm-site-header {{
         position: sticky !important;
         top: 0 !important;
@@ -82,12 +78,14 @@ def render_navigation(active_page=None):
         z-index: 999999 !important;
         width: 100% !important;
         height: 56px !important;
-        background-color: rgba(10,13,18,.92) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        background-color: rgba(10, 12, 15, 0.65) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
         margin-bottom: 0 !important;
     }}
 
-    /* ── Container: mx-auto max-w-7xl px-6 h-14 flex items-center justify-between ── */
+    /* Inner Max-Width Container */
     div.arm-header-inner {{
         max-width: 1280px !important;
         margin: 0 auto !important;
@@ -99,53 +97,46 @@ def render_navigation(active_page=None):
         box-sizing: border-box !important;
     }}
 
-    /* ── Logo: flex items-center gap-2 shrink-0 ── */
+    /* Brand Logo */
     a.arm-brand-logo {{
         display: flex !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 10px !important;
         text-decoration: none !important;
         flex-shrink: 0 !important;
         cursor: pointer !important;
         background: transparent !important;
-        background-color: transparent !important;
         border: none !important;
-        box-shadow: none !important;
         padding: 0 !important;
         margin: 0 !important;
     }}
-    a.arm-brand-logo:hover {{
-        opacity: 0.9 !important;
-    }}
 
-    /* Logo Icon: w-6 h-6 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 */
     div.arm-brand-icon {{
-        width: 24px !important;
-        height: 24px !important;
-        border-radius: 6px !important;
-        background: linear-gradient(135deg, #ff6b4a 0%, #e7b85a 100%) !important;
+        width: 26px !important;
+        height: 26px !important;
+        border-radius: 7px !important;
+        background: linear-gradient(135deg, #6366F1 0%, #A855F7 50%, #EC4899 100%) !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        font-size: 11px !important;
+        font-size: 12px !important;
         color: #ffffff !important;
     }}
 
-    /* Logo Text: text-white font-semibold text-[15px] tracking-tight */
     span.arm-brand-title {{
-        font-family: 'Fraunces', Georgia, serif !important;
-        font-size: 15px !important;
-        font-weight: 600 !important;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
         color: #ffffff !important;
         letter-spacing: -0.025em !important;
         white-space: nowrap !important;
     }}
 
-    /* ── Nav Links: flex items-center gap-7 ml-10 mr-auto ── */
+    /* Navigation Links */
     nav.arm-main-nav {{
         display: flex !important;
         align-items: center !important;
-        margin-left: 28px !important;
+        margin-left: 32px !important;
         margin-right: auto !important;
         background: transparent !important;
         border: none !important;
@@ -157,117 +148,70 @@ def render_navigation(active_page=None):
         list-style: none !important;
         margin: 0 !important;
         padding: 0 !important;
-        gap: 22px !important;
-        background: transparent !important;
-        border: none !important;
+        gap: 28px !important;
     }}
 
     li.arm-nav-li {{
         display: inline-flex !important;
         align-items: center !important;
         height: 56px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
     }}
 
-    /* Plain Text Links: ABSOLUTE OVERRIDE — NO BORDERS, NO BOXES, NO BACKGROUNDS */
     a.arm-nav-a {{
-        font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif !important;
         font-size: 14px !important;
         font-weight: 500 !important;
-        color: #9ca3af !important; /* text-gray-400 */
+        color: #86868B !important;
         text-decoration: none !important;
-        background: transparent !important;
-        background-color: transparent !important;
-        border: 0 !important;
-        border-style: none !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        outline: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        height: auto !important;
-        width: auto !important;
         white-space: nowrap !important;
         transition: color 150ms ease, transform 150ms ease !important;
     }}
 
     a.arm-nav-a:hover {{
-        color: #ffffff !important; /* hover:text-white */
-        background: transparent !important;
-        background-color: transparent !important;
-        border: 0 !important;
-        box-shadow: none !important;
+        color: #F5F5F7 !important;
         transform: translateY(-1px) !important;
     }}
 
     a.arm-nav-a.active {{
-        color: #ffffff !important;
+        color: #FFFFFF !important;
         font-weight: 600 !important;
-        background: transparent !important;
-        border: 0 !important;
-        box-shadow: none !important;
     }}
 
-    /* ── Right side: Sign In only ── */
+    /* Right Action Button */
     div.arm-header-right {{
         display: flex !important;
         align-items: center !important;
         flex-shrink: 0 !important;
-        background: transparent !important;
-        border: none !important;
     }}
 
-    /* Sign In: text-[14px] font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90 transition-opacity duration-150 rounded-full px-4 py-[7px] */
     a.arm-auth-btn {{
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
-        font-size: 14px !important;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif !important;
+        font-size: 13.5px !important;
         font-weight: 500 !important;
-        color: #ffffff !important;
+        color: #F5F5F7 !important;
         text-decoration: none !important;
-        background: #ff6b4a !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
         border-radius: 9999px !important;
-        padding: 7px 16px !important;
+        padding: 7px 18px !important;
         white-space: nowrap !important;
-        border: none !important;
-        box-shadow: 0 6px 18px rgba(255, 107, 74, 0.22) !important;
         transition: transform 150ms ease, background 150ms ease !important;
     }}
 
     a.arm-auth-btn:hover {{
-        background: #ff8066 !important;
+        background: rgba(255, 255, 255, 0.16) !important;
+        border-color: rgba(255, 255, 255, 0.24) !important;
         transform: translateY(-1px) !important;
     }}
 
     /* Responsive */
-    @media (max-width: 1024px) {{
-        div.arm-header-inner {{
-            padding: 0 16px !important;
-        }}
-        nav.arm-main-nav {{
-            margin-left: 20px !important;
-        }}
-        ul.arm-nav-ul {{
-            gap: 18px !important;
-        }}
-    }}
-
-    @media (max-width: 768px) {{
-        header.arm-site-header {{ height: auto !important; }}
-        div.arm-header-inner {{ min-height: 56px !important; height: auto !important; gap: 14px !important; }}
-        nav.arm-main-nav {{ order: 3 !important; width: 100% !important; margin: 0 !important; overflow-x: auto !important; }}
-        ul.arm-nav-ul {{
-            overflow-x: auto !important;
-            scrollbar-width: none !important;
-            gap: 16px !important;
-            padding-bottom: 10px !important;
-        }}
+    @media (max-width: 900px) {{
+        div.arm-header-inner {{ padding: 0 16px !important; }}
+        nav.arm-main-nav {{ margin-left: 16px !important; }}
+        ul.arm-nav-ul {{ gap: 16px !important; }}
     }}
     </style>
 
@@ -276,22 +220,17 @@ def render_navigation(active_page=None):
         <!-- Logo -->
         <a href="?page=home" target="_self" class="arm-brand-logo">
           <div class="arm-brand-icon">
-            <i class="fa-solid fa-sparkles" style="font-size:11px;"></i>
+            <i class="fa-solid fa-sparkles"></i>
           </div>
           <span class="arm-brand-title">AiResuMind</span>
         </a>
 
-        <!-- Nav links: Dashboard, Resume Analyzer, Resume Builder, Cold Mail, Job Search -->
+        <!-- Navigation links -->
         <nav class="arm-main-nav">
           <ul class="arm-nav-ul">
             {nav_links_html}
           </ul>
         </nav>
-
-        <!-- Right side: Sign In only -->
-        <div class="arm-header-right">
-          <a href="?page={auth_target}" target="_self" class="arm-auth-btn">{auth_label}</a>
-        </div>
       </div>
     </header>
     """
